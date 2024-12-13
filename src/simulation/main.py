@@ -1,12 +1,13 @@
 # 1 - Импортируем пакеты
-import pygame
-# from pygame.locals import *
 import sys
+
+import pygame
+
 from simulation.entities.herbivore import Herbivore
 from simulation.entities.predator import Predator
 
 
-def draw_grid(block_size):
+def draw_grid(block_size: int) -> None:
     for x in range(0, WINDOW_WIDTH, block_size):
         for y in range(0, WINDOW_HEIGHT, block_size):
             rect = pygame.Rect(x, y, block_size, block_size)
