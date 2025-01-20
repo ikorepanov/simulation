@@ -2,16 +2,17 @@
 name = "simulation"
 version = "0.1.0"
 description = "The second project of Sergey Zhukov's roadmap"
-readme = "README.md"
-authors = [
-    { name = "Ilia Korepanov" }
-]
-requires-python = ">=3.9, <3.12"
+authors = [{ name = "Ilia Korepanov" }]
+
 dependencies = []
 
-[project.scripts]
-simulation = "simulation:main"
+requires-python = ">=3.9, <3.12"
+readme = "README.md"
+license = { file = "LICENSE" }
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[project.scripts]
+simulation = "simulation:main"
