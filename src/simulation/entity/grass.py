@@ -1,5 +1,5 @@
 from simulation.coordinates import Coordinates
-from simulation.entity import Entity
+from simulation.entity.entity import Entity
 
 
 class Grass(Entity):
