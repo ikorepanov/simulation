@@ -1,2 +1,2 @@
-class Abscissa():
+class Abscissa:
     pass

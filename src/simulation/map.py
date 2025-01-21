@@ -2,7 +2,7 @@ from simulation.coordinates import Coordinates
 from simulation.entity.entity import Entity
 
 
-class Map():
+class Map:
     def __init__(self, coordinates: Coordinates, entity: Entity):
         self.some = {coordinates: entity}
 

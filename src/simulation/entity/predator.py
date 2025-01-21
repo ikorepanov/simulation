@@ -1,6 +1,5 @@
-from simulation.entity.creature import Creature
-
 from simulation.coordinates import Coordinates
+from simulation.entity.creature import Creature
 
 
 class Predator(Creature):

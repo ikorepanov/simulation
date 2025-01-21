@@ -1,2 +1,2 @@
-class Ordinate():
+class Ordinate:
     pass
