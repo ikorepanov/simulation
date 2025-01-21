@@ -5,9 +5,9 @@ from simulation.entity.entity import Entity
 
 
 class Creature(Entity):
-    def __init__(self, coordinates: Coordinates, speed: int, HP: int):
+    def __init__(self, coordinates: Coordinates, speed: int, health: int):
         self.speed = speed
-        self.HP = HP
+        self.health = health
         super().__init__(coordinates)
 
     @abstractmethod
