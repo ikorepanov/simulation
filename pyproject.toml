@@ -17,6 +17,7 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "flake8==7.1.1",
+    "isort==5.13.2",
     "mypy==1.14.1",
 ]
 
@@ -33,6 +34,13 @@ namespace_packages = true
 
 # for strict mypy:
 disallow_untyped_defs = true
+
+[tool.isort]
+line_length = 120
+force_alphabetical_sort_within_sections = true
+include_trailing_comma = true
+use_parentheses = true
+multi_line_output = 3
 
 [project.scripts]
 simulation = "simulation:main"
