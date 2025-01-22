@@ -49,4 +49,4 @@ line-length = 120
 skip-string-normalization = true
 
 [project.scripts]
-simulation = "simulation:main"
+simulation = "simulation.main:main"
