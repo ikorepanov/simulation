@@ -170,3 +170,5 @@ cython_debug/
 
 *.pyc
 *.lock
+
+*:Zone.Identifier

@@ -2,7 +2,7 @@ import sys
 
 import pygame
 
-from simulation.params import FRAMES_PER_SECOND, WINDOW_HEIGHT, WINDOW_WIDTH
+from simulation.params import BASE_PATH, FRAMES_PER_SECOND, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class Simulation:
@@ -31,9 +31,19 @@ class Simulation:
     def make_frames_pause(self) -> None:
         self.clock.tick(FRAMES_PER_SECOND)
 
-    def start_simulation(self, background_color: tuple[int, int, int]) -> None:
+    def load_image(self, image_name: str) -> pygame.surface.Surface:
+        path_to_image = str(BASE_PATH) + f'/assets/images/{image_name}.png'
+        return pygame.image.load(path_to_image)
+
+    def draw_entity(self, image: pygame.surface.Surface, x: int, y: int) -> None:
+        self.window.blit(image, (x, y))
+
+    def start_simulation(self, background_color: tuple[int, int, int], image_name: str, x: int, y: int) -> None:
         # 3 - Инициализируем окружение pygame
         self.initialize_pygame_environment()
+
+        # 4 - Загружаем элементы: изображения, зуки и т.д.
+        image = self.load_image(image_name)
 
         while True:
             # 7 - Проверяем наличие событий и обрабатываем их
@@ -41,6 +51,9 @@ class Simulation:
 
             # 9 - Очищаем окно
             self.clear_window(background_color)
+
+            # 10 - Рисуем все элементы окна
+            self.draw_entity(image, x, y)
 
             # 11 - Обновляем окно
             self.update_window()
