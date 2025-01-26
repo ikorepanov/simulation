@@ -18,7 +18,6 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-    "black==24.10.0",
     "flake8==7.1.1",
     "isort==5.13.2",
     "mypy==1.14.1",
