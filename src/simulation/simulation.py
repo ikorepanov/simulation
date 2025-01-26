@@ -1,35 +1,32 @@
 import sys
 
-from pygame import init, QUIT, quit
-from pygame.display import set_mode, update
-from pygame.event import get
-from pygame.time import Clock
+import pygame
 
 from simulation.params import FRAMES_PER_SECOND, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class Simulation:
     def __init__(self) -> None:
-        self.window = set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        self.clock = Clock()
+        self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.clock = pygame.time.Clock()
 
     def initialize_pygame_environment(self) -> None:
-        init()
+        pygame.init()
 
     def quit_game(self) -> None:
-        quit()
+        pygame.quit()
         sys.exit()
 
     def check_events(self) -> None:
-        for event in get():
-            if event.type == QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 self.quit_game()
 
     def clear_window(self, background_color: tuple[int, int, int]) -> None:
         self.window.fill(background_color)
 
     def update_window(self) -> None:
-        update()
+        pygame.display.update()
 
     def make_frames_pause(self) -> None:
         self.clock.tick(FRAMES_PER_SECOND)
