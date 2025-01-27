@@ -13,8 +13,10 @@ class Window:
     def update_window(self) -> None:
         pygame.display.update()
 
-    def draw_entity(self, image: pygame.surface.Surface, x: int, y: int) -> None:
-        self.surface.blit(image, (x, y))
+    # def draw_entity(self, image: pygame.surface.Surface, x: int, y: int) -> None:
+    #     self.surface.blit(image, (x, y))
+    def draw_entity(self, image: pygame.surface.Surface, image_rect: pygame.rect.Rect) -> None:
+        self.surface.blit(image, image_rect)
 
     def draw_grid(self, block_size: int) -> None:
         for x in range(0, WINDOW_WIDTH, block_size):
