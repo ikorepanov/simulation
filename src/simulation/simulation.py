@@ -2,7 +2,7 @@ import sys
 
 import pygame
 
-from simulation.params import BASE_PATH, FRAMES_PER_SECOND, MAX_WIDTH, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT
+from simulation.params import BASE_PATH, FRAMES_PER_SECOND, MAX_WIDTH, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT, N_PIXELS_PER_FRAME
 from simulation.window import Window
 
 import random
@@ -40,19 +40,27 @@ class Simulation:
         image = self.load_image(image_name)
 
         # 5 - Инициализируем переменные
-        imageX = random.randrange(0, MAX_WIDTH, IMAGE_WIDTH_HEIGHT)
-        imageY = random.randrange(0, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT)
+        image_x = random.randrange(0, MAX_WIDTH, IMAGE_WIDTH_HEIGHT)
+        image_y = random.randrange(0, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT)
+
+        x_speed = N_PIXELS_PER_FRAME
 
         while True:
             # 7 - Проверяем наличие событий и обрабатываем их
             self.check_events()
 
+            # 8 - Выполняем действия "в рамках фрейма"
+            if (image_x < 0) or (image_x >= MAX_WIDTH):
+                x_speed = - x_speed
+
+            image_x = image_x + x_speed
+
             # 9 - Очищаем окно
             self.window.clear_window(background_color)
 
             # 10 - Рисуем все элементы окна
-            self.window.draw_entity(image, imageX, imageY)
             self.window.draw_grid(IMAGE_WIDTH_HEIGHT)
+            self.window.draw_entity(image, image_x, image_y)
 
             # 11 - Обновляем окно
             self.window.update_window()
