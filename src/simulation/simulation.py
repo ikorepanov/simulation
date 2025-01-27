@@ -1,11 +1,17 @@
+import random
 import sys
 
 import pygame
 
-from simulation.params import BASE_PATH, FRAMES_PER_SECOND, WINDOW_WIDTH, WINDOW_HEIGHT, IMAGE_WIDTH_HEIGHT, N_PIXELS_PER_FRAME
+from simulation.params import (
+    BASE_PATH,
+    FRAMES_PER_SECOND,
+    IMAGE_WIDTH_HEIGHT,
+    N_PIXELS_PER_FRAME,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+)
 from simulation.window import Window
-
-import random
 
 
 class Simulation:
@@ -32,12 +38,22 @@ class Simulation:
         path_to_image = str(BASE_PATH) + f'/assets/images/{image_name}.png'
         return pygame.image.load(path_to_image)
 
-    def start_simulation(self, background_color: tuple[int, int, int], image_name: str) -> None:
+    def load_sound(self, sound_name: str) -> None:
+        path_to_sound = str(BASE_PATH) + f'/assets/sounds/{sound_name}.ogg'
+        pygame.mixer.music.load(path_to_sound)
+
+    def play_sound(self) -> None:
+        pygame.mixer.music.play(-1, 0.0)
+
+    def start_simulation(self, background_color: tuple[int, int, int], image_name: str, sound_name: str) -> None:
         # 3 - Инициализируем окружение pygame
         self.initialize_pygame_environment()
 
         # 4 - Загружаем элементы: изображения, зуки и т.д.
         image = self.load_image(image_name)
+
+        self.load_sound(sound_name)
+        self.play_sound()
 
         # 5 - Инициализируем переменные
         # image_x = random.randrange(0, MAX_WIDTH, IMAGE_WIDTH_HEIGHT)

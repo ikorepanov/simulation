@@ -1,6 +1,6 @@
 import pygame
 
-from simulation.params import WINDOW_HEIGHT, WINDOW_WIDTH, WHITE
+from simulation.params import WHITE, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class Window:
