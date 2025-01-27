@@ -2,8 +2,10 @@ import sys
 
 import pygame
 
-from simulation.params import BASE_PATH, FRAMES_PER_SECOND
+from simulation.params import BASE_PATH, FRAMES_PER_SECOND, MAX_WIDTH, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT
 from simulation.window import Window
+
+import random
 
 
 class Simulation:
@@ -30,12 +32,16 @@ class Simulation:
         path_to_image = str(BASE_PATH) + f'/assets/images/{image_name}.png'
         return pygame.image.load(path_to_image)
 
-    def start_simulation(self, background_color: tuple[int, int, int], image_name: str, x: int, y: int) -> None:
+    def start_simulation(self, background_color: tuple[int, int, int], image_name: str) -> None:
         # 3 - Инициализируем окружение pygame
         self.initialize_pygame_environment()
 
         # 4 - Загружаем элементы: изображения, зуки и т.д.
         image = self.load_image(image_name)
+
+        # 5 - Инициализируем переменные
+        imageX = random.randrange(0, MAX_WIDTH, IMAGE_WIDTH_HEIGHT)
+        imageY = random.randrange(0, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT)
 
         while True:
             # 7 - Проверяем наличие событий и обрабатываем их
@@ -45,7 +51,8 @@ class Simulation:
             self.window.clear_window(background_color)
 
             # 10 - Рисуем все элементы окна
-            self.window.draw_entity(image, x, y)
+            self.window.draw_entity(image, imageX, imageY)
+            self.window.draw_grid(IMAGE_WIDTH_HEIGHT)
 
             # 11 - Обновляем окно
             self.window.update_window()
