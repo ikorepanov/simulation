@@ -2,6 +2,7 @@ import sys
 
 import pygame
 
+from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
 from simulation.params import BASE_PATH, FRAMES_PER_SECOND, IMAGE_WIDTH_HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
 from simulation.window import Window
@@ -38,7 +39,7 @@ class Simulation:
     def play_sound(self) -> None:
         pygame.mixer.music.play(-1, 0.0)
 
-    def start_simulation(self, background_color: tuple[int, int, int], image_name: str, sound_name: str) -> None:
+    def start_simulation(self, background_color: tuple[int, int, int], sound_name: str) -> None:
         # 3 - Инициализируем окружение pygame
         self.initialize_pygame_environment()
 
@@ -47,7 +48,8 @@ class Simulation:
         self.play_sound()
 
         # 5 - Инициализируем переменные
-        predator = Predator(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, image_name)
+        predator = Predator(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, 'predator_small')
+        herbivore = Herbivore(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, 'herbivore_small')
 
         while True:
             # 7 - Проверяем наличие событий и обрабатываем их
@@ -55,6 +57,7 @@ class Simulation:
 
             # 8 - Выполняем действия "в рамках фрейма"
             predator.update()
+            herbivore.update()
 
             # 9 - Очищаем окно
             self.window.clear_window(background_color)
@@ -62,6 +65,7 @@ class Simulation:
             # 10 - Рисуем все элементы окна
             self.window.draw_grid(IMAGE_WIDTH_HEIGHT)
             predator.draw()
+            herbivore.draw()
 
             # 11 - Обновляем окно
             self.window.update_window()
