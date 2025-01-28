@@ -27,11 +27,11 @@ class Creature(Entity):
         self.width = creature_rect.width
         self.height = creature_rect.height
         self.max_width = window_width - self.width
-        self.max_height = window_height - self.height
+        # self.max_height = window_height - self.height
 
         # выбираем произвольную начальную позицию
         self.x = random.randrange(0, self.max_width, self.width)
-        self.y = random.randrange(0, self.max_height, self.height)
+        self.y = random.randrange(0, window_height, self.height)
 
         # выбираем произвольную скорость между -3 и 3, но не ноль
         speed_list = [-3, -2, -1, 1, 2, 3]

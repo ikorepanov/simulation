@@ -4,7 +4,15 @@ import pygame
 
 from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
-from simulation.params import BASE_PATH, FRAMES_PER_SECOND, IMAGE_WIDTH_HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
+from simulation.params import (
+    BASE_PATH,
+    FRAMES_PER_SECOND,
+    IMAGE_WIDTH_HEIGHT,
+    N_HERBIVORES,
+    N_PREDATORS,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+)
 from simulation.window import Window
 
 
@@ -45,27 +53,42 @@ class Simulation:
 
         # 4 - Загружаем элементы: изображения, зуки и т.д.
         self.load_sound(sound_name)
-        self.play_sound()
+        # self.play_sound()
 
         # 5 - Инициализируем переменные
-        predator = Predator(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, 'predator_small')
-        herbivore = Herbivore(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, 'herbivore_small')
+        predator_list = []
+        herbivore_list = []
+
+        for predator in range(0, N_PREDATORS):
+            predator = Predator(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, 'predator_small')
+            predator_list.append(predator)
+
+        for herbivore in range(0, N_HERBIVORES):
+            herbivore = Herbivore(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, 'herbivore_small')
+            herbivore_list.append(herbivore)
 
         while True:
             # 7 - Проверяем наличие событий и обрабатываем их
             self.check_events()
 
             # 8 - Выполняем действия "в рамках фрейма"
-            predator.update()
-            herbivore.update()
+            for predator in predator_list:
+                predator.update()
+
+            for herbivore in herbivore_list:
+                herbivore.update()
 
             # 9 - Очищаем окно
             self.window.clear_window(background_color)
 
             # 10 - Рисуем все элементы окна
             self.window.draw_grid(IMAGE_WIDTH_HEIGHT)
-            predator.draw()
-            herbivore.draw()
+
+            for predator in predator_list:
+                predator.draw()
+
+            for herbivore in herbivore_list:
+                herbivore.draw()
 
             # 11 - Обновляем окно
             self.window.update_window()
