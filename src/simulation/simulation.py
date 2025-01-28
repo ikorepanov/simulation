@@ -1,16 +1,9 @@
-import random
 import sys
 
 import pygame
 
-from simulation.params import (
-    BASE_PATH,
-    FRAMES_PER_SECOND,
-    IMAGE_WIDTH_HEIGHT,
-    N_PIXELS_PER_FRAME,
-    WINDOW_HEIGHT,
-    WINDOW_WIDTH,
-)
+from simulation.entity.predator import Predator
+from simulation.params import BASE_PATH, FRAMES_PER_SECOND, IMAGE_WIDTH_HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
 from simulation.window import Window
 
 
@@ -50,38 +43,25 @@ class Simulation:
         self.initialize_pygame_environment()
 
         # 4 - Загружаем элементы: изображения, зуки и т.д.
-        image = self.load_image(image_name)
-
         self.load_sound(sound_name)
         self.play_sound()
 
         # 5 - Инициализируем переменные
-        # image_x = random.randrange(0, MAX_WIDTH, IMAGE_WIDTH_HEIGHT)
-        # image_y = random.randrange(0, MAX_HEIGHT, IMAGE_WIDTH_HEIGHT)
-        image_rect = image.get_rect()
-        MAX_WIDTH = WINDOW_WIDTH - image_rect.width
-        MAX_HEIGHT = WINDOW_HEIGHT - image_rect.height
-        image_rect.left = random.randrange(0, MAX_WIDTH, image_rect.width)
-        image_rect.top = random.randrange(0, MAX_HEIGHT, image_rect.height)
-
-        x_speed = N_PIXELS_PER_FRAME
+        predator = Predator(self.window, WINDOW_WIDTH, WINDOW_HEIGHT, image_name)
 
         while True:
             # 7 - Проверяем наличие событий и обрабатываем их
             self.check_events()
 
             # 8 - Выполняем действия "в рамках фрейма"
-            if (image_rect.left < 0) or (image_rect.left >= MAX_WIDTH):
-                x_speed = - x_speed
-
-            image_rect.left = image_rect.left + x_speed
+            predator.update()
 
             # 9 - Очищаем окно
             self.window.clear_window(background_color)
 
             # 10 - Рисуем все элементы окна
             self.window.draw_grid(IMAGE_WIDTH_HEIGHT)
-            self.window.draw_entity(image, image_rect)
+            predator.draw()
 
             # 11 - Обновляем окно
             self.window.update_window()
