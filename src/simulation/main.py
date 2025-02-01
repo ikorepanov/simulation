@@ -24,8 +24,7 @@ window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 
 # 4 - Загружаем элементы: изображения, зуки и т.д.
-path_to_sound = str(BASE_PATH) + '/assets/sounds/watch_yourself.ogg'
-pygame.mixer.music.load(path_to_sound)
+pygame.mixer.music.load(BASE_PATH + '/assets/sounds/watch_yourself.ogg')
 
 score_display = pygwidgets.DisplayText(
     window,
@@ -70,16 +69,10 @@ while True:
             pygame.quit()
             sys.exit()
 
-        if playing:
-            creature_mgr.handle_event(event)
-            the_score = creature_mgr.get_score()
-            score_display.setValue(f'Score: {str(the_score)}')
-        elif start_button.handleEvent(event):
+        if start_button.handleEvent(event):
             creature_mgr.start()
             score_display.setValue('Score: 0')
-
             pygame.mixer.music.play(-1, 0.0)  # включить музыку
-
             playing = True
             start_button.disable()
 
@@ -87,15 +80,12 @@ while True:
     if playing:
         creature_mgr.update()
         status_display.setValue('Не знаю, что тут писать...')
-        # if something:
-        #     playing = False
-        #     start_button.enable
 
     # 9 - Очищаем окно
     window.fill(BACKGROUND_COLOR)
 
     # 10 - Рисуем все элементы окна
-    def draw_grid(window: pygame.surface, block_size: int) -> None:
+    def draw_grid(window: pygame.Surface, block_size: int) -> None:
         for x in range(0, WINDOW_WIDTH, block_size):
             for y in range(0, WINDOW_HEIGHT, block_size):
                 rect = pygame.Rect(x, y, block_size, block_size)
