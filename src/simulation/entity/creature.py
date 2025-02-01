@@ -44,7 +44,7 @@ class Creature(Entity):
         self.x = self.x + self.x_speed
 
     def draw(self) -> None:
-        self.window.draw_entity(self.image, self.x, self.y)
+        self.window.blit(self.image, (self.x, self.y))
 
     @abstractmethod
     def make_move(self) -> None:
