@@ -1,6 +1,8 @@
-import pygame
 import random
+
+import pygame
 import pygwidgets
+
 from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
 from simulation.params import N_HERBIVORES, N_PREDATORS
@@ -16,11 +18,11 @@ class CreatureMgr:
         self.creature_list = []
 
         for herbivore_num in range(0, N_HERBIVORES):
-            herbivore = Herbivore(self.window, self.max_width, self.max_height, 'herbivore_small')
+            herbivore = Herbivore(self.window, self.max_width, self.max_height, 1)
             self.creature_list.append(herbivore)
 
         for predator_num in range(0, N_PREDATORS):
-            predator = Predator(self.window, self.max_width, self.max_height, 'predator_small')
+            predator = Predator(self.window, self.max_width, self.max_height, 2)
             self.creature_list.append(predator)
 
     def handle_event(self, event):

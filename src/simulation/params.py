@@ -14,7 +14,7 @@ USABLE_WINDOW_HEIGHT = WINDOW_HEIGHT - PANEL_HEIGTH
 
 FRAMES_PER_SECOND = 30  # За каждую секунду окно перерерисовывается 30 раз (максимум)
 
-BASE_PATH = Path(__file__).resolve().parent
+BASE_PATH = str(Path(__file__).resolve().parent)
 
 IMAGE_WIDTH_HEIGHT = 80  # pixels
 MAX_WIDTH = WINDOW_WIDTH - IMAGE_WIDTH_HEIGHT
@@ -22,5 +22,5 @@ MAX_HEIGHT = WINDOW_HEIGHT - IMAGE_WIDTH_HEIGHT
 
 N_PIXELS_PER_FRAME = 1
 
-N_PREDATORS = 15
-N_HERBIVORES = 15
+N_PREDATORS = 3
+N_HERBIVORES = 3
