@@ -19,7 +19,7 @@ class CreatureMgr:
 
     def start(self) -> None:
         self.creature_list: list[Herbivore | Predator] = []
-        self.entity_list = []
+        self.entity_list: list[Grass] = []
 
         for num in range(1, N_HERBIVORES + 1):
             herbivore = Herbivore(self.window, self.max_width, self.max_height, num)

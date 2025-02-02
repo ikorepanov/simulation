@@ -114,7 +114,7 @@ while True:
     start_button.draw()
 
     # 11 - Обновляем окно
-    pygame.display.update()
+    pygame.display.update()  # Также, можно pygame.display.flip()
 
     # 12 - Делаем паузу
     clock.tick(FRAMES_PER_SECOND)  # ожидание pygame
