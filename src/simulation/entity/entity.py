@@ -24,7 +24,7 @@ class Entity(ABC):
         self.width = rect.width
         self.height = rect.height
         # выбираем произвольную начальную позицию
-        self.x = random.randrange(0, max_width, self.width)
+        self.x = random.randrange(0, max_width - self.width, self.width)
         self.y = random.randrange(0, max_height, self.height)
         self.image.setLoc((self.x, self.y))
 

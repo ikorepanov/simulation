@@ -27,7 +27,7 @@ class Creature(Entity):
         super().__init__(window, max_width, max_height, ID, image)
 
     def update(self) -> None:
-        if (self.x < 0) or (self.x >= self.max_width):
+        if (self.x < 0) or (self.x >= self.max_width - self.width):
             self.speed_x = - self.speed_x
 
         self.x = self.x + self.speed_x
