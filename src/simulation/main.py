@@ -1,3 +1,9 @@
+# Game Loop
+# I. Process input (Events)
+# II. Update game
+# III. Render (Draw)
+# IV. Control how fast (FPS)
+
 import sys
 
 import pygame
@@ -8,19 +14,21 @@ from simulation.params import (
     BACKGROUND_COLOR,
     BASE_PATH,
     BLACK,
-    FRAMES_PER_SECOND,
+    FPS,
     GRAY,
     IMAGE_WIDTH_HEIGHT,
     PANEL_HEIGTH,
     USABLE_WINDOW_HEIGHT,
     WHITE,
-    WINDOW_HEIGHT,
-    WINDOW_WIDTH,
+    HEIGHT,
+    WIDTH,
 )
 
 # 3 - Инициализируем окружение pygame
 pygame.init()
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.mixer.init()
+window = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Simulation')
 clock = pygame.time.Clock()
 
 # 4 - Загружаем элементы: изображения, зуки и т.д.
@@ -48,21 +56,22 @@ status_display = pygwidgets.DisplayText(
 
 start_button = pygwidgets.TextButton(
     window,
-    (WINDOW_WIDTH - 110, USABLE_WINDOW_HEIGHT + 10),
+    (WIDTH - 110, USABLE_WINDOW_HEIGHT + 10),
     'Start',
 )
 
 # 5 - Инициализируем переменные
 creature_mgr = CreatureMgr(
     window,
-    WINDOW_WIDTH,
+    WIDTH,
     USABLE_WINDOW_HEIGHT,
 )
 
 playing = False  # ждём, пока пользователь не нажмёт кнопку Start
 
-# 6 - Бесконечный цикл
+# 6 - Бесконечный цикл (Game Loop)
 while True:
+    # I. Process input (Events)
     # 7 - Проверяем наличие событий и обрабатываем их
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -81,13 +90,14 @@ while True:
         creature_mgr.update()
         status_display.setValue('Не знаю, что тут писать...')
 
+    # III. Render (Draw)
     # 9 - Очищаем окно
     window.fill(BACKGROUND_COLOR)
 
     # 10 - Рисуем все элементы окна
     def draw_grid(window: pygame.Surface, block_size: int) -> None:
-        for x in range(0, WINDOW_WIDTH, block_size):
-            for y in range(0, WINDOW_HEIGHT, block_size):
+        for x in range(0, WIDTH, block_size):
+            for y in range(0, USABLE_WINDOW_HEIGHT, block_size):
                 rect = pygame.Rect(x, y, block_size, block_size)
                 pygame.draw.rect(window, WHITE, rect, 1)
 
@@ -105,7 +115,7 @@ while True:
         pygame.Rect(
             0,
             USABLE_WINDOW_HEIGHT,
-            WINDOW_WIDTH,
+            WIDTH,
             PANEL_HEIGTH,
         ),
     )
@@ -114,7 +124,9 @@ while True:
     start_button.draw()
 
     # 11 - Обновляем окно
+    # *after* drawing everything:
     pygame.display.update()  # Также, можно pygame.display.flip()
 
+    # IV. Control how fast (FPS): keep loop running at the right speed
     # 12 - Делаем паузу
-    clock.tick(FRAMES_PER_SECOND)  # ожидание pygame
+    clock.tick(FPS)  # ожидание pygame
