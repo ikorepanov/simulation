@@ -24,6 +24,8 @@ from simulation.params import (
     WIDTH,
 )
 
+from simulation.entity.entity import Entity
+
 # 3 - Инициализируем окружение pygame
 pygame.init()
 pygame.mixer.init()
@@ -67,6 +69,8 @@ creature_mgr = CreatureMgr(
     USABLE_WINDOW_HEIGHT,
 )
 
+all_sprites = pygame.sprite.Group()
+
 playing = False  # ждём, пока пользователь не нажмёт кнопку Start
 
 # 6 - Бесконечный цикл (Game Loop)
@@ -85,12 +89,14 @@ while True:
             playing = True
             start_button.disable()
 
+# II. Update game
     # 8 - Выполняем действия "в рамках фрейма"
     if playing:
-        creature_mgr.update()
+        all_sprites.update()
+        creature_mgr.update()  # NB! Удалить
         status_display.setValue('Не знаю, что тут писать...')
 
-    # III. Render (Draw)
+# III. Render (Draw)
     # 9 - Очищаем окно
     window.fill(BACKGROUND_COLOR)
 
@@ -106,7 +112,8 @@ while True:
 
     # 2). С помощью менеджера рисуем существ
     if playing:
-        creature_mgr.draw()
+        all_sprites.draw(window)
+        creature_mgr.draw()  # NB! Удалить
 
     # 3). Изображаем нижнюю панель с данными состояния и кнопкой Start
     pygame.draw.rect(
@@ -127,6 +134,6 @@ while True:
     # *after* drawing everything:
     pygame.display.update()  # Также, можно pygame.display.flip()
 
-    # IV. Control how fast (FPS): keep loop running at the right speed
+# IV. Control how fast (FPS): keep loop running at the right speed
     # 12 - Делаем паузу
     clock.tick(FPS)  # ожидание pygame
