@@ -9,26 +9,24 @@ import sys
 import pygame
 import pygwidgets
 
-# from simulation.entity.creature_mgr import CreatureMgr
+from simulation.entity.grass import Grass
+from simulation.entity.herbivore import Herbivore
+from simulation.entity.predator import Predator
+from simulation.entity.rock import Rock
+from simulation.entity.tree import Tree
 from simulation.params import (
     BACKGROUND_COLOR,
     BASE_PATH,
     BLACK,
     FPS,
     GRAY,
+    HEIGHT,
     IMAGE_WIDTH_HEIGHT,
     PANEL_HEIGTH,
     USABLE_HEIGHT,
     WHITE,
-    HEIGHT,
     WIDTH,
 )
-
-from simulation.entity.herbivore import Herbivore
-from simulation.entity.predator import Predator
-from simulation.entity.grass import Grass
-from simulation.entity.rock import Rock
-from simulation.entity.tree import Tree
 
 # 3 - Инициализируем окружение pygame
 pygame.init()
@@ -67,18 +65,14 @@ start_button = pygwidgets.TextButton(
 )
 
 # 5 - Инициализируем переменные
-# creature_mgr = CreatureMgr(
-#     window,
-#     WIDTH,
-#     USABLE_WINDOW_HEIGHT,
-# )
+all_sprites = pygame.sprite.Group()  # type: ignore
 
-all_sprites = pygame.sprite.Group()
 herbivore = Herbivore(1)
 predator = Predator(2)
 grass = Grass(3)
 rock = Rock(4)
 tree = Tree(5)
+
 all_sprites.add(tree, grass, rock, herbivore, predator)
 
 playing = False  # ждём, пока пользователь не нажмёт кнопку Start
@@ -93,7 +87,6 @@ while True:
             sys.exit()
 
         if start_button.handleEvent(event):
-            # creature_mgr.start()
             score_display.setValue('Score: 0')
             pygame.mixer.music.play(-1, 0.0)  # включить музыку
             playing = True
@@ -103,7 +96,6 @@ while True:
     # 8 - Выполняем действия "в рамках фрейма"
     if playing:
         all_sprites.update()
-        # creature_mgr.update()  # NB! Удалить
         status_display.setValue('Не знаю, что тут писать...')
 
 # III. Render (Draw)
@@ -123,7 +115,6 @@ while True:
     # 2). С помощью менеджера рисуем существ
     if playing:
         all_sprites.draw(window)
-        # creature_mgr.draw()  # NB! Удалить
 
     # 3). Изображаем нижнюю панель с данными состояния и кнопкой Start
     pygame.draw.rect(

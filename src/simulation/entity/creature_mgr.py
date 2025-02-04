@@ -1,9 +1,9 @@
 import pygame
 
+from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
-from simulation.entity.grass import Grass
-from simulation.params import N_HERBIVORES, N_PREDATORS, N_GRASS
+from simulation.params import N_GRASS, N_HERBIVORES, N_PREDATORS
 
 
 class CreatureMgr:

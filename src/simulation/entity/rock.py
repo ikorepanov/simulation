@@ -1,7 +1,7 @@
-from simulation.params import BASE_PATH
 import pygame
 
 from simulation.entity.entity import Entity
+from simulation.params import BASE_PATH
 
 
 class Rock(Entity):
