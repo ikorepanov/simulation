@@ -9,7 +9,7 @@ import sys
 import pygame
 import pygwidgets
 
-from simulation.entity.creature_mgr import CreatureMgr
+# from simulation.entity.creature_mgr import CreatureMgr
 from simulation.params import (
     BACKGROUND_COLOR,
     BASE_PATH,
@@ -18,13 +18,17 @@ from simulation.params import (
     GRAY,
     IMAGE_WIDTH_HEIGHT,
     PANEL_HEIGTH,
-    USABLE_WINDOW_HEIGHT,
+    USABLE_HEIGHT,
     WHITE,
     HEIGHT,
     WIDTH,
 )
 
-from simulation.entity.entity import Entity
+from simulation.entity.herbivore import Herbivore
+from simulation.entity.predator import Predator
+from simulation.entity.grass import Grass
+from simulation.entity.rock import Rock
+from simulation.entity.tree import Tree
 
 # 3 - Инициализируем окружение pygame
 pygame.init()
@@ -38,7 +42,7 @@ pygame.mixer.music.load(BASE_PATH + '/assets/sounds/watch_yourself.ogg')
 
 score_display = pygwidgets.DisplayText(
     window,
-    (10, USABLE_WINDOW_HEIGHT + 25),
+    (10, USABLE_HEIGHT + 25),
     'Score: 0',
     textColor=BLACK,
     backgroundColor=None,
@@ -48,7 +52,7 @@ score_display = pygwidgets.DisplayText(
 
 status_display = pygwidgets.DisplayText(
     window,
-    (180, USABLE_WINDOW_HEIGHT + 25),
+    (180, USABLE_HEIGHT + 25),
     '',
     textColor=BLACK,
     backgroundColor=None,
@@ -58,18 +62,24 @@ status_display = pygwidgets.DisplayText(
 
 start_button = pygwidgets.TextButton(
     window,
-    (WIDTH - 110, USABLE_WINDOW_HEIGHT + 10),
+    (WIDTH - 110, USABLE_HEIGHT + 10),
     'Start',
 )
 
 # 5 - Инициализируем переменные
-creature_mgr = CreatureMgr(
-    window,
-    WIDTH,
-    USABLE_WINDOW_HEIGHT,
-)
+# creature_mgr = CreatureMgr(
+#     window,
+#     WIDTH,
+#     USABLE_WINDOW_HEIGHT,
+# )
 
 all_sprites = pygame.sprite.Group()
+herbivore = Herbivore(1)
+predator = Predator(2)
+grass = Grass(3)
+rock = Rock(4)
+tree = Tree(5)
+all_sprites.add(tree, grass, rock, herbivore, predator)
 
 playing = False  # ждём, пока пользователь не нажмёт кнопку Start
 
@@ -83,7 +93,7 @@ while True:
             sys.exit()
 
         if start_button.handleEvent(event):
-            creature_mgr.start()
+            # creature_mgr.start()
             score_display.setValue('Score: 0')
             pygame.mixer.music.play(-1, 0.0)  # включить музыку
             playing = True
@@ -93,7 +103,7 @@ while True:
     # 8 - Выполняем действия "в рамках фрейма"
     if playing:
         all_sprites.update()
-        creature_mgr.update()  # NB! Удалить
+        # creature_mgr.update()  # NB! Удалить
         status_display.setValue('Не знаю, что тут писать...')
 
 # III. Render (Draw)
@@ -103,7 +113,7 @@ while True:
     # 10 - Рисуем все элементы окна
     def draw_grid(window: pygame.Surface, block_size: int) -> None:
         for x in range(0, WIDTH, block_size):
-            for y in range(0, USABLE_WINDOW_HEIGHT, block_size):
+            for y in range(0, USABLE_HEIGHT, block_size):
                 rect = pygame.Rect(x, y, block_size, block_size)
                 pygame.draw.rect(window, WHITE, rect, 1)
 
@@ -113,7 +123,7 @@ while True:
     # 2). С помощью менеджера рисуем существ
     if playing:
         all_sprites.draw(window)
-        creature_mgr.draw()  # NB! Удалить
+        # creature_mgr.draw()  # NB! Удалить
 
     # 3). Изображаем нижнюю панель с данными состояния и кнопкой Start
     pygame.draw.rect(
@@ -121,7 +131,7 @@ while True:
         GRAY,
         pygame.Rect(
             0,
-            USABLE_WINDOW_HEIGHT,
+            USABLE_HEIGHT,
             WIDTH,
             PANEL_HEIGTH,
         ),

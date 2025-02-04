@@ -8,9 +8,8 @@ BACKGROUND_COLOR = (0, 180, 180)
 
 WIDTH = 640  # pixels
 HEIGHT = 540  # pixels (480)
-
-PANEL_HEIGTH = 60
-USABLE_WINDOW_HEIGHT = HEIGHT - PANEL_HEIGTH
+PANEL_HEIGTH = 60  # pixels
+USABLE_HEIGHT = HEIGHT - PANEL_HEIGTH
 
 FPS = 30  # За каждую секунду окно перерерисовывается 30 раз (максимум)
 
