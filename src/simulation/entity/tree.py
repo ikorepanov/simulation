@@ -1,11 +1,12 @@
+from pathlib import Path
+
 import pygame
 
 from simulation.entity.entity import Entity
-from simulation.params import BASE_PATH
 
 
 class Tree(Entity):
-    tree_image = pygame.image.load(BASE_PATH + '/assets/images/tree_small.png')
+    tree_image = pygame.image.load(Path.cwd() / 'src/simulation/assets/images/tree_small.png')
 
     def __init__(
         self,

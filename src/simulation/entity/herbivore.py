@@ -1,11 +1,12 @@
+from pathlib import Path
+
 import pygame
 
 from simulation.entity.creature import Creature
-from simulation.params import BASE_PATH
 
 
 class Herbivore(Creature):
-    herbivore_image = pygame.image.load(BASE_PATH + '/assets/images/herbivore_small.png')
+    herbivore_image = pygame.image.load(Path.cwd() / 'src/simulation/assets/images/herbivore_small.png')
 
     def __init__(
         self,

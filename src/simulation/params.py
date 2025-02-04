@@ -1,5 +1,3 @@
-from pathlib import Path
-
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -12,8 +10,6 @@ PANEL_HEIGTH = 60  # pixels
 USABLE_HEIGHT = HEIGHT - PANEL_HEIGTH
 
 FPS = 30  # За каждую секунду окно перерерисовывается 30 раз (максимум)
-
-BASE_PATH = str(Path(__file__).resolve().parent)
 
 IMAGE_WIDTH_HEIGHT = 80  # pixels
 MAX_WIDTH = WIDTH - IMAGE_WIDTH_HEIGHT

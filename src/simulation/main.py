@@ -3,8 +3,8 @@
 # II. Update game
 # III. Render (Draw)
 # IV. Control how fast (FPS)
-
 import sys
+from pathlib import Path
 
 import pygame
 import pygwidgets
@@ -16,7 +16,6 @@ from simulation.entity.rock import Rock
 from simulation.entity.tree import Tree
 from simulation.params import (
     BACKGROUND_COLOR,
-    BASE_PATH,
     BLACK,
     FPS,
     GRAY,
@@ -32,11 +31,12 @@ from simulation.params import (
 pygame.init()
 pygame.mixer.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
+print('INITIALIZED!')
 pygame.display.set_caption('Simulation')
 clock = pygame.time.Clock()
 
 # 4 - Загружаем элементы: изображения, зуки и т.д.
-pygame.mixer.music.load(BASE_PATH + '/assets/sounds/watch_yourself.ogg')
+pygame.mixer.music.load(Path.cwd() / 'src/simulation/assets/sounds/watch_yourself.ogg')
 
 score_display = pygwidgets.DisplayText(
     window,

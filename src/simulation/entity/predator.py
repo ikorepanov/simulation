@@ -1,11 +1,12 @@
+from pathlib import Path
+
 import pygame
 
 from simulation.entity.creature import Creature
-from simulation.params import BASE_PATH
 
 
 class Predator(Creature):
-    predator_image = pygame.image.load(BASE_PATH + '/assets/images/predator_small.png')
+    predator_image = pygame.image.load(Path.cwd() / 'src/simulation/assets/images/predator_small.png')
 
     def __init__(
         self,
