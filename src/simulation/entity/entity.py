@@ -1,5 +1,5 @@
 import random
-from abc import ABC, abstractmethod
+from abc import ABC
 from pathlib import Path
 
 import pygame
@@ -9,7 +9,6 @@ from simulation.params import USABLE_HEIGHT, WIDTH
 
 
 class Entity(ABC, Sprite):
-    @abstractmethod
     def __init__(
         self,
         ID: int,
