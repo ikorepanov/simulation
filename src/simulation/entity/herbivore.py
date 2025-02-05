@@ -1,19 +1,16 @@
-from pathlib import Path
-
 import pygame
 
 from simulation.entity.creature import Creature
 
 
 class Herbivore(Creature):
-    herbivore_image = pygame.image.load(Path.cwd() / 'src/simulation/assets/images/herbivore_small.png')
-
     def __init__(
         self,
         ID: int,
+        image: pygame.Surface,
         health: int = 7,
     ):
-        super().__init__(ID, health, Herbivore.herbivore_image)
+        super().__init__(ID, image, health)
 
     def make_move(self) -> None:
         pass

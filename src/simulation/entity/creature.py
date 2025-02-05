@@ -12,8 +12,8 @@ class Creature(Entity):
     def __init__(
         self,
         ID: int,
-        health: int,
         image: pygame.Surface,
+        health: int,
     ):
         self.health = health
 

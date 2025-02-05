@@ -31,7 +31,6 @@ from simulation.params import (
 pygame.init()
 pygame.mixer.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-print('INITIALIZED!')
 pygame.display.set_caption('Simulation')
 clock = pygame.time.Clock()
 
@@ -64,14 +63,20 @@ start_button = pygwidgets.TextButton(
     'Start',
 )
 
+herbivore_image = Herbivore.load_image('herbivore_small')
+predator_image = Predator.load_image('predator_small')
+grass_image = Grass.load_image('grass_small')
+rock_image = Rock.load_image('rock_small')
+tree_image = Tree.load_image('tree_small')
+
 # 5 - Инициализируем переменные
 all_sprites = pygame.sprite.Group()  # type: ignore
 
-herbivore = Herbivore(1)
-predator = Predator(2)
-grass = Grass(3)
-rock = Rock(4)
-tree = Tree(5)
+herbivore = Herbivore(1, herbivore_image)
+predator = Predator(2, predator_image)
+grass = Grass(3, grass_image)
+rock = Rock(4, rock_image)
+tree = Tree(5, tree_image)
 
 all_sprites.add(tree, grass, rock, herbivore, predator)
 
