@@ -29,7 +29,6 @@ from simulation.params import (
 
 # 3 - Инициализируем окружение pygame
 pygame.init()
-pygame.mixer.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Simulation')
 clock = pygame.time.Clock()

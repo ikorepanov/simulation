@@ -8,7 +8,6 @@ from simulation.params import WIDTH
 
 
 class Creature(Entity):
-    @abstractmethod
     def __init__(
         self,
         ID: int,
@@ -19,7 +18,7 @@ class Creature(Entity):
 
         # выбираем произвольную скорость между -3 и 3, но не ноль
         speed_list = [-3, -2, -1, 1, 2, 3]
-        self.speed_x = random.choice(speed_list)
+        self.x_speed = random.choice(speed_list)
 
         super().__init__(ID, image)
 
@@ -28,9 +27,9 @@ class Creature(Entity):
             return
 
         if (self.rect.left < 0) or (self.rect.right >= WIDTH):
-            self.speed_x = - self.speed_x
+            self.x_speed = - self.x_speed
 
-        self.rect.x = self.rect.x + self.speed_x
+        self.rect.x += self.x_speed
 
     @abstractmethod
     def make_move(self) -> None:
