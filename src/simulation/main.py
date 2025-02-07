@@ -22,6 +22,7 @@ from simulation.params import (
     HEIGHT,
     IMAGE_WIDTH_HEIGHT,
     PANEL_HEIGTH,
+    TITLE,
     USABLE_HEIGHT,
     WHITE,
     WIDTH,
@@ -30,7 +31,7 @@ from simulation.params import (
 # 3 - Инициализируем окружение pygame
 pygame.init()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Simulation')
+pygame.display.set_caption(TITLE)
 clock = pygame.time.Clock()
 
 # 4 - Загружаем элементы: изображения, зуки и т.д.
