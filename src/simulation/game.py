@@ -124,8 +124,7 @@ class Game:
         draw_grid(self.window, IMAGE_WIDTH_HEIGHT)
 
         # 2). С помощью менеджера рисуем существ
-        if self.playing:
-            self.all_sprites.draw(self.window)
+        self.all_sprites.draw(self.window)
 
         # 3). Изображаем нижнюю панель с данными состояния и кнопкой Start
         pg.draw.rect(
