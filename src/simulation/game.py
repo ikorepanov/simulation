@@ -43,6 +43,7 @@ class Game:
 
         self.playing = False  # ждём, пока пользователь не нажмёт кнопку Start
 
+    def new(self) -> None:
         # 4 - Загружаем элементы: изображения, зуки и т.д.
         pg.mixer.music.load(Path.cwd() / 'src/simulation/assets/sounds/watch_yourself.ogg')
 
@@ -88,6 +89,8 @@ class Game:
         tree = Tree(5, tree_image)
 
         self.all_sprites.add(tree, grass, rock, herbivore, predator)
+
+        self.run()
 
     def events(self) -> None:
         # 7 - Проверяем наличие событий и обрабатываем их
