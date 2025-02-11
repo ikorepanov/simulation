@@ -10,14 +10,16 @@ from simulation.params import BACKGROUND_COLOR, FPS, HEIGHT, IMAGE_WIDTH_HEIGHT,
 
 class Game:
     def __init__(self) -> None:
+        # Initialize game window, etc.
         pg.init()
         pg.mixer.init()
-        self.window = pg.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.running = True
 
     def new(self) -> None:
+        # Start a new game
         herbivore_image = Herbivore.load_image('herbivore_small')
         predator_image = Predator.load_image('predator_small')
         grass_image = Grass.load_image('grass_small')
@@ -37,6 +39,7 @@ class Game:
         self.run()
 
     def run(self) -> None:
+        # Game Loop
         self.playing = True
         while self.playing:
             self.events()
@@ -45,32 +48,38 @@ class Game:
             self.clock.tick(FPS)
 
     def update(self) -> None:
+        # Game Loop - Update
         self.all_sprites.update()
 
     def events(self) -> None:
+        # Game Loop - events
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 if self.playing:
                     self.playing = False
                 self.running = False
 
+    def draw_grid(self, screen: pg.Surface, block_size: int) -> None:
+        for x in range(0, WIDTH, block_size):
+            for y in range(0, HEIGHT, block_size):
+                rect = pg.Rect(x, y, block_size, block_size)
+                pg.draw.rect(screen, WHITE, rect, 1)
+
     def draw(self) -> None:
-        self.window.fill(BACKGROUND_COLOR)
+        # Game Loop - draw
+        self.screen.fill(BACKGROUND_COLOR)
 
-        def draw_grid(window: pg.Surface, block_size: int) -> None:
-            for x in range(0, WIDTH, block_size):
-                for y in range(0, USABLE_HEIGHT, block_size):
-                    rect = pg.Rect(x, y, block_size, block_size)
-                    pg.draw.rect(window, WHITE, rect, 1)
+        self.draw_grid(self.screen, IMAGE_WIDTH_HEIGHT)
 
-        draw_grid(self.window, IMAGE_WIDTH_HEIGHT)
+        self.all_sprites.draw(self.screen)
 
-        self.all_sprites.draw(self.window)
-
+        # *after* drawing everythin, flip the display
         pg.display.flip()
 
     def show_start_screen(self) -> None:
+        # Game splash/start screen
         print('Игра началась')
 
     def show_go_screen(self) -> None:
+        # Game over/continue
         print('Игра закончилась')
