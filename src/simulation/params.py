@@ -5,7 +5,7 @@ GRAY = (200, 200, 200)
 BACKGROUND_COLOR = (0, 180, 180)
 
 WIDTH = 640  # pixels
-HEIGHT = 540  # pixels (480)
+HEIGHT = 480  # pixels
 PANEL_HEIGTH = 60  # pixels
 USABLE_HEIGHT = HEIGHT - PANEL_HEIGTH
 
