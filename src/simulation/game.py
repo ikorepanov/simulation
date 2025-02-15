@@ -1,3 +1,5 @@
+import random
+
 import pygame as pg
 
 from simulation.entity.grass import Grass
@@ -5,7 +7,7 @@ from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
 from simulation.entity.rock import Rock
 from simulation.entity.tree import Tree
-from simulation.params import BACKGROUND_COLOR, FPS, HEIGHT, IMAGE_WIDTH_HEIGHT, TITLE, USABLE_HEIGHT, WHITE, WIDTH
+from simulation.params import BACKGROUND_COLOR, FPS, HEIGHT, MAX_NUM_OF_TILES, ROCK_NUM, TILE, TITLE, WHITE, WIDTH
 
 
 class Game:
@@ -23,18 +25,39 @@ class Game:
         herbivore_image = Herbivore.load_image('herbivore_small')
         predator_image = Predator.load_image('predator_small')
         grass_image = Grass.load_image('grass_small')
-        rock_image = Rock.load_image('rock_small')
         tree_image = Tree.load_image('tree_small')
 
         self.all_sprites = pg.sprite.Group()  # type: ignore
+        self.rocks = pg.sprite.Group()  # type: ignore
 
         herbivore = Herbivore(1, herbivore_image)
         predator = Predator(2, predator_image)
         grass = Grass(3, grass_image)
-        rock = Rock(4, rock_image)
         tree = Tree(5, tree_image)
 
-        self.all_sprites.add(tree, grass, rock, herbivore, predator)
+        self.all_sprites.add(tree, grass, herbivore, predator)
+
+        for _ in range(ROCK_NUM):
+            orientation = random.choice(['horizontal', 'vertical'])
+
+            if orientation == 'horizontal':
+                width = random.randrange(TILE, TILE * MAX_NUM_OF_TILES, TILE)
+                height = TILE
+                y = random.randrange(0, HEIGHT, TILE)
+            else:
+                width = TILE
+                height = random.randrange(TILE, TILE * MAX_NUM_OF_TILES, TILE)
+                y = random.randrange(0, HEIGHT + TILE - height, TILE)
+
+            rock = Rock(
+                random.randrange(0, WIDTH - width, TILE),
+                y,
+                width,
+                height,
+            )
+
+            self.all_sprites.add(rock)
+            self.rocks.add(rock)
 
         self.run()
 
@@ -69,7 +92,7 @@ class Game:
         # Game Loop - draw
         self.screen.fill(BACKGROUND_COLOR)
 
-        self.draw_grid(self.screen, IMAGE_WIDTH_HEIGHT)
+        self.draw_grid(self.screen, TILE)
 
         self.all_sprites.draw(self.screen)
 

@@ -22,3 +22,8 @@ N_HERBIVORES = 3
 N_GRASS = 3
 
 TITLE = 'Simulation'
+
+ROCK_NUM = 7
+MAX_NUM_OF_TILES = 4
+
+TILE = 40  # pixels

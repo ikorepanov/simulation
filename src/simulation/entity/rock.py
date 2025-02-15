@@ -1,12 +1,21 @@
-import pygame
+import pygame as pg
+from pygame.sprite import Sprite
 
-from simulation.entity.entity import Entity
+from simulation.params import GREEN
 
 
-class Rock(Entity):
+class Rock(Sprite):
     def __init__(
         self,
-        ID: int,
-        image: pygame.Surface,
+        x: int,
+        y: int,
+        w: int,
+        h: int,
     ):
-        super().__init__(ID, image)
+        super().__init__()
+
+        self.image = pg.Surface((w, h))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
