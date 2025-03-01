@@ -1,13 +1,23 @@
 import random
 
 import pygame as pg
+from typing import NamedTuple
 
-from simulation.entity.grass import Grass
-from simulation.entity.herbivore import Herbivore
-from simulation.entity.predator import Predator
+from simulation.entity.entity import Entity
+
+# from simulation.entity.grass import Grass
+# from simulation.entity.herbivore import Herbivore
+# from simulation.entity.predator import Predator
 from simulation.entity.rock import Rock
-from simulation.entity.tree import Tree
+# from simulation.entity.tree import Tree
 from simulation.params import BACKGROUND_COLOR, FPS, HEIGHT, MAX_NUM_OF_TILES, ROCK_NUM, TILE, TITLE, WHITE, WIDTH
+
+
+class ObstacleInitParamsSet(NamedTuple):
+    x: int
+    y: int
+    width: int
+    height: int
 
 
 class Game:
@@ -19,45 +29,177 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.running = True
+        self.occupied_tiles: set[tuple[int, int]] = set()
+
+    def define_init_params(self, max_obstacle_size: int) -> ObstacleInitParamsSet:
+        width_or_height = random.randrange(TILE, TILE * max_obstacle_size + 1, TILE)
+
+        horizontal = random.choice((True, False))
+
+        if horizontal:
+            width = width_or_height
+            height = TILE
+            y = random.randrange(0, HEIGHT, TILE)
+        else:
+            width = TILE
+            height = width_or_height
+            y = random.randrange(0, HEIGHT - height + 1, TILE)
+
+        x = random.randrange(0, WIDTH - width + 1, TILE)
+
+        return ObstacleInitParamsSet(x, y, width, height)
+
+    def is_place_occupied(self, x: int, y: int, width: int, height: int) -> bool:
+        # for i in range(x, x + width + 1, TILE):
+        #     for j in range(y, y + height + 1, TILE):
+        #         if (i, j) in self.occupied_tiles:
+        #             return True
+        # return False
+
+        x_s = []
+        y_s = []
+
+        for x in range(x, x + width + 1, TILE):
+            x_s.append(x)
+        for y in range(y, y + height + 1, TILE):
+            y_s.append(y)
+        for x in x_s:
+            for y in y_s:
+                if (x, y) in self.occupied_tiles:
+                    return True
+        return False
+
+
+    def add_to_occupied_tiles_list(self, x: int, y: int, width: int, height: int) -> None:
+        # for i in range(max(0, x - TILE), min(x + width, WIDTH - TILE) + 1, TILE):
+        #     for j in range(max(0, y - TILE), min(y + height, HEIGHT - TILE) + 1, TILE):
+        #         self.occupied_tiles.add((i, j))
+
+        x_s = []
+        y_s = []
+
+        for x in range(max(0, x - TILE), min(x + width, WIDTH - TILE) + 1, TILE):
+            x_s.append(x)
+        for y in range(max(0, y - TILE), min(y + height, HEIGHT - TILE) + 1, TILE):
+            y_s.append(y)
+        for x in x_s:
+            for y in y_s:
+                self.occupied_tiles.add((x, y))
+
+    def spawn_obstacles(self, number_of_obstacles: int, max_obstacle_size: int, obstacle_class) -> None:
+        for _ in range(number_of_obstacles):
+            attempts = 0
+
+            while attempts < 1000:
+                params = self.define_init_params(max_obstacle_size)
+
+                if self.is_place_occupied(
+                    params.x,
+                    params.y,
+                    params.width,
+                    params.height,
+                ):
+                    attempts += 1
+                    continue
+
+                obstacle = obstacle_class(
+                    params.height,
+                    params.y,
+                    params.width,
+                    params.height,
+                )
+
+                self.all_sprites.add(obstacle)
+                self.rocks.add(obstacle)
+
+                self.add_to_occupied_tiles_list(
+                    params.height,
+                    params.y,
+                    params.width,
+                    params.height,
+                )
+
+                break
 
     def new(self) -> None:
         # Start a new game
-        herbivore_image = Herbivore.load_image('herbivore_small')
-        predator_image = Predator.load_image('predator_small')
-        grass_image = Grass.load_image('grass_small')
-        tree_image = Tree.load_image('tree_small')
+        # herbivore_image = Herbivore.load_image('herbivore_small')
+        # predator_image = Predator.load_image('predator_small')
+        # grass_image = Grass.load_image('grass_small')
+        # tree_image = Tree.load_image('tree_small')
 
         self.all_sprites = pg.sprite.Group()  # type: ignore
         self.rocks = pg.sprite.Group()  # type: ignore
 
-        herbivore = Herbivore(1, herbivore_image)
-        predator = Predator(2, predator_image)
-        grass = Grass(3, grass_image)
-        tree = Tree(5, tree_image)
+        # self.spawn_obstacles(ROCK_NUM, MAX_NUM_OF_TILES, Rock)
 
-        self.all_sprites.add(tree, grass, herbivore, predator)
+        # herbivore = Herbivore(1, herbivore_image)
+        # predator = Predator(2, predator_image)
+        # grass = Grass(3, grass_image)
+        # tree = Tree(5, tree_image)
+
+        # self.all_sprites.add(tree, grass, herbivore, predator)
 
         for _ in range(ROCK_NUM):
-            orientation = random.choice(['horizontal', 'vertical'])
+            attempts = 0
+            while attempts < 1000:
+                # print(attempts)
+                # horizontal = random.choice((True, False))
+                # print(horizontal)
 
-            if orientation == 'horizontal':
-                width = random.randrange(TILE, TILE * MAX_NUM_OF_TILES, TILE)
-                height = TILE
-                y = random.randrange(0, HEIGHT, TILE)
-            else:
-                width = TILE
-                height = random.randrange(TILE, TILE * MAX_NUM_OF_TILES, TILE)
-                y = random.randrange(0, HEIGHT + TILE - height, TILE)
+                # if horizontal:
+                #     width = random.randrange(TILE, TILE * MAX_NUM_OF_TILES, TILE)
+                #     height = TILE
+                #     y = random.randrange(0, HEIGHT, TILE)
+                # else:
+                #     width = TILE
+                #     height = random.randrange(TILE, TILE * MAX_NUM_OF_TILES + 1, TILE)
+                #     y = random.randrange(0, HEIGHT + TILE - height, TILE)
 
-            rock = Rock(
-                random.randrange(0, WIDTH - width, TILE),
-                y,
-                width,
-                height,
-            )
+                # x = random.randrange(0, WIDTH - width + 1, TILE)
+                # print(x, y, width, height)
+                params = self.define_init_params(MAX_NUM_OF_TILES)
+                x = params.x
+                y = params.y
+                width = params.width
+                height = params.height
 
-            self.all_sprites.add(rock)
-            self.rocks.add(rock)
+                if self.is_place_occupied(x, y, width, height):
+                    attempts += 1
+                    print('Занято!')
+                    continue
+
+                rock = Rock(
+                    x,
+                    y,
+                    width,
+                    height,
+                )
+
+                print('Создан!')
+
+                self.all_sprites.add(rock)
+                self.rocks.add(rock)
+
+                print(self.all_sprites)
+                print(self.rocks)
+
+                x_s = []
+                y_s = []
+
+                for x in range(max(0, x - TILE), min(x + width, WIDTH - TILE) + 1, TILE):
+                    x_s.append(x)
+
+                for y in range(max(0, y - TILE), min(y + height, HEIGHT - TILE) + 1, TILE):
+                    y_s.append(y)
+
+                for x in x_s:
+                    for y in y_s:
+                        self.occupied_tiles.add((x, y))
+
+                break
+
+        print(self.occupied_tiles)
 
         self.run()
 
