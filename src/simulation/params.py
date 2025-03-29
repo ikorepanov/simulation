@@ -1,8 +1,13 @@
+from simulation.entity.rock import Rock
+from simulation.entity.tree import Tree
+
+
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
 BACKGROUND_COLOR = (0, 180, 180)
+BLUE = (0, 0, 255)
 
 WIDTH = 640  # pixels
 HEIGHT = 480  # pixels
@@ -23,7 +28,13 @@ N_GRASS = 3
 
 TITLE = 'Simulation'
 
-ROCK_NUM = 7
+ROCK_NUM = 1
+TREE_NUM = 2
 MAX_NUM_OF_TILES = 4
 
 TILE = 40  # pixels
+
+some_dict = {
+    Rock: ROCK_NUM,
+    Tree: TREE_NUM,
+}
