@@ -1,12 +1,14 @@
-import pygame
+# import pygame
 
 from simulation.entity.entity import Entity
+from simulation.coordinates import Coordinates
 
 
 class Tree(Entity):
     def __init__(
         self,
-        ID: int,
-        image: pygame.Surface,
+        coordinates: Coordinates,
+        w: int,
+        h: int,
     ):
-        super().__init__(ID, image)
+        super().__init__(coordinates, w, h)

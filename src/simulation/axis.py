@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class Axis(ABC):
-    @abstractmethod
     def __init__(
         self,
         value: int,
