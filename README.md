@@ -12,7 +12,7 @@
 
 Запустить приложение:
 ```shell
-python -m hangman.main
+python -m simulation.main
 ```
 
 или
