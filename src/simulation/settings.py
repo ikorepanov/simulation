@@ -1,7 +1,7 @@
 # game options/settings
 TITLE = 'SIMULATION'
-WIDTH = 360
-HEIGHT = 480
+WIDTH = 800
+HEIGHT = 600
 FPS = 30  # How many times per second does the game loop repeat?
 
 # define colors

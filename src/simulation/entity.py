@@ -16,8 +16,11 @@ class Entity(ABC, Sprite):
     ):
         super().__init__()
 
-        self.image = pg.Surface((w, h))
+        self.image = pg.Surface((w, h))  # Every sprite has to have (1)
         self.image.fill(GREEN)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect()  # Every sprite has to have (2)
         self.rect.x = x
         self.rect.y = y
+
+    def update(self) -> None:
+        pass
