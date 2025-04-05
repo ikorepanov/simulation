@@ -1,4 +1,7 @@
+from typing import Any
+
 import pygame as pg
+from pygame.sprite import Group
 
 from simulation.settings import BLACK, FPS, HEIGHT, TITLE, WIDTH
 
@@ -15,7 +18,7 @@ class Game:
 
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
-        self.all_sprites = pg.sprite.Group()  # type: ignore
+        self.all_sprites: Group[Any] = pg.sprite.Group()  # collection of sprites
         self.run()
 
     def run(self) -> None:
