@@ -2,7 +2,7 @@
 TITLE = 'SIMULATION'
 WIDTH = 360
 HEIGHT = 480
-FPS = 30
+FPS = 30  # How many times per second does the game loop repeat?
 
 # define colors
 WHITE = (255, 255, 255)

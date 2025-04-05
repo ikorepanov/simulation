@@ -5,12 +5,12 @@ from simulation.settings import BLACK, FPS, HEIGHT, TITLE, WIDTH
 
 class Game:
     def __init__(self) -> None:
-        # Initialize game window, etc.
-        pg.init()
-        pg.mixer.init()
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.display.set_caption(TITLE)
-        self.clock = pg.time.Clock()
+        # Initialize pygame, game window, etc.
+        pg.init()  # initializes pygame, gets it ready to go
+        pg.mixer.init()  # the mixer handles playing all the sound effects
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))  # create the window
+        pg.display.set_caption(TITLE)  # "установить заголовок"
+        self.clock = pg.time.Clock()  # handles the speed and keeps track of how fast we're going
         self.running = True
 
     def new(self) -> None:
@@ -19,19 +19,18 @@ class Game:
         self.run()
 
     def run(self) -> None:
-        # Game Loop
+        # NB! Game Loop
         self.playing = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
-            self.clock.tick(FPS)
+            self.clock.tick(FPS)  # keep loop running at the right speed
 
     def events(self) -> None:
-        # Game Loop - events
+        # Game Loop - Events (process input)
         for event in pg.event.get():
-            # Check for closing window
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT:  # Check for closing window
                 if self.playing:
                     self.playing = False
                 self.running = False
@@ -41,11 +40,10 @@ class Game:
         self.all_sprites.update()
 
     def draw(self) -> None:
-        # Game Loop - draw
+        # Game Loop - Draw (render)
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
-        # *after* drawing everythin, flip the display
-        pg.display.flip()
+        pg.display.flip()  # *after* drawing everything, flip the display
 
     def show_start_screen(self) -> None:
         # Game splash/start screen
