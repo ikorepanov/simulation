@@ -1,18 +1,18 @@
+from simulation.coordinate import Coordinate
 from simulation.creature import Creature
 
 
 class Predator(Creature):
     def __init__(
         self,
-        x: int,
-        y: int,
+        position: Coordinate,
         w: int,
         h: int,
         velocity: int,
         hp: int,
         attack_power: int
     ):
-        super().__init__(x, y, w, h, velocity, hp)
+        super().__init__(position, w, h, velocity, hp)
 
         self.attack_power = attack_power
 
