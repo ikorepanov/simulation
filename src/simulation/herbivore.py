@@ -1,9 +1,8 @@
 from simulation.coordinate import Coordinate
 from simulation.creature import Creature
-from simulation.settings import ATTACK_POWER
 
 
-class Predator(Creature):
+class Herbivore(Creature):
     def __init__(
         self,
         coordinate: Coordinate,
@@ -14,13 +13,14 @@ class Predator(Creature):
     ):
         super().__init__(coordinate, w, h, velocity, hp)
 
-        self.attack_power = ATTACK_POWER
-
     def make_move(self) -> None:
         pass
 
-    def chase(self) -> None:
+    def search(self) -> None:
         pass
 
-    def attack(self) -> None:
+    def eat(self) -> None:
+        pass
+
+    def loose_hp(self) -> None:
         pass

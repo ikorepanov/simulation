@@ -13,6 +13,9 @@ class Map:
         coordinate: Coordinate,
         entity: Entity,
     ) -> None:
-        self.entities[coordinate] = entity
         entity.rect.x = coordinate.abscissa.value
         entity.rect.y = coordinate.ordinate.value
+        self.entities[coordinate] = entity
+
+    def set_init_etities_positions(self) -> None:
+        pass
