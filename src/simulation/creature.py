@@ -7,13 +7,13 @@ from simulation.entity import Entity
 class Creature(Entity):
     def __init__(
         self,
-        position: Coordinate,
+        coordinate: Coordinate,
         w: int,
         h: int,
         velocity: int,
         hp: int
     ):
-        super().__init__(position, w, h)
+        super().__init__(coordinate, w, h)
 
         self.velocity = velocity
         self.hp = hp

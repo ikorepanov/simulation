@@ -10,7 +10,7 @@ from simulation.settings import GREEN
 class Entity(ABC, Sprite):
     def __init__(
         self,
-        position: Coordinate,
+        coordinate: Coordinate,
         w: int,
         h: int,
     ):
@@ -19,8 +19,8 @@ class Entity(ABC, Sprite):
         self.image = pg.Surface((w, h))  # Every sprite has to have (1)
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()  # Every sprite has to have (2)
-        self.rect.x = position.abscissa.value
-        self.rect.y = position.ordinate.value
+        self.rect.x = coordinate.abscissa.value
+        self.rect.y = coordinate.ordinate.value
 
     def update(self) -> None:
         pass
