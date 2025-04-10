@@ -11,7 +11,7 @@ class Creature(Entity):
         w: int,
         h: int,
         velocity: int,
-        hp: int
+        hp: int,
     ):
         super().__init__(coordinate, w, h)
 

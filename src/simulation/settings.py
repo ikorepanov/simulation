@@ -15,3 +15,9 @@ BLUE = (0, 0, 255)
 # entities settings
 ATTACK_POWER = 100
 AMOUNT_OF_GRASS = 100
+VELOCITY = 100
+HP = 100
+
+# number of entities
+PREDATOR_NUMBER = 2
+HERBIVORE_NUMBER = 4
