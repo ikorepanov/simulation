@@ -1,6 +1,6 @@
 from simulation.coordinate import Coordinate
 from simulation.entity import Entity
-from simulation.settings import AMOUNT_OF_GRASS
+from simulation.settings import AMOUNT_OF_GRASS, YELLOW
 
 
 class Grass(Entity):
@@ -9,8 +9,9 @@ class Grass(Entity):
         coordinate: Coordinate,
         w: int,
         h: int,
+        color: tuple[int, int, int] = YELLOW,
     ):
-        super().__init__(coordinate, w, h)
+        super().__init__(coordinate, w, h, color)
 
         self.amount = AMOUNT_OF_GRASS
 

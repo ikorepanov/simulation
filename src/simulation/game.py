@@ -3,6 +3,7 @@ from typing import Any
 import pygame as pg
 from pygame.sprite import Group
 
+from simulation.map import Map
 from simulation.settings import BLACK, FPS, HEIGHT, TITLE, WIDTH
 
 
@@ -19,6 +20,12 @@ class Game:
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
         self.all_sprites: Group[Any] = pg.sprite.Group()  # collection of sprites
+        # ***Обернуть в метод***
+        map = Map()
+        map.place_entities_in_init_positions()
+        for entity in map.entities.values():
+            self.all_sprites.add(entity)
+        # ***
         self.run()
 
     def run(self) -> None:

@@ -1,5 +1,6 @@
 from simulation.coordinate import Coordinate
 from simulation.entity import Entity
+from simulation.settings import WHITE
 
 
 class Tree(Entity):
@@ -8,5 +9,6 @@ class Tree(Entity):
         coordinate: Coordinate,
         w: int,
         h: int,
+        color: tuple[int, int, int] = WHITE,
     ):
-        super().__init__(coordinate, w, h)
+        super().__init__(coordinate, w, h, color)

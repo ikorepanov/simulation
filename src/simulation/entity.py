@@ -4,7 +4,6 @@ import pygame as pg
 from pygame.sprite import Sprite
 
 from simulation.coordinate import Coordinate
-from simulation.settings import GREEN
 
 
 class Entity(ABC, Sprite):
@@ -13,11 +12,12 @@ class Entity(ABC, Sprite):
         coordinate: Coordinate,
         w: int,
         h: int,
+        color: tuple[int, int, int],
     ):
         super().__init__()
 
         self.image = pg.Surface((w, h))  # Every sprite has to have (1)
-        self.image.fill(GREEN)
+        self.image.fill(color)
         self.rect = self.image.get_rect()  # Every sprite has to have (2)
         self.rect.x = coordinate.abscissa.value
         self.rect.y = coordinate.ordinate.value

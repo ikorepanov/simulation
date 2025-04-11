@@ -10,10 +10,11 @@ class Creature(Entity):
         coordinate: Coordinate,
         w: int,
         h: int,
+        color: tuple[int, int, int],
         velocity: int,
         hp: int,
     ):
-        super().__init__(coordinate, w, h)
+        super().__init__(coordinate, w, h, color)
 
         self.velocity = velocity
         self.hp = hp

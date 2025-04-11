@@ -12,7 +12,8 @@ class Axis(ABC):
     ):
         possible_values = range(0, axis_length, tile_size)
         if value in possible_values:
-            self.value = possible_values.index(value)
+            # self.value = possible_values.index(value)
+            self.value = value
 
 
 class Abscissa(Axis):

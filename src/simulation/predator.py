@@ -1,6 +1,6 @@
 from simulation.coordinate import Coordinate
 from simulation.creature import Creature
-from simulation.settings import ATTACK_POWER, HP, TILE, VELOCITY
+from simulation.settings import ATTACK_POWER, GREEN, HP, TILE, VELOCITY
 
 
 class Predator(Creature):
@@ -9,10 +9,11 @@ class Predator(Creature):
         coordinate: Coordinate,
         w: int = TILE,
         h: int = TILE,
+        color: tuple[int, int, int] = GREEN,
         velocity: int = VELOCITY,
         hp: int = HP,
     ):
-        super().__init__(coordinate, w, h, velocity, hp)
+        super().__init__(coordinate, w, h, color, velocity, hp)
 
         self.attack_power = ATTACK_POWER
 

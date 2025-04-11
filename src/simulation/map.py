@@ -31,7 +31,7 @@ class Map:
             abscissa = Abscissa(self.select_random_value_for_point_on_asix(self.width))
             ordinate = Ordinate(self.select_random_value_for_point_on_asix(self.height))
             coordinate = Coordinate(abscissa=abscissa, ordinate=ordinate)
-            if coordinate in self.entities.keys():
+            if coordinate in self.entities.keys():  # NB! Не работает!
                 attempts += 1
                 continue
             break
