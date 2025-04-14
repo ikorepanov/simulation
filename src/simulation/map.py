@@ -4,7 +4,11 @@ from simulation.coordinate import Abscissa, Coordinate, Ordinate
 from simulation.entity import Entity
 from simulation.herbivore import Herbivore
 from simulation.predator import Predator
-from simulation.settings import HEIGHT, HERBIVORE_NUMBER, PREDATOR_NUMBER, TILE, WIDTH
+from simulation.settings import ATTEMPTS, HEIGHT, HERBIVORE_NUMBER, PREDATOR_NUMBER, TILE, WIDTH
+
+
+class MyException(Exception):
+    pass
 
 
 class Map:
@@ -27,15 +31,17 @@ class Map:
         self,
     ) -> Coordinate:
         attempts = 0
-        while attempts < 1000:
+        while attempts < ATTEMPTS:
             abscissa = Abscissa(self.select_random_value_for_point_on_asix(self.width))
             ordinate = Ordinate(self.select_random_value_for_point_on_asix(self.height))
             coordinate = Coordinate(abscissa=abscissa, ordinate=ordinate)
-            if coordinate in self.entities.keys():  # NB! Не работает!
+            if coordinate in self.entities:
                 attempts += 1
                 continue
-            break
-        return coordinate
+            return coordinate
+        raise MyException(
+            'На карте отсутствуют не занятые клетки. Уменьшите число существ или увеличьте размер карты в настройках'
+        )
 
     def set_entity_on_map(
         self,
@@ -49,9 +55,17 @@ class Map:
     def place_entities_in_init_positions(self) -> None:
         # для первой сущности
         for _ in range(PREDATOR_NUMBER):
-            coordinate = self.set_coordinate()
+            try:
+                coordinate = self.set_coordinate()
+            except MyException as error:
+                print(error)
+                break
             self.set_entity_on_map(coordinate, Predator(coordinate))
         # для второй сущности
         for _ in range(HERBIVORE_NUMBER):
-            coordinate = self.set_coordinate()
+            try:
+                coordinate = self.set_coordinate()
+            except MyException as error:
+                print(error)
+                break
             self.set_entity_on_map(coordinate, Herbivore(coordinate))

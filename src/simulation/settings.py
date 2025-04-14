@@ -4,6 +4,7 @@ WIDTH = 200
 HEIGHT = 150
 TILE = 50
 FPS = 30  # How many times per second does the game loop repeat?
+ATTEMPTS = 1000
 
 # define colors
 WHITE = (255, 255, 255)
