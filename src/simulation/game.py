@@ -3,8 +3,16 @@ from typing import Any
 import pygame as pg
 from pygame.sprite import Group
 
+from simulation.entity import Entity
+from simulation.herbivore import Herbivore
 from simulation.map import Map
-from simulation.settings import BLACK, FPS, HEIGHT, TITLE, WIDTH
+from simulation.predator import Predator
+from simulation.settings import BLACK, FPS, HEIGHT, HERBIVORE_NUMBER, PREDATOR_NUMBER, TITLE, WIDTH
+
+CLASS_INSTANCES: dict[type[Entity], int] = {
+        Predator: PREDATOR_NUMBER,
+        Herbivore: HERBIVORE_NUMBER,
+    }
 
 
 class Game:
@@ -22,7 +30,7 @@ class Game:
         self.all_sprites: Group[Any] = pg.sprite.Group()  # collection of sprites
         # ***Обернуть в метод***
         map = Map()
-        map.place_entities_in_init_positions()
+        map.place_entities_in_init_positions(CLASS_INSTANCES)
         for entity in map.entities.values():
             self.all_sprites.add(entity)
         # ***

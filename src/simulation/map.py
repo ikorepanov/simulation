@@ -2,9 +2,7 @@ import random
 
 from simulation.coordinate import Abscissa, Coordinate, Ordinate
 from simulation.entity import Entity
-from simulation.herbivore import Herbivore
-from simulation.predator import Predator
-from simulation.settings import ATTEMPTS, HEIGHT, HERBIVORE_NUMBER, PREDATOR_NUMBER, TILE, WIDTH
+from simulation.settings import ATTEMPTS, HEIGHT, TILE, WIDTH
 
 
 class MyException(Exception):
@@ -52,20 +50,18 @@ class Map:
         entity.rect.y = coordinate.ordinate.value
         self.entities[coordinate] = entity
 
-    def place_entities_in_init_positions(self) -> None:
-        # для первой сущности
-        for _ in range(PREDATOR_NUMBER):
-            try:
-                coordinate = self.set_coordinate()
-            except MyException as error:
-                print(error)
-                break
-            self.set_entity_on_map(coordinate, Predator(coordinate))
-        # для второй сущности
-        for _ in range(HERBIVORE_NUMBER):
-            try:
-                coordinate = self.set_coordinate()
-            except MyException as error:
-                print(error)
-                break
-            self.set_entity_on_map(coordinate, Herbivore(coordinate))
+    def place_entities_in_init_positions(
+        self,
+        some_volume: dict[type[Entity], int],
+    ) -> None:
+        for class_name, instance_number in some_volume.items():
+            for i in range(instance_number):
+                try:
+                    coordinate = self.set_coordinate()
+                except MyException as error:
+                    print(error)
+                    break  # Break the inner loop...
+                self.set_entity_on_map(coordinate, class_name(coordinate))  # type: ignore
+            else:  # "no_break" (continue if the inner loop wasn't broken)
+                continue
+            break  # Inner loop was broken, break the outer
