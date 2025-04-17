@@ -55,7 +55,7 @@ class Map:
         some_volume: dict[type[Entity], int],
     ) -> None:
         for class_name, instance_number in some_volume.items():
-            for i in range(instance_number):
+            for _ in range(instance_number):
                 try:
                     coordinate = self.set_coordinate()
                 except MyException as error:
