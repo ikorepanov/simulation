@@ -1,14 +1,14 @@
 from simulation.coordinate import Coordinate
 from simulation.creature import Creature
-from simulation.settings import BLUE, HP, TILE, VELOCITY
+from simulation.settings import BLUE, HP, TILESIZE, VELOCITY
 
 
 class Herbivore(Creature):
     def __init__(
         self,
         coordinate: Coordinate,
-        w: int = TILE,
-        h: int = TILE,
+        w: int = TILESIZE,
+        h: int = TILESIZE,
         color: tuple[int, int, int] = BLUE,
         velocity: int = VELOCITY,
         hp: int = HP,

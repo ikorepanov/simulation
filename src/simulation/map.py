@@ -2,7 +2,7 @@ import random
 
 from simulation.coordinate import Abscissa, Coordinate, Ordinate
 from simulation.entity import Entity
-from simulation.settings import ATTEMPTS, HEIGHT, TILE, WIDTH
+from simulation.settings import ATTEMPTS, HEIGHT, TILESIZE, WIDTH
 
 
 class MyException(Exception):
@@ -21,7 +21,7 @@ class Map:
         self,
         stop: int,
         start: int = 0,
-        step: int = TILE,
+        step: int = TILESIZE,
     ) -> int:
         return random.randrange(start, stop, step)
 

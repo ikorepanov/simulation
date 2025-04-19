@@ -1,18 +1,27 @@
-# game options/settings
-TITLE = 'SIMULATION'
-WIDTH = 200
-HEIGHT = 150
-TILE = 50
-FPS = 30  # How many times per second does the game loop repeat?
-ATTEMPTS = 1000
-
-# define colors
+# define colors (R, G, B)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+DARKGREY = (40, 40, 40)
+LIGHTGREY = (100, 100, 100)
+
+# game options/settings
+TITLE = 'Simulation'
+WIDTH = 1024
+HEIGHT = 768
+FPS = 60  # How many times per second does the game loop repeat?
+BGCOLOR = DARKGREY
+GRIDCOLOR = LIGHTGREY
+
+TILESIZE = 32
+GRIDWIDTH = WIDTH / TILESIZE
+GRIDHEIGHT = HEIGHT / TILESIZE
+
+# finding free tile
+ATTEMPTS = 1000
 
 # entities settings
 ATTACK_POWER = 100

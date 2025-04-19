@@ -1,6 +1,6 @@
 from abc import ABC
 
-from simulation.settings import HEIGHT, TILE, WIDTH
+from simulation.settings import HEIGHT, TILESIZE, WIDTH
 
 
 class Axis(ABC):
@@ -29,7 +29,7 @@ class Abscissa(Axis):
         self,
         value: int,
         axis_length: int = WIDTH,
-        tile_size: int = TILE,
+        tile_size: int = TILESIZE,
     ):
         super().__init__(value, axis_length, tile_size)
 
@@ -39,7 +39,7 @@ class Ordinate(Axis):
         self,
         value: int,
         axis_length: int = HEIGHT,
-        tile_size: int = TILE,
+        tile_size: int = TILESIZE,
     ):
         super().__init__(value, axis_length, tile_size)
 

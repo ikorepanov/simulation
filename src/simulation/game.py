@@ -7,7 +7,17 @@ from simulation.entity import Entity
 from simulation.herbivore import Herbivore
 from simulation.map import Map
 from simulation.predator import Predator
-from simulation.settings import BLACK, FPS, HEIGHT, HERBIVORE_NUMBER, PREDATOR_NUMBER, TITLE, WIDTH
+from simulation.settings import (
+    BGCOLOR,
+    FPS,
+    GRIDCOLOR,
+    HEIGHT,
+    HERBIVORE_NUMBER,
+    PREDATOR_NUMBER,
+    TILESIZE,
+    TITLE,
+    WIDTH,
+)
 
 CLASS_INSTANCES: dict[type[Entity], int] = {
         Predator: PREDATOR_NUMBER,
@@ -57,9 +67,19 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
 
+    def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int]) -> None:
+        pg.draw.line(self.screen, GRIDCOLOR, start_pos, end_pos)
+
+    def draw_grid(self) -> None:
+        for x in range(0, WIDTH, TILESIZE):
+            self.draw_line((x, 0), (x, HEIGHT))
+        for y in range(0, HEIGHT, TILESIZE):
+            self.draw_line((0, y), (WIDTH, y))
+
     def draw(self) -> None:
         # Game Loop - Draw (render)
-        self.screen.fill(BLACK)
+        self.screen.fill(BGCOLOR)
+        self.draw_grid()
         self.all_sprites.draw(self.screen)
         pg.display.flip()  # *after* drawing everything, flip the display
 
