@@ -4,15 +4,16 @@ import pygame as pg
 from pygame.sprite import Sprite
 
 from simulation.coordinate import Coordinate
+from simulation.settings import TILESIZE
 
 
 class Entity(ABC, Sprite):
     def __init__(
         self,
         coordinate: Coordinate,
-        w: int,
-        h: int,
         color: tuple[int, int, int],
+        w: int = TILESIZE,
+        h: int = TILESIZE,
     ):
         super().__init__()
 

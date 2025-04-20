@@ -1,19 +1,17 @@
 from simulation.coordinate import Coordinate
 from simulation.creature import Creature
-from simulation.settings import BLUE, HP, TILESIZE, VELOCITY
+from simulation.settings import BLUE, HP, VELOCITY
 
 
 class Herbivore(Creature):
     def __init__(
         self,
         coordinate: Coordinate,
-        w: int = TILESIZE,
-        h: int = TILESIZE,
         color: tuple[int, int, int] = BLUE,
         velocity: int = VELOCITY,
         hp: int = HP,
     ):
-        super().__init__(coordinate, w, h, color, velocity, hp)
+        super().__init__(coordinate, color, velocity, hp)
 
     def make_move(self) -> None:
         pass

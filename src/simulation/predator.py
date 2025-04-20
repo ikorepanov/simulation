@@ -1,21 +1,20 @@
 from simulation.coordinate import Coordinate
 from simulation.creature import Creature
-from simulation.settings import ATTACK_POWER, GREEN, HP, TILESIZE, VELOCITY
+from simulation.settings import ATTACK_POWER, GREEN, HP, VELOCITY
 
 
 class Predator(Creature):
     def __init__(
         self,
         coordinate: Coordinate,
-        w: int = TILESIZE,
-        h: int = TILESIZE,
         color: tuple[int, int, int] = GREEN,
         velocity: int = VELOCITY,
         hp: int = HP,
+        attack_power: int = ATTACK_POWER
     ):
-        super().__init__(coordinate, w, h, color, velocity, hp)
+        super().__init__(coordinate, color, velocity, hp)
 
-        self.attack_power = ATTACK_POWER
+        self.attack_power = attack_power
 
     def make_move(self) -> None:
         pass
