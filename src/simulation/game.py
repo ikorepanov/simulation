@@ -18,6 +18,7 @@ from simulation.settings import (
     TITLE,
     WIDTH,
 )
+from simulation.player import Player
 
 CLASS_INSTANCES: dict[type[Entity], int] = {
         Predator: PREDATOR_NUMBER,
@@ -38,12 +39,17 @@ class Game:
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
         self.all_sprites: Group[Any] = pg.sprite.Group()  # collection of sprites
+
+        player = Player()
+        self.all_sprites.add(player)
+
         # ***Обернуть в метод***
         map = Map()
         map.place_entities_in_init_positions(CLASS_INSTANCES)
         for entity in map.entities.values():
             self.all_sprites.add(entity)
         # ***
+
         self.run()
 
     def run(self) -> None:
