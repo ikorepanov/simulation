@@ -1,7 +1,6 @@
 from typing import Any
 
 import pygame as pg
-from pygame.sprite import Group
 
 from simulation.entity import Entity
 from simulation.herbivore import Herbivore
@@ -38,17 +37,16 @@ class Game:
 
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
-        self.all_sprites: Group[Any] = pg.sprite.Group()  # collection of sprites
+        self.all_sprites: pg.sprite.Group[Entity] = pg.sprite.Group()  # collection of sprites
 
-        player = Player()
-        self.all_sprites.add(player)
+        self.player = Player()
+        self.all_sprites.add(self.player)  # type: ignore
 
-        # ***Обернуть в метод***
-        map = Map()
-        map.place_entities_in_init_positions(CLASS_INSTANCES)
-        for entity in map.entities.values():
-            self.all_sprites.add(entity)
-        # ***
+        # Создадим группы для существ и препятствий
+        self.creatures: pg.sprite.Group[Entity] = pg.sprite.Group()
+        self.obstacles: pg.sprite.Group[Entity] = pg.sprite.Group()
+
+        self.map = Map(self)
 
         self.run()
 

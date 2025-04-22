@@ -2,7 +2,9 @@ import random
 
 from simulation.coordinate import Abscissa, Coordinate, Ordinate
 from simulation.entity import Entity
-from simulation.settings import ATTEMPTS, HEIGHT, TILESIZE, WIDTH
+from simulation.settings import ATTEMPTS, HEIGHT, TILESIZE, WIDTH, PREDATOR_NUMBER
+# from simulation.game import Game
+from simulation.predator import Predator
 
 
 class MyException(Exception):
@@ -12,10 +14,22 @@ class MyException(Exception):
 class Map:
     def __init__(
         self,
+        game,
     ) -> None:
+        self.game = game
         self.width = WIDTH
         self.height = HEIGHT
         self.entities: dict[Coordinate, Entity] = {}
+        self.predators = self.create_predators()
+
+    def create_predators(self) -> list[Predator]:
+        lst = []
+        for i in range(PREDATOR_NUMBER):
+            p = Predator(self)
+            self.game.all_sprites.add(p)
+            self.game.creatures.add(p)
+            lst.append(p)
+        return lst
 
     def select_random_value_for_point_on_asix(
         self,
@@ -41,27 +55,27 @@ class Map:
             'На карте отсутствуют не занятые клетки. Уменьшите число существ или увеличьте размер карты в настройках'
         )
 
-    def set_entity_on_map(
-        self,
-        coordinate: Coordinate,
-        entity: Entity,
-    ) -> None:
-        entity.rect.x = coordinate.abscissa.value
-        entity.rect.y = coordinate.ordinate.value
-        self.entities[coordinate] = entity
+    # def set_entity_on_map(
+    #     self,
+    #     coordinate: Coordinate,
+    #     entity: Entity,
+    # ) -> None:
+    #     entity.rect.x = coordinate.abscissa.value
+    #     entity.rect.y = coordinate.ordinate.value
+    #     self.entities[coordinate] = entity
 
-    def place_entities_in_init_positions(
-        self,
-        some_volume: dict[type[Entity], int],
-    ) -> None:
-        for class_name, instance_number in some_volume.items():
-            for _ in range(instance_number):
-                try:
-                    coordinate = self.set_coordinate()
-                except MyException as error:
-                    print(error)
-                    break  # Break the inner loop...
-                self.set_entity_on_map(coordinate, class_name(coordinate))  # type: ignore
-            else:  # "no_break" (continue if the inner loop wasn't broken)
-                continue
-            break  # Inner loop was broken, break the outer
+    # def place_entities_in_init_positions(
+    #     self,
+    #     some_volume: dict[type[Entity], int],
+    # ) -> None:
+    #     for class_name, instance_number in some_volume.items():
+    #         for _ in range(instance_number):
+    #             try:
+    #                 coordinate = self.set_coordinate()
+    #             except MyException as error:
+    #                 print(error)
+    #                 break  # Break the inner loop...
+    #             self.set_entity_on_map(coordinate, class_name(coordinate))  # type: ignore
+    #         else:  # "no_break" (continue if the inner loop wasn't broken)
+    #             continue
+    #         break  # Inner loop was broken, break the outer
