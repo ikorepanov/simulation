@@ -1,18 +1,23 @@
-from abc import abstractmethod
+from __future__ import annotations
 
-from simulation.coordinate import Coordinate
+from abc import abstractmethod
+from typing import TYPE_CHECKING
+
 from simulation.entity import Entity
+
+if TYPE_CHECKING:
+    from simulation.map import Map
 
 
 class Creature(Entity):
     def __init__(
         self,
-        coordinate: Coordinate,
+        map: Map,
         color: tuple[int, int, int],
         velocity: int,
         hp: int,
     ):
-        super().__init__(coordinate, color)
+        super().__init__(map, color)
 
         self.velocity = velocity
         self.hp = hp

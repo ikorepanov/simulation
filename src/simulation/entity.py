@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 from abc import ABC
+from typing import TYPE_CHECKING
 
 import pygame as pg
 from pygame.sprite import Sprite
 
+if TYPE_CHECKING:
+    from simulation.map import Map
 
 from simulation.settings import TILESIZE
 
@@ -10,8 +15,7 @@ from simulation.settings import TILESIZE
 class Entity(ABC, Sprite):
     def __init__(
         self,
-        map,
-        # coordinate: Coordinate,
+        map: Map,
         color: tuple[int, int, int],
         w: int = TILESIZE,
         h: int = TILESIZE,

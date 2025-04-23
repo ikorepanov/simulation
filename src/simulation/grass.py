@@ -1,17 +1,15 @@
-from simulation.coordinate import Coordinate
 from simulation.entity import Entity
+from simulation.map import Map
 from simulation.settings import AMOUNT_OF_GRASS, YELLOW
 
 
 class Grass(Entity):
     def __init__(
         self,
-        coordinate: Coordinate,
-        w: int,
-        h: int,
+        map: Map,
         color: tuple[int, int, int] = YELLOW,
     ):
-        super().__init__(coordinate, w, h, color)
+        super().__init__(map, color)
 
         self.amount = AMOUNT_OF_GRASS
 

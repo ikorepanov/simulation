@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import random
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from simulation.game import Game
 
 from simulation.coordinate import Abscissa, Coordinate, Ordinate
 from simulation.entity import Entity
-from simulation.settings import ATTEMPTS, HEIGHT, TILESIZE, WIDTH, PREDATOR_NUMBER
-# from simulation.game import Game
 from simulation.predator import Predator
+from simulation.settings import ATTEMPTS, HEIGHT, PREDATOR_NUMBER, TILESIZE, WIDTH
 
 
 class MyException(Exception):
@@ -14,7 +19,7 @@ class MyException(Exception):
 class Map:
     def __init__(
         self,
-        game,
+        game: Game,
     ) -> None:
         self.game = game
         self.width = WIDTH

@@ -1,21 +1,24 @@
-from simulation.coordinate import Coordinate
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from simulation.creature import Creature
 from simulation.settings import ATTACK_POWER, GREEN, HP, VELOCITY
-# from simulation.map import Map
+
+if TYPE_CHECKING:
+    from simulation.map import Map
 
 
 class Predator(Creature):
     def __init__(
         self,
-        map,
-        # coordinate: Coordinate,
+        map: Map,
         color: tuple[int, int, int] = GREEN,
         velocity: int = VELOCITY,
         hp: int = HP,
         attack_power: int = ATTACK_POWER
     ):
 
-        # super().__init__(coordinate, color, velocity, hp)
         super().__init__(map, color, velocity, hp)
 
         self.attack_power = attack_power

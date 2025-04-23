@@ -1,10 +1,9 @@
-from typing import Any
-
 import pygame as pg
 
 from simulation.entity import Entity
 from simulation.herbivore import Herbivore
 from simulation.map import Map
+from simulation.player import Player
 from simulation.predator import Predator
 from simulation.settings import (
     BGCOLOR,
@@ -17,7 +16,6 @@ from simulation.settings import (
     TITLE,
     WIDTH,
 )
-from simulation.player import Player
 
 CLASS_INSTANCES: dict[type[Entity], int] = {
         Predator: PREDATOR_NUMBER,
