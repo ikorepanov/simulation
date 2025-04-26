@@ -8,12 +8,11 @@ class Axis(ABC):
         self,
         value: int,
         axis_length: int,
-        tile_size: int,
     ):
-        possible_values = range(0, axis_length, tile_size)
+        possible_values = range(int(axis_length / TILESIZE))
+
         if value in possible_values:
-            # self.value = possible_values.index(value)
-            self.value = value
+            self.value = possible_values.index(value)
 
     def __hash__(self) -> int:
         return hash(self.value)
@@ -29,9 +28,8 @@ class Abscissa(Axis):
         self,
         value: int,
         axis_length: int = WIDTH,
-        tile_size: int = TILESIZE,
     ):
-        super().__init__(value, axis_length, tile_size)
+        super().__init__(value, axis_length)
 
 
 class Ordinate(Axis):
@@ -39,9 +37,8 @@ class Ordinate(Axis):
         self,
         value: int,
         axis_length: int = HEIGHT,
-        tile_size: int = TILESIZE,
     ):
-        super().__init__(value, axis_length, tile_size)
+        super().__init__(value, axis_length)
 
 
 class Coordinate:

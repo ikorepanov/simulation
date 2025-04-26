@@ -13,7 +13,7 @@ from simulation.herbivore import Herbivore
 from simulation.rock import Rock
 from simulation.tree import Tree
 from simulation.grass import Grass
-from simulation.settings import ATTEMPTS, HEIGHT, PREDATOR_NUMBER, TILESIZE, WIDTH, HERBIVORE_NUMBER, TREE_NUMBER, ROCK_NUMBER, GRASS_NUMBER
+from simulation.settings import HEIGHT, PREDATOR_NUMBER, TILESIZE, WIDTH, HERBIVORE_NUMBER, TREE_NUMBER, ROCK_NUMBER, GRASS_NUMBER, NUMBER_OF_ATTEMPTS
 
 
 class MyException(Exception):
@@ -54,29 +54,49 @@ class Map:
                 entities_lst.append(e)
         return entities_lst
 
-    def select_random_value_for_point_on_asix(
+    def select_random_point_on_asix(
         self,
-        stop: int,
-        start: int = 0,
-        step: int = TILESIZE,
+        axis_length: int,  # pixels
     ) -> int:
-        return random.randrange(start, stop, step)
+        return random.randrange(int(axis_length / TILESIZE))
 
-    def set_coordinate(
-        self,
-    ) -> Coordinate:
+    def form_coordinate(self) -> Coordinate:
+        abscissa = Abscissa(self.select_random_point_on_asix(self.width))
+        ordinate = Ordinate(self.select_random_point_on_asix(self.height))
+        return Coordinate(abscissa, ordinate)
+
+    def is_occupied(self, coordinate: Coordinate) -> bool:
+        if coordinate in self.entities:
+            return True
+        return False
+
+    def set_initial_entity_coordinate(self) -> Coordinate:
         attempts = 0
-        while attempts < ATTEMPTS:
-            abscissa = Abscissa(self.select_random_value_for_point_on_asix(self.width))
-            ordinate = Ordinate(self.select_random_value_for_point_on_asix(self.height))
-            coordinate = Coordinate(abscissa=abscissa, ordinate=ordinate)
-            if coordinate in self.entities:
+        while attempts < NUMBER_OF_ATTEMPTS:
+            coordinate = self.form_coordinate()
+            if self.is_occupied(coordinate):
                 attempts += 1
                 continue
             return coordinate
         raise MyException(
-            'На карте отсутствуют не занятые клетки. Уменьшите число существ или увеличьте размер карты в настройках'
+            'На карте отсутствуют не занятые клетки. Уменьшите число сущностей или увеличьте размер карты в настройках'
         )
+
+    # def set_coordinate(
+    #     self,
+    # ) -> Coordinate:
+    #     attempts = 0
+    #     while attempts < ATTEMPTS:
+    #         abscissa = Abscissa(self.select_random_point_on_asix(self.width))
+    #         ordinate = Ordinate(self.select_random_point_on_asix(self.height))
+    #         coordinate = Coordinate(abscissa=abscissa, ordinate=ordinate)
+    #         if coordinate in self.entities:
+    #             attempts += 1
+    #             continue
+    #         return coordinate
+    #     raise MyException(
+    #         'На карте отсутствуют не занятые клетки. Уменьшите число существ или увеличьте размер карты в настройках'
+    #     )
 
     # def set_entity_on_map(
     #     self,

@@ -11,18 +11,18 @@ PURPLE = (128, 0, 128)
 
 # game options/settings
 TITLE = 'Simulation'
-WIDTH = 1024
-HEIGHT = 768
+WIDTH = 1024  # 1024
+HEIGHT = 768  # 768
 FPS = 60  # How many times per second does the game loop repeat?
 BGCOLOR = DARKGREY
 GRIDCOLOR = LIGHTGREY
 
-TILESIZE = 32
+TILESIZE = 32  # 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
 # finding free tile
-ATTEMPTS = 1000
+NUMBER_OF_ATTEMPTS = 1000
 
 # entities settings
 ATTACK_POWER = 100
