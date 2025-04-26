@@ -7,6 +7,7 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 DARKGREY = (40, 40, 40)
 LIGHTGREY = (100, 100, 100)
+PURPLE = (128, 0, 128)
 
 # game options/settings
 TITLE = 'Simulation'
@@ -30,5 +31,8 @@ VELOCITY = 100
 HP = 100
 
 # number of entities
-PREDATOR_NUMBER = 3
+PREDATOR_NUMBER = 1
 HERBIVORE_NUMBER = 2
+TREE_NUMBER = 3
+ROCK_NUMBER = 3
+GRASS_NUMBER = 4

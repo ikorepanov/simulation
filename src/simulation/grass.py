@@ -1,5 +1,10 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from simulation.entity import Entity
-from simulation.map import Map
+if TYPE_CHECKING:
+    from simulation.map import Map
 from simulation.settings import AMOUNT_OF_GRASS, YELLOW
 
 

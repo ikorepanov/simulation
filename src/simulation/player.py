@@ -1,6 +1,6 @@
 import pygame as pg
 
-from simulation.settings import HEIGHT, RED, WIDTH
+from simulation.settings import HEIGHT, BLUE, WIDTH
 
 
 class Player(pg.sprite.Sprite):
@@ -9,7 +9,7 @@ class Player(pg.sprite.Sprite):
 
         # image
         self.image = pg.Surface((50, 50))
-        self.image.fill(RED)
+        self.image.fill(BLUE)
 
         # rect
         self.rect = self.image.get_rect()
