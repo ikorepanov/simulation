@@ -26,7 +26,7 @@ class Entity(ABC, Sprite):
         self.image = pg.Surface((w, h))  # Every sprite has to have (1)
         self.image.fill(color)
         self.rect = self.image.get_rect()  # Every sprite has to have (2)
-        coordinate = map.set_coordinate()
+        coordinate = self.map.set_coordinate()
         self.rect.x = coordinate.abscissa.value
         self.rect.y = coordinate.ordinate.value
 

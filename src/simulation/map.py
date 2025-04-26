@@ -38,11 +38,6 @@ class Map:
         }
 
         self.entities: dict[Coordinate, Entity] = {}
-        # self.predators = self.create_predators()
-        # self.herbivores = self.create_herbivores()
-        # self.trees = self.create_trees()
-        # self.rocks = self.create_rocks()
-        # self.grass = self.create_grass()
 
         self.entities_lst = self.create_all_entities()
 
@@ -58,51 +53,6 @@ class Map:
                     self.game.obstacles.add(e)
                 entities_lst.append(e)
         return entities_lst
-
-    # def create_predators(self) -> list[Predator]:
-    #     lst = []
-    #     for i in range(PREDATOR_NUMBER):
-    #         p = Predator(self)
-    #         self.game.all_sprites.add(p)
-    #         self.game.creatures.add(p)
-    #         lst.append(p)
-    #     return lst
-
-    # def create_herbivores(self) -> list[Herbivore]:
-    #     lst = []
-    #     for i in range(HERBIVORE_NUMBER):
-    #         p = Herbivore(self)
-    #         self.game.all_sprites.add(p)
-    #         self.game.creatures.add(p)
-    #         lst.append(p)
-    #     return lst
-
-    # def create_trees(self) -> list[Tree]:
-    #     lst = []
-    #     for i in range(TREE_NUMBER):
-    #         p = Tree(self)
-    #         self.game.all_sprites.add(p)
-    #         self.game.creatures.add(p)
-    #         lst.append(p)
-    #     return lst
-
-    # def create_rocks(self) -> list[Rock]:
-    #     lst = []
-    #     for i in range(ROCK_NUMBER):
-    #         p = Rock(self)
-    #         self.game.all_sprites.add(p)
-    #         self.game.creatures.add(p)
-    #         lst.append(p)
-    #     return lst
-
-    # def create_grass(self) -> list[Grass]:
-    #     lst = []
-    #     for i in range(GRASS_NUMBER):
-    #         p = Grass(self)
-    #         self.game.all_sprites.add(p)
-    #         self.game.creatures.add(p)
-    #         lst.append(p)
-    #     return lst
 
     def select_random_value_for_point_on_asix(
         self,
