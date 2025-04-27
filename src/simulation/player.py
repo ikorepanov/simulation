@@ -1,6 +1,6 @@
 import pygame as pg
 
-from simulation.settings import HEIGHT, BLUE, WIDTH
+from simulation.settings import BLUE, HEIGHT, WIDTH
 
 
 class Player(pg.sprite.Sprite):
