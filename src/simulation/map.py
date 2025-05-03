@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from simulation.game import Game
 
-from simulation.coordinate import Abscissa, Coordinate, Ordinate
+from simulation.coordinate import Coordinate
 from simulation.entity import Entity
 from simulation.grass import Grass
 from simulation.herbivore import Herbivore
@@ -56,7 +56,7 @@ class Map:
     def create_all_entities(self) -> list[Entity]:
         entities_lst = []
         for class_name, instance_number in self.entity_set.items():
-            for i in range(instance_number):
+            for _ in range(instance_number):
                 try:
                     entity = class_name(self)
                 except NoUnoccupiedTilesError as error:
@@ -78,12 +78,12 @@ class Map:
         self,
         axis_length: int,  # pixels
     ) -> int:
-        return random.randrange(int(axis_length / TILESIZE))
+        return random.randrange(int(axis_length / TILESIZE))  # relative units
 
     def form_coordinate(self) -> Coordinate:
-        abscissa = Abscissa(self.select_random_point_on_asix(self.width))
-        ordinate = Ordinate(self.select_random_point_on_asix(self.height))
-        return Coordinate(abscissa, ordinate)
+        x = self.select_random_point_on_asix(self.width)
+        y = self.select_random_point_on_asix(self.height)
+        return Coordinate(x, y)
 
     def is_occupied(self, coordinate: Coordinate) -> bool:
         if coordinate in self.entities:
