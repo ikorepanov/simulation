@@ -1,4 +1,7 @@
+from typing import Any
+
 import pygame as pg
+from pygame.sprite import AbstractGroup
 
 from simulation.entity import Entity
 from simulation.herbivore import Herbivore
@@ -35,20 +38,30 @@ class Game:
 
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
-        self.all_sprites: pg.sprite.Group[Entity] = pg.sprite.Group()  # collection of sprites
+        self.all_sprites: AbstractGroup[Any] = pg.sprite.Group()  # collection of sprites
 
-        self.player = Player()
-        self.all_sprites.add(self.player)  # type: ignore
+        self.player = Player(self)
 
         # Создадим группы для существ и препятствий
-        self.creatures: pg.sprite.Group[Entity] = pg.sprite.Group()
-        self.obstacles: pg.sprite.Group[Entity] = pg.sprite.Group()
+        self.creatures: AbstractGroup[Any] = pg.sprite.Group()
+        self.obstacles: AbstractGroup[Any] = pg.sprite.Group()
+        self.predators: AbstractGroup[Any] = pg.sprite.Group()
+        self.herbivores: AbstractGroup[Any] = pg.sprite.Group()
+        self.rocks: AbstractGroup[Any] = pg.sprite.Group()
+        self.trees: AbstractGroup[Any] = pg.sprite.Group()
+        self.grass: AbstractGroup[Any] = pg.sprite.Group()
 
-        self.map = Map(self)
+        Map(self)
 
         self.run()
 
     def run(self) -> None:
+        print(f'NB! {self.all_sprites.sprites()}')
+        print(f'NB! {self.creatures.sprites()}')
+        print(f'NB! {self.obstacles.sprites()}')
+        print(f'NB! {self.rocks.sprites()}')
+        print(f'NB! {self.trees.sprites()}')
+        print(f'NB! {self.grass.sprites()}')
         # NB! Game Loop
         self.playing = True
         while self.playing:

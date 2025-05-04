@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
+
+from pygame.sprite import AbstractGroup
 
 from simulation.entity import Entity
 
@@ -16,8 +18,9 @@ class Creature(Entity):
         color: tuple[int, int, int],
         velocity: int,
         hp: int,
+        sprite_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
-        super().__init__(map, color)
+        super().__init__(map, color, sprite_groups or (map.game.all_sprites, map.game.creatures))
 
         self.velocity = velocity
         self.hp = hp

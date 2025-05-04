@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 import pygame as pg
-from pygame.sprite import Sprite
+from pygame.sprite import AbstractGroup, Sprite
 
 if TYPE_CHECKING:
     from simulation.map import Map
@@ -12,15 +12,16 @@ if TYPE_CHECKING:
 from simulation.settings import TILESIZE
 
 
-class Entity(ABC, Sprite):
+class Entity(Sprite, ABC):
     def __init__(
         self,
         map: Map,
         color: tuple[int, int, int],
+        sprite_groups: tuple[AbstractGroup[Any], ...] | None = None,
         w: int = TILESIZE,
         h: int = TILESIZE,
     ):
-        super().__init__()
+        super().__init__(*(sprite_groups or (map.game.all_sprites,)))
 
         self.map = map
         self.image = pg.Surface((w, h))  # Every sprite has to have (1)

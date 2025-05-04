@@ -62,11 +62,6 @@ class Map:
                 except NoUnoccupiedTilesError as error:
                     print(f'No Unoccupied Tiles Error: {error.message}')
                     break  # Break the inner loop...
-                self.game.all_sprites.add(entity)
-                if class_name in {Predator, Herbivore}:
-                    self.game.creatures.add(entity)
-                else:
-                    self.game.obstacles.add(entity)
                 entities_lst.append(entity)
                 self.entities[entity.coordinate] = entity
             else:  # "no_break" (continue if the inner loop wasn't broken)

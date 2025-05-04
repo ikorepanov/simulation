@@ -1,11 +1,23 @@
+from __future__ import annotations
+
+from typing import Any, TYPE_CHECKING
+
 import pygame as pg
+from pygame.sprite import AbstractGroup, Sprite
 
 from simulation.settings import BLUE, HEIGHT, WIDTH
 
+if TYPE_CHECKING:
+    from simulation.game import Game
 
-class Player(pg.sprite.Sprite):
-    def __init__(self) -> None:
-        super().__init__()
+
+class Player(Sprite):
+    def __init__(
+        self,
+        game: Game,
+    ) -> None:
+        self.sprite_groups: AbstractGroup[Any] = game.all_sprites
+        super().__init__(self.sprite_groups)
 
         # image
         self.image = pg.Surface((50, 50))

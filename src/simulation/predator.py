@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
+
+from pygame.sprite import AbstractGroup
 
 from simulation.creature import Creature
 from simulation.settings import ATTACK_POWER, HP, RED, VELOCITY
@@ -16,10 +18,16 @@ class Predator(Creature):
         color: tuple[int, int, int] = RED,
         velocity: int = VELOCITY,
         hp: int = HP,
-        attack_power: int = ATTACK_POWER
+        attack_power: int = ATTACK_POWER,
+        sprite_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
 
-        super().__init__(map, color, velocity, hp)
+        super().__init__(map, color, velocity, hp, sprite_groups or (
+            map.game.all_sprites,
+            map.game.creatures,
+            map.game.predators,
+            )
+        )
 
         self.attack_power = attack_power
 
