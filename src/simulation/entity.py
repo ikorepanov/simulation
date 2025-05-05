@@ -17,11 +17,12 @@ class Entity(Sprite, ABC):
         self,
         map: Map,
         color: tuple[int, int, int],
-        sprite_groups: tuple[AbstractGroup[Any], ...] | None = None,
+        class_specific_groups: tuple[AbstractGroup[Any], ...] | None = None,
         w: int = TILESIZE,
         h: int = TILESIZE,
     ):
-        super().__init__(*(sprite_groups or (map.game.all_sprites,)))
+        sprite_groups = (map.game.all_sprites,) + (class_specific_groups or ())
+        super().__init__(*sprite_groups)
 
         self.map = map
         self.image = pg.Surface((w, h))  # Every sprite has to have (1)

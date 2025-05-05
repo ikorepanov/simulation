@@ -18,9 +18,10 @@ class Creature(Entity):
         color: tuple[int, int, int],
         velocity: int,
         hp: int,
-        sprite_groups: tuple[AbstractGroup[Any], ...] | None = None,
+        class_specific_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
-        super().__init__(map, color, sprite_groups or (map.game.all_sprites, map.game.creatures))
+        sprite_groups = (map.game.creatures,) + (class_specific_groups or ())
+        super().__init__(map, color, sprite_groups)
 
         self.velocity = velocity
         self.hp = hp

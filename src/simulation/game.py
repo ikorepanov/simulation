@@ -56,12 +56,6 @@ class Game:
         self.run()
 
     def run(self) -> None:
-        print(f'NB! {self.all_sprites.sprites()}')
-        print(f'NB! {self.creatures.sprites()}')
-        print(f'NB! {self.obstacles.sprites()}')
-        print(f'NB! {self.rocks.sprites()}')
-        print(f'NB! {self.trees.sprites()}')
-        print(f'NB! {self.grass.sprites()}')
         # NB! Game Loop
         self.playing = True
         while self.playing:

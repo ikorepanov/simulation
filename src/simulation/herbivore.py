@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
-
-from pygame.sprite import AbstractGroup
+from typing import TYPE_CHECKING
 
 from simulation.creature import Creature
 from simulation.settings import GREEN, HP, VELOCITY
@@ -18,14 +16,8 @@ class Herbivore(Creature):
         color: tuple[int, int, int] = GREEN,
         velocity: int = VELOCITY,
         hp: int = HP,
-        sprite_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
-        super().__init__(map, color, velocity, hp, sprite_groups or (
-            map.game.all_sprites,
-            map.game.creatures,
-            map.game.herbivores,
-            )
-        )
+        super().__init__(map, color, velocity, hp, (map.game.herbivores,))
 
     def make_move(self) -> None:
         pass
