@@ -10,6 +10,8 @@ from simulation.entity import Entity
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from simulation.coordinate import Coordinate
+
 
 class Creature(Entity):
     def __init__(
@@ -23,9 +25,28 @@ class Creature(Entity):
         sprite_groups = (map.game.creatures,) + (class_specific_groups or ())
         super().__init__(map, color, sprite_groups)
 
+        self.map = map
         self.velocity = velocity
         self.hp = hp
 
+    def get_target_entity_positions(self, class_name: Entity) -> list[Coordinate]:
+        # Получить инфу о координатах всех имеющихся травоядных / травы
+        return [key for key, val in self.map.entities.items() if val == class_name]
+
+    def choose_preferable_target(self, options: list[Coordinate]) -> Coordinate:
+        # Выбираем ближайшую цель
+        # Здесь будет реализован алгоритм поиска пути
+        pass
+
+    def check_if_movement_is_possible(self) -> bool:
+        # Проверить - возможно ли "шагнуть" на ту или иную клетку
+        pass
+
     @abstractmethod
-    def make_move(self) -> None:
+    def make_move(self, target_coordinate: Coordinate) -> None:
+        # "Сделать шаг" по направлению к цели
         raise NotImplementedError
+
+    def act_as_intendent(self) -> None:
+        # Атаковать - для хищников, есть (траву) - для травоядных
+        pass

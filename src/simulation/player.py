@@ -19,6 +19,8 @@ class Player(Sprite):
         self.sprite_groups: AbstractGroup[Any] = game.all_sprites
         super().__init__(self.sprite_groups)
 
+        self.game = game
+
         # image
         self.image = pg.Surface((50, 50))
         self.image.fill(BLUE)
