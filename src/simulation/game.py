@@ -3,27 +3,8 @@ from typing import Any
 import pygame as pg
 from pygame.sprite import AbstractGroup
 
-from simulation.entity import Entity
-from simulation.herbivore import Herbivore
 from simulation.map import Map
-from simulation.player import Player
-from simulation.predator import Predator
-from simulation.settings import (
-    BGCOLOR,
-    FPS,
-    GRIDCOLOR,
-    HEIGHT,
-    HERBIVORE_NUMBER,
-    PREDATOR_NUMBER,
-    TILESIZE,
-    TITLE,
-    WIDTH,
-)
-
-CLASS_INSTANCES: dict[type[Entity], int] = {
-        Predator: PREDATOR_NUMBER,
-        Herbivore: HERBIVORE_NUMBER,
-    }
+from simulation.settings import BGCOLOR, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
 
 
 class Game:
@@ -40,7 +21,7 @@ class Game:
         # Start a new game (reset the game, not the whole program)
         self.all_sprites: AbstractGroup[Any] = pg.sprite.Group()  # collection of sprites
 
-        self.player = Player(self)
+        # self.player = Player(self)
 
         # Создадим группы для существ и препятствий
         self.creatures: AbstractGroup[Any] = pg.sprite.Group()

@@ -29,6 +29,10 @@ class Creature(Entity):
         self.velocity = velocity
         self.hp = hp
 
+        self.show_coordinate()
+
+        self.speed_x = 0
+
     def get_target_entity_positions(self, class_name: Entity) -> list[Coordinate]:
         # Получить инфу о координатах всех имеющихся травоядных / травы
         return [key for key, val in self.map.entities.items() if val == class_name]
@@ -47,6 +51,14 @@ class Creature(Entity):
         # "Сделать шаг" по направлению к цели
         raise NotImplementedError
 
+    def check_if_collide(self) -> bool:
+        # Проверяем, приблизились ли вплотную к цели
+        pass
+
     def act_as_intendent(self) -> None:
         # Атаковать - для хищников, есть (траву) - для травоядных
         pass
+
+    def show_coordinate(self) -> None:
+        print(f'X is {self.coordinate.x}')
+        print(f'Y is {self.coordinate.y}')

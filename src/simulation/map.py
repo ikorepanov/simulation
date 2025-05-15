@@ -49,9 +49,17 @@ class Map:
             Grass: GRASS_NUMBER,
         }
 
+        self.started = False
+
         self.entities: dict[Coordinate, Entity] = {}
 
         self.entities_lst = self.create_all_entities()
+
+        self.start_chasing()
+
+    def start_chasing(self) -> None:
+        print('NB! The chasing has just started!')
+        self.started = True
 
     def create_all_entities(self) -> list[Entity]:
         entities_lst = []

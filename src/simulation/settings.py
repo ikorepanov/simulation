@@ -11,13 +11,13 @@ PURPLE = (128, 0, 128)
 
 # game options/settings
 TITLE = 'Simulation'
-WIDTH = 1024  # 1024
-HEIGHT = 768  # 768
-FPS = 60  # How many times per second does the game loop repeat?
+WIDTH = 400  # 1024
+HEIGHT = 300  # 768
+FPS = 30  # 60  # How many times per second does the game loop repeat?
 BGCOLOR = DARKGREY
 GRIDCOLOR = LIGHTGREY
 
-TILESIZE = 32  # 32
+TILESIZE = 100  # 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
@@ -32,7 +32,7 @@ HP = 100
 
 # number of entities
 PREDATOR_NUMBER = 1
-HERBIVORE_NUMBER = 2
-ROCK_NUMBER = 3
-TREE_NUMBER = 3
-GRASS_NUMBER = 4
+HERBIVORE_NUMBER = 0
+ROCK_NUMBER = 0
+TREE_NUMBER = 0
+GRASS_NUMBER = 0
