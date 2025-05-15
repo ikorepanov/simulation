@@ -8,8 +8,6 @@ from simulation.settings import ATTACK_POWER, HP, RED, VELOCITY
 if TYPE_CHECKING:
     from simulation.map import Map
 
-from simulation.settings import TILESIZE
-
 
 class Predator(Creature):
     def __init__(
@@ -24,9 +22,6 @@ class Predator(Creature):
 
         self.attack_power = attack_power
 
-        self.target_x = self.coordinate.x + 1
-        self.show_target_coordinate()
-
     def make_move(self) -> None:
         pass
 
@@ -35,15 +30,3 @@ class Predator(Creature):
 
     def attack(self) -> None:
         pass
-
-    def update(self) -> None:
-        self.speed_x = 0
-        if self.map.started:
-            self.speed_x = 1
-            if self.rect.x >= self.target_x * TILESIZE:
-                self.speed_x = 0
-                self.map.started = False
-        self.rect.x += self.speed_x
-
-    def show_target_coordinate(self) -> None:
-        print(f'Target X: {self.target_x}')
