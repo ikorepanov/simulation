@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.coordinate import Coordinate
-from simulation.settings import TILESIZE
+# from simulation.settings import TILESIZE
 
 
 class Creature(Entity):
@@ -30,12 +30,10 @@ class Creature(Entity):
         self.velocity = velocity
         self.hp = hp
 
-        self.show_coordinate()
-
-        self.speed_x = 0
-
-        self.target_x = self.coordinate.x + 1
-        self.show_target_coordinate()
+        # self.show_coordinate()
+        # self.speed_x = 0
+        # self.target_x = self.coordinate.x + 1
+        # self.show_target_coordinate()
 
     def get_target_entity_positions(self, class_name: Entity) -> list[Coordinate]:
         # Получить инфу о координатах всех имеющихся травоядных / травы
@@ -63,18 +61,18 @@ class Creature(Entity):
         # Атаковать - для хищников, есть (траву) - для травоядных
         pass
 
-    def show_coordinate(self) -> None:
-        print(f'X is {self.coordinate.x}')
-        print(f'Y is {self.coordinate.y}')
+    # def show_coordinate(self) -> None:
+    #     print(f'X is {self.coordinate.x}')
+    #     print(f'Y is {self.coordinate.y}')
 
-    def update(self) -> None:
-        self.speed_x = 0
-        if self.map.started:
-            self.speed_x = 1
-            if self.rect.x >= self.target_x * TILESIZE:
-                self.speed_x = 0
-                self.map.started = False
-        self.rect.x += self.speed_x
+    # def update(self) -> None:
+    #     self.speed_x = 0
+    #     if self.map.started:
+    #         self.speed_x = 1
+    #         if self.rect.x >= self.target_x * TILESIZE:
+    #             self.speed_x = 0
+    #             self.map.started = False
+    #     self.rect.x += self.speed_x
 
-    def show_target_coordinate(self) -> None:
-        print(f'Target X: {self.target_x}')
+    # def show_target_coordinate(self) -> None:
+    #     print(f'Target X: {self.target_x}')

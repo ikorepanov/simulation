@@ -8,6 +8,9 @@ from simulation.settings import ATTACK_POWER, HP, RED, VELOCITY
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from simulation.coordinate import Coordinate
+from simulation.settings import TILESIZE
+
 
 class Predator(Creature):
     def __init__(
@@ -21,6 +24,11 @@ class Predator(Creature):
         super().__init__(map, color, velocity, hp, (map.game.predators,))
 
         self.attack_power = attack_power
+
+        # добавлено на время отладки алгоритма поиска пути
+        self.coordinate = Coordinate(0, 0)
+        self.rect.x = self.coordinate.x * TILESIZE
+        self.rect.y = self.coordinate.y * TILESIZE
 
     def make_move(self) -> None:
         pass

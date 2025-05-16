@@ -8,6 +8,9 @@ from simulation.settings import GREEN, HP, VELOCITY
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from simulation.coordinate import Coordinate
+from simulation.settings import TILESIZE
+
 
 class Herbivore(Creature):
     def __init__(
@@ -18,6 +21,11 @@ class Herbivore(Creature):
         hp: int = HP,
     ):
         super().__init__(map, color, velocity, hp, (map.game.herbivores,))
+
+        # добавлено на время отладки алгоритма поиска пути
+        self.coordinate = Coordinate(3, 2)
+        self.rect.x = self.coordinate.x * TILESIZE
+        self.rect.y = self.coordinate.y * TILESIZE
 
     def make_move(self) -> None:
         pass

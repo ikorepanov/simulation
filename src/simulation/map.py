@@ -55,7 +55,7 @@ class Map:
 
         self.entities_lst = self.create_all_entities()
 
-        self.start_chasing()
+        # self.start_chasing()
 
     def start_chasing(self) -> None:
         print('NB! The chasing has just started!')
