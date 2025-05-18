@@ -25,6 +25,8 @@ from simulation.settings import (
 )
 from simulation.tree import Tree
 
+from collections import deque
+
 
 class NoUnoccupiedTilesError(Exception):
     def __init__(self, message: str) -> None:
@@ -56,6 +58,9 @@ class Map:
         self.entities_lst = self.create_all_entities()
 
         # self.start_chasing()
+
+        path = self.get_path_for_resource(Coordinate(0, 0))
+        self.print_the_path(path)
 
     def start_chasing(self) -> None:
         print('NB! The chasing has just started!')
@@ -104,3 +109,62 @@ class Map:
         raise NoUnoccupiedTilesError(
             'На карте отсутствуют не занятые клетки. Уменьшите число сущностей или увеличьте размер карты в настройках'
         )
+
+    def is_walkable(self, coordinate: Coordinate) -> bool:
+        if coordinate in self.entities:
+            return False
+        return True
+
+    def is_on_map(self, coordinate: Coordinate) -> bool:
+        if any([coordinate.x < 0, coordinate.x >= WIDTH / TILESIZE, coordinate.y < 0, coordinate.y >= HEIGHT / TILESIZE]):
+            return False
+        return True
+
+    def get_all_adjacent(self, coordinate: Coordinate) -> list[Coordinate]:
+        adjacent = []
+        x = coordinate.x
+        y = coordinate.y
+        some = [(x + 1, y),  (x, y + 1), (x - 1, y), (x, y - 1)]
+        for pair in some:
+            coordinate = Coordinate(*pair)
+            # if self.is_walkable(coordinate) and self.is_on_map(coordinate):
+            if self.is_on_map(coordinate):
+                adjacent.append(coordinate)
+        return adjacent
+
+    def get_the_path(self, target_node: Coordinate, parents: dict[Coordinate, Coordinate | None]) -> list[Coordinate]:
+        some_node: Coordinate | None = target_node
+        path = []
+        while some_node:
+            path.append(some_node)
+            some_node = parents[some_node]
+        return path
+
+    def get_path_for_resource(self, starting_point: Coordinate) -> list[Coordinate] | None:
+        visited = set()
+        queue: deque[Coordinate] = deque()
+        parents: dict[Coordinate, Coordinate | None] = {}
+
+        queue.appendleft(starting_point)
+        parents[starting_point] = None
+
+        while len(queue) > 0:
+            node = queue.pop()
+            visited.add(node)
+            adjacent = self.get_all_adjacent(node)
+            for a_node in adjacent:
+                if a_node in visited:
+                    continue
+                queue.appendleft(a_node)
+                parents[a_node] = node
+                ent = self.entities.get(a_node, None)
+                if ent and isinstance(ent, Herbivore):
+                    return self.get_the_path(a_node, parents)
+        return None
+
+    def print_the_path(self, path: list[Coordinate] | None) -> None:
+        some = []
+        if path:
+            for node in path:
+                some.append((node.x, node.y))
+        print(f'Путь к цели: {list(reversed(some))}')

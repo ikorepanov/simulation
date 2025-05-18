@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from simulation.creature import Creature
-from simulation.settings import GREEN, HP, VELOCITY
+from simulation.settings import GREEN, HP, VELOCITY, WIDTH, HEIGHT
 
 if TYPE_CHECKING:
     from simulation.map import Map
@@ -23,7 +23,7 @@ class Herbivore(Creature):
         super().__init__(map, color, velocity, hp, (map.game.herbivores,))
 
         # добавлено на время отладки алгоритма поиска пути
-        self.coordinate = Coordinate(3, 2)
+        self.coordinate = Coordinate(WIDTH / TILESIZE - 1, HEIGHT / TILESIZE - 1)
         self.rect.x = self.coordinate.x * TILESIZE
         self.rect.y = self.coordinate.y * TILESIZE
 
