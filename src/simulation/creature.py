@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.coordinate import Coordinate
+
 # from simulation.settings import TILESIZE
 
 

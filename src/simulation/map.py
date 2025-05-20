@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from simulation.game import Game
 
+from collections import deque
+
 from simulation.coordinate import Coordinate
 from simulation.entity import Entity
 from simulation.grass import Grass
@@ -24,8 +26,6 @@ from simulation.settings import (
     WIDTH,
 )
 from simulation.tree import Tree
-
-from collections import deque
 
 
 class NoUnoccupiedTilesError(Exception):
@@ -116,7 +116,14 @@ class Map:
         return True
 
     def is_on_map(self, coordinate: Coordinate) -> bool:
-        if any([coordinate.x < 0, coordinate.x >= WIDTH / TILESIZE, coordinate.y < 0, coordinate.y >= HEIGHT / TILESIZE]):
+        if any(
+            [
+                coordinate.x < 0,
+                coordinate.x >= WIDTH / TILESIZE,
+                coordinate.y < 0,
+                coordinate.y >= HEIGHT / TILESIZE,
+            ]
+        ):
             return False
         return True
 
@@ -141,25 +148,38 @@ class Map:
         return path
 
     def get_path_for_resource(self, starting_point: Coordinate) -> list[Coordinate] | None:
-        visited = set()
+        visited: set[Coordinate] = set()
         queue: deque[Coordinate] = deque()
         parents: dict[Coordinate, Coordinate | None] = {}
 
         queue.appendleft(starting_point)
         parents[starting_point] = None
 
+        print()
+        count = 0
         while len(queue) > 0:
+        # while count < 145:
+            print(f'Visited: {[(visited_member.x, visited_member.y) for visited_member in visited]}')
+            print(f'Queue: {[(queue_member.x, queue_member.y) for queue_member in queue]}')
+            print()
+
+            print(f'Итерация № {count + 1}')
             node = queue.pop()
+            print(f'Node: {(node.x, node.y)}')
             visited.add(node)
-            adjacent = self.get_all_adjacent(node)
-            for a_node in adjacent:
-                if a_node in visited:
+
+            adjacent_nodes = self.get_all_adjacent(node)
+            for a_node in adjacent_nodes:
+                if a_node in visited or a_node in queue:
                     continue
                 queue.appendleft(a_node)
                 parents[a_node] = node
                 ent = self.entities.get(a_node, None)
                 if ent and isinstance(ent, Herbivore):
+                    print()
+                    print('Done')
                     return self.get_the_path(a_node, parents)
+            count += 1
         return None
 
     def print_the_path(self, path: list[Coordinate] | None) -> None:

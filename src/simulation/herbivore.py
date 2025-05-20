@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from simulation.creature import Creature
-from simulation.settings import GREEN, HP, VELOCITY, WIDTH, HEIGHT
+from simulation.settings import GREEN, HEIGHT, HP, VELOCITY, WIDTH
 
 if TYPE_CHECKING:
     from simulation.map import Map
