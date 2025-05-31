@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from abc import abstractmethod
 from typing import Any, TYPE_CHECKING
 
 from pygame.sprite import AbstractGroup
@@ -10,9 +9,10 @@ from simulation.entity import Entity
 if TYPE_CHECKING:
     from simulation.map import Map
 
-from simulation.coordinate import Coordinate
+import pygame
 
-# from simulation.settings import TILESIZE
+from simulation.coordinate import Coordinate
+from simulation.settings import WIDTH
 
 
 class Creature(Entity):
@@ -20,60 +20,49 @@ class Creature(Entity):
         self,
         map: Map,
         color: tuple[int, int, int],
-        velocity: int,
-        hp: int,
+        speed: int,
         class_specific_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
         sprite_groups = (map.game.creatures,) + (class_specific_groups or ())
         super().__init__(map, color, sprite_groups)
 
-        self.map = map
-        self.velocity = velocity
-        self.hp = hp
-
-        # self.show_coordinate()
-        # self.speed_x = 0
-        # self.target_x = self.coordinate.x + 1
-        # self.show_target_coordinate()
-
-    def get_target_entity_positions(self, class_name: Entity) -> list[Coordinate]:
-        # Получить инфу о координатах всех имеющихся травоядных / травы
-        return [key for key, val in self.map.entities.items() if val == class_name]
+        self.speed = speed
+        self.state = 'moving'
+        self.wait_time = 0
 
     def choose_preferable_target(self, options: list[Coordinate]) -> Coordinate:
         # Выбираем ближайшую цель
         # Здесь будет реализован алгоритм поиска пути
-        pass
+        coordinate: Coordinate
+        return coordinate
 
     def check_if_movement_is_possible(self) -> bool:
         # Проверить - возможно ли "шагнуть" на ту или иную клетку
-        pass
+        is_possible: bool
+        return is_possible
 
-    @abstractmethod
     def make_move(self, target_coordinate: Coordinate) -> None:
         # "Сделать шаг" по направлению к цели
-        raise NotImplementedError
+        pass
 
     def check_if_collide(self) -> bool:
         # Проверяем, приблизились ли вплотную к цели
-        pass
+        is_collide: bool
+        return is_collide
 
     def act_as_intendent(self) -> None:
         # Атаковать - для хищников, есть (траву) - для травоядных
         pass
 
-    # def show_coordinate(self) -> None:
-    #     print(f'X is {self.coordinate.x}')
-    #     print(f'Y is {self.coordinate.y}')
+    def update(self) -> None:
+        if self.state == 'moving':
+            self.rect.x += self.speed
+            if self.rect.right >= WIDTH:
+                self.rect.left = 0
+                self.state = 'waiting'
+                self.wait_time = pygame.time.get_ticks()
 
-    # def update(self) -> None:
-    #     self.speed_x = 0
-    #     if self.map.started:
-    #         self.speed_x = 1
-    #         if self.rect.x >= self.target_x * TILESIZE:
-    #             self.speed_x = 0
-    #             self.map.started = False
-    #     self.rect.x += self.speed_x
-
-    # def show_target_coordinate(self) -> None:
-    #     print(f'Target X: {self.target_x}')
+        elif self.state == 'waiting':
+            now = pygame.time.get_ticks()
+            if now - self.wait_time >= 2000:
+                self.state = 'moving'

@@ -3,13 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from simulation.creature import Creature
-from simulation.settings import ATTACK_POWER, HP, RED, VELOCITY
+from simulation.settings import ATTACK_POWER, PREDATOR_SPEED, RED
 
 if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.coordinate import Coordinate
-from simulation.settings import TILESIZE
 
 
 class Predator(Creature):
@@ -17,20 +16,14 @@ class Predator(Creature):
         self,
         map: Map,
         color: tuple[int, int, int] = RED,
-        velocity: int = VELOCITY,
-        hp: int = HP,
+        speed: int = PREDATOR_SPEED,
         attack_power: int = ATTACK_POWER,
     ):
-        super().__init__(map, color, velocity, hp, (map.game.predators,))
+        super().__init__(map, color, speed, (map.game.predators,))
 
         self.attack_power = attack_power
 
-        # добавлено на время отладки алгоритма поиска пути
-        self.coordinate = Coordinate(0, 0)
-        self.rect.x = self.coordinate.x * TILESIZE
-        self.rect.y = self.coordinate.y * TILESIZE
-
-    def make_move(self) -> None:
+    def make_move(self, target_coordinate: Coordinate) -> None:
         pass
 
     def chase(self) -> None:

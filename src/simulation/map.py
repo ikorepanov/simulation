@@ -57,11 +57,6 @@ class Map:
 
         self.entities_lst = self.create_all_entities()
 
-        # self.start_chasing()
-
-        path = self.get_path_for_resource(Coordinate(0, 0))
-        self.print_the_path(path)
-
     def start_chasing(self) -> None:
         print('NB! The chasing has just started!')
         self.started = True
@@ -170,7 +165,7 @@ class Map:
 
                 ent = self.entities.get(a_node, None)
                 if ent and isinstance(ent, Herbivore):
-                    return self.get_the_path(a_node, parents)
+                    return list(reversed(self.get_the_path(a_node, parents)))[1:]
         return None
 
     def print_the_path(self, path: list[Coordinate] | None) -> None:

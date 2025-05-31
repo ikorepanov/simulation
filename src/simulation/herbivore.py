@@ -3,13 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from simulation.creature import Creature
-from simulation.settings import GREEN, HEIGHT, HP, VELOCITY, WIDTH
+from simulation.settings import GREEN, HERBIVORE_SPEED
 
 if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.coordinate import Coordinate
-from simulation.settings import TILESIZE
 
 
 class Herbivore(Creature):
@@ -17,17 +16,14 @@ class Herbivore(Creature):
         self,
         map: Map,
         color: tuple[int, int, int] = GREEN,
-        velocity: int = VELOCITY,
-        hp: int = HP,
+        speed: int = HERBIVORE_SPEED,
     ):
-        super().__init__(map, color, velocity, hp, (map.game.herbivores,))
+        super().__init__(map, color, speed, (map.game.herbivores,))
 
-        # добавлено на время отладки алгоритма поиска пути
-        self.coordinate = Coordinate(WIDTH / TILESIZE - 1, HEIGHT / TILESIZE - 1)
-        self.rect.x = self.coordinate.x * TILESIZE
-        self.rect.y = self.coordinate.y * TILESIZE
+        self.rect.x = 0  # добавлено на время отладки
+        self.rect.y = 0  # добавлено на время отладки
 
-    def make_move(self) -> None:
+    def make_move(self, target_coordinate: Coordinate) -> None:
         pass
 
     def search(self) -> None:

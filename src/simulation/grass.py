@@ -7,7 +7,7 @@ from simulation.entity import Entity
 if TYPE_CHECKING:
     from simulation.map import Map
 
-from simulation.settings import AMOUNT_OF_GRASS, YELLOW
+from simulation.settings import AMOUNT_OF_GRASS, HEIGHT, TILESIZE, WIDTH, YELLOW
 
 
 class Grass(Entity):
@@ -17,6 +17,9 @@ class Grass(Entity):
         color: tuple[int, int, int] = YELLOW,
     ):
         super().__init__(map, color, (map.game.grass,))
+
+        self.rect.x = WIDTH - TILESIZE  # добавлено на время отладки
+        self.rect.y = HEIGHT - TILESIZE  # добавлено на время отладки
 
         self.amount = AMOUNT_OF_GRASS
 
