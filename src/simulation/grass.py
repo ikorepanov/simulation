@@ -7,19 +7,24 @@ from simulation.entity import Entity
 if TYPE_CHECKING:
     from simulation.map import Map
 
-from simulation.settings import AMOUNT_OF_GRASS, HEIGHT, TILESIZE, WIDTH, YELLOW
+from simulation.coordinate import Coordinate
+from simulation.settings import AMOUNT_OF_GRASS, HEIGHT, MINTWAVE, TILESIZE, WIDTH
 
 
 class Grass(Entity):
     def __init__(
         self,
         map: Map,
-        color: tuple[int, int, int] = YELLOW,
+        color: tuple[int, int, int] = MINTWAVE,
     ):
         super().__init__(map, color, (map.game.grass,))
 
-        self.rect.x = WIDTH - TILESIZE  # добавлено на время отладки
-        self.rect.y = HEIGHT - TILESIZE  # добавлено на время отладки
+        if self.map.game.development_mode:
+            x = int((WIDTH - TILESIZE) / TILESIZE)
+            y = int((HEIGHT - TILESIZE) / TILESIZE)
+            self.coordinate = Coordinate(x, y)
+            self.rect.x = self.coordinate.x * TILESIZE
+            self.rect.y = self.coordinate.y * TILESIZE
 
         self.amount = AMOUNT_OF_GRASS
 

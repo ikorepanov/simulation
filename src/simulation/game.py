@@ -4,7 +4,7 @@ import pygame as pg
 from pygame.sprite import AbstractGroup
 
 from simulation.map import Map
-from simulation.settings import BGCOLOR, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
+from simulation.settings import BGCOLOR, DEVELOPMENT_MODE, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
 
 
 class Game:
@@ -16,6 +16,7 @@ class Game:
         pg.display.set_caption(TITLE)  # "установить заголовок"
         self.clock = pg.time.Clock()  # handles the speed and keeps track of how fast we're going
         self.running = True
+        self.development_mode = DEVELOPMENT_MODE
 
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)

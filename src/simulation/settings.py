@@ -8,6 +8,8 @@ YELLOW = (255, 255, 0)
 DARKGREY = (40, 40, 40)
 LIGHTGREY = (100, 100, 100)
 PURPLE = (128, 0, 128)
+VORTEX = (200, 0, 255)
+MINTWAVE = (0, 255, 100)
 
 # game options/settings
 TITLE = 'Simulation'
@@ -16,6 +18,7 @@ HEIGHT = 300  # 768
 FPS = 30  # 60  # How many times per second does the game loop repeat?
 BGCOLOR = DARKGREY
 GRIDCOLOR = LIGHTGREY
+DEVELOPMENT_MODE = True
 
 TILESIZE = 100  # 32
 GRIDWIDTH = WIDTH / TILESIZE
