@@ -92,8 +92,7 @@ class Creature(Entity):
             node = queue.pop()
             visited.add(node)
 
-            entity_on_the_node = self.map.entities.get(node, None)
-            if entity_on_the_node and isinstance(entity_on_the_node, self.prey):
+            if node in self.map.entities and isinstance(self.map.entities.get(node, None), self.prey):
                 print('The path has been found')
                 return list(reversed(self.recover_path_from_parents_dict(node, parents)))
 
