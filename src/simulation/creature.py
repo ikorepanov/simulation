@@ -66,7 +66,7 @@ class Creature(Entity):
         while node:
             path.append(node)
             node = parents[node]
-        return path
+        return path[-2:0:-1]
 
     def pick_up_the_scent(self) -> list[Coordinate] | None:
         # Запуск алгоритма поиска пути к ближайшей цели
@@ -94,7 +94,7 @@ class Creature(Entity):
 
             if node in self.map.entities and isinstance(self.map.entities.get(node, None), self.prey):
                 print('The path has been found')
-                return list(reversed(self.recover_path_from_parents_dict(node, parents)))
+                return self.recover_path_from_parents_dict(node, parents)
 
             adjacent_nodes = self.get_adjacents(node)
             for a_node in adjacent_nodes:
