@@ -32,6 +32,8 @@ class Creature(Entity):
         self.state = 'sniffing'
         self.wait_time = 0
         self.prey: type[Entity] = Entity
+        self.path: list[Coordinate] = []
+        self.next_node: Coordinate | None = None
 
     def is_on_map(self, coordinate: Coordinate) -> bool:
         if any(
@@ -67,8 +69,9 @@ class Creature(Entity):
             path.append(node)
             node = parents[node]
         return path[-2:0:-1]
+        # return path[1:-1]
 
-    def pick_up_the_scent(self) -> list[Coordinate] | None:
+    def pick_up_the_scent(self) -> None:
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -88,13 +91,14 @@ class Creature(Entity):
         queue.appendleft(current_postition)
         parents[current_postition] = None
 
-        while len(queue) > 0:
+        while queue:
             node = queue.pop()
             visited.add(node)
 
             if node in self.map.entities and isinstance(self.map.entities.get(node, None), self.prey):
                 print('The path has been found')
-                return self.recover_path_from_parents_dict(node, parents)
+                self.path = self.recover_path_from_parents_dict(node, parents)
+                break
 
             adjacent_nodes = self.get_adjacents(node)
             for a_node in adjacent_nodes:
@@ -103,8 +107,8 @@ class Creature(Entity):
                 queue.appendleft(a_node)
                 parents[a_node] = node
 
-        print('Target entities are missing from the map or the path cannot be found')
-        return None
+        else:
+            print('Target entities are missing from the map or the path cannot be found')
 
     def check_if_movement_is_possible(self) -> bool:
         # Проверить - возможно ли "шагнуть" на ту или иную клетку
@@ -126,18 +130,47 @@ class Creature(Entity):
 
     def update(self) -> None:
         if self.state == 'sniffing':
-            path = self.pick_up_the_scent()
-            if path:
-                print(f'Path to prey: {[(node.x, node.y) for node in path]}')
+            self.pick_up_the_scent()
+            if self.path:
+                print(f'Path to prey: {[(node.x, node.y) for node in self.path]}')
+                self.state = 'checking'  # 'waiting'
+
+        if self.state == 'checking':
+            if self.path:
+                self.next_node = self.path.pop(0)
+                self.state = 'moving'
+            else:
+                print('STOP')
+                self.state = 'stop'
 
         if self.state == 'moving':
-            self.rect.x += self.speed
-            if self.rect.right >= WIDTH:
-                self.rect.left = 0
-                self.state = 'waiting'
-                self.wait_time = pygame.time.get_ticks()
+            print(self.next_node.x, self.next_node.y)
+            print([(node.x, node.y) for node in self.path])
+            if self.next_node:
+                if self.rect.x != self.next_node.x * TILESIZE:
+                    self.rect.x += self.speed
+                    if self.rect.x >= self.next_node.x * TILESIZE:
+                        # self.state = 'stop'
+                        # self.state = 'waiting'
+                        self.state = 'checking'
+                        self.wait_time = pygame.time.get_ticks()
+                if self.rect.y != self.next_node.y * TILESIZE:
+                    self.rect.y += self.speed
+                    if self.rect.y >= self.next_node.y * TILESIZE:
+                        # self.state = 'stop'
+                        # self.state = 'waiting'
+                        self.state = 'checking'
+                        self.wait_time = pygame.time.get_ticks()
 
-        elif self.state == 'waiting':
+        if self.state == 'stop':
+            pass
+
+        if self.state == 'waiting':
             now = pygame.time.get_ticks()
             if now - self.wait_time >= 2000:
-                self.state = 'moving'
+                if self.path:
+                    self.next_node = self.path.pop(0)
+                    self.state = 'moving'
+                else:
+                    print('STOP')
+                    self.state = 'stop'
