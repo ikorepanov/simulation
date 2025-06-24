@@ -85,7 +85,7 @@ class Map:
             return True
         return False
 
-    def set_initial_entity_coordinate(self) -> Coordinate:
+    def set_initial_coordinate(self) -> Coordinate:
         attempts = 0
         while attempts < NUMBER_OF_ATTEMPTS:
             coordinate = self.form_coordinate()
