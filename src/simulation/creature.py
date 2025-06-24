@@ -17,23 +17,33 @@ from simulation.coordinate import Coordinate
 from simulation.settings import HEIGHT, TILESIZE, WIDTH
 
 
-class Creature(Entity):
+class Creature(Entity):  # Абстрактный класс
     def __init__(
         self,
         map: Map,
         color: tuple[int, int, int],
-        speed: int,
+        speed: int,  # сколько клеток может пройти за 1 ход
+        hp: int,  # Health Points ("здоровье")
         class_specific_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
-        sprite_groups = (map.game.creatures,) + (class_specific_groups or ())
-        super().__init__(map, color, sprite_groups)
+        if class_specific_groups is not None:
+            sprite_groups = (map.game.creatures,) + (class_specific_groups)
+        else:
+            sprite_groups = (map.game.creatures,)
+
+        super().__init__(map, color, class_specific_groups=sprite_groups)
 
         self.speed = speed
+        self.hp = hp
+
         self.state = 'sniffing'
         self.wait_time = 0
         self.prey: type[Entity] = Entity
         self.path: list[Coordinate] = []
         self.next_node: Coordinate | None = None
+
+    def make_move(self) -> None:  # сделать ход. Абстрактный метод
+        pass
 
     def is_on_map(self, coordinate: Coordinate) -> bool:
         if any(
@@ -114,10 +124,6 @@ class Creature(Entity):
         # Проверить - возможно ли "шагнуть" на ту или иную клетку
         is_possible: bool
         return is_possible
-
-    def make_move(self, target_coordinate: Coordinate) -> None:
-        # "Сделать шаг" по направлению к цели
-        pass
 
     def check_if_collide(self) -> bool:
         # Проверяем, приблизились ли вплотную к цели

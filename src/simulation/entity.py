@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 from simulation.settings import TILESIZE
 
 
-class Entity(Sprite):
+class Entity(Sprite):  # Абстрактный класс
     def __init__(
         self,
         map: Map,
