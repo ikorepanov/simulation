@@ -8,10 +8,12 @@ from pygame.sprite import AbstractGroup, Sprite
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from abc import ABC
+
 from simulation.settings import TILESIZE
 
 
-class Entity(Sprite):  # Абстрактный класс
+class Entity(Sprite, ABC):
     def __init__(
         self,
         map: Map,
@@ -34,3 +36,8 @@ class Entity(Sprite):  # Абстрактный класс
             self.initial_coordinate = self.map.set_initial_coordinate()
             self.rect.x = self.initial_coordinate.x * TILESIZE
             self.rect.y = self.initial_coordinate.y * TILESIZE
+
+    def __new__(cls, *args, **kwargs):  # type: ignore
+        if cls is Entity:
+            raise TypeError("Can't instantiate abstract class Entity (even without any abstract method)")
+        return super().__new__(cls)

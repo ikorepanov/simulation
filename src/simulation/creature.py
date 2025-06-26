@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import abstractmethod
 from typing import Any, TYPE_CHECKING
 
 from pygame.sprite import AbstractGroup
@@ -17,7 +18,7 @@ from simulation.coordinate import Coordinate
 from simulation.settings import HEIGHT, TILESIZE, WIDTH
 
 
-class Creature(Entity):  # Абстрактный класс
+class Creature(Entity):
     def __init__(
         self,
         map: Map,
@@ -42,8 +43,9 @@ class Creature(Entity):  # Абстрактный класс
         self.path: list[Coordinate] = []
         self.next_node: Coordinate | None = None
 
-    def make_move(self) -> None:  # сделать ход. Абстрактный метод
-        pass
+    @abstractmethod
+    def make_move(self) -> None:
+        raise NotImplementedError
 
     def is_on_map(self, coordinate: Coordinate) -> bool:
         if any(
