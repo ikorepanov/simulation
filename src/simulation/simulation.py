@@ -3,11 +3,11 @@ from typing import Any
 import pygame
 from pygame.sprite import AbstractGroup
 
-# from simulation.action import Action
+from simulation.action import Action
 from simulation.map import Map
 from simulation.settings import BGCOLOR, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
 
-# from simulation.action import MoveCreaturesAction, PlaceEntitiesAction
+from simulation.action import MoveCreaturesAction, PlaceEntitiesAction
 
 
 class Simulation:
@@ -22,16 +22,22 @@ class Simulation:
 
         self.map = map
 
-        # self.init_actions: list[Action] = [PlaceEntitiesAction()]
-        # self.turn_actions: list[Action] = [MoveCreaturesAction()]
+        self.init_actions: list[Action] = [PlaceEntitiesAction()]
+        self.turn_actions: list[Action] = [MoveCreaturesAction()]
 
-    # def next_turn(self) -> None:
-    #     for action in self.turn_actions:
-    #         action.execute(self.map)
+    def next_turn(self) -> None:
+        for action in self.turn_actions:
+            action.execute(self.map)
 
-    # def some(self) -> None:
-    #     while True:
-    #         self.next_turn()
+    def some(self) -> None:  # ?
+        while True:
+            self.next_turn()
+
+    def start_simulation(self) -> None:
+        pass
+
+    def pause_simulation(self) -> None:
+        pass
 
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
