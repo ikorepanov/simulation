@@ -1,13 +1,9 @@
-from __future__ import annotations
-
 import random
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from simulation.game import Game
 
 from simulation.coordinate import Coordinate
+from simulation.creature import Creature
 from simulation.entity import Entity
+from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.grass import Grass
 from simulation.herbivore import Herbivore
 from simulation.predator import Predator
@@ -25,74 +21,76 @@ from simulation.settings import (
 )
 from simulation.tree import Tree
 
-
-class NoUnoccupiedTilesError(Exception):
-    def __init__(self, message: str) -> None:
-        self.message = message
-        super().__init__(self.message)
+CLASSES_TO_CREATE: dict[type[Entity], int] = {
+    Predator: PREDATOR_NUMBER,
+    Herbivore: HERBIVORE_NUMBER,
+    Rock: ROCK_NUMBER,
+    Tree: TREE_NUMBER,
+    Grass: GRASS_NUMBER,
+}
 
 
 class Map:
-    def __init__(
-        self,
-        game: Game,
-    ) -> None:
-        self.game = game
+    def __init__(self) -> None:
         self.width = WIDTH
         self.height = HEIGHT
-
-        self.entity_set = {
-            Predator: PREDATOR_NUMBER,
-            Herbivore: HERBIVORE_NUMBER,
-            Rock: ROCK_NUMBER,
-            Tree: TREE_NUMBER,
-            Grass: GRASS_NUMBER,
-        }
-
         self.entities: dict[Coordinate, Entity] = {}
 
-        self.entities_lst = self.create_all_entities()
+    def add_entity(self, coordinate: Coordinate, entity: Entity) -> None:
+        # if isinstance(entity, Creature):
+        #     entity.coordinate = coordinate
+        self.entities[coordinate] = entity
 
-    def create_all_entities(self) -> list[Entity]:
-        entities_lst = []
-        for class_name, instance_number in self.entity_set.items():
-            for _ in range(instance_number):
-                try:
-                    entity = class_name(self)
-                except NoUnoccupiedTilesError as error:
-                    print(f'No Unoccupied Tiles Error: {error.message}')
-                    break  # Break the inner loop...
-                entities_lst.append(entity)
-                self.entities[entity.coordinate] = entity
-            else:  # "no_break" (continue if the inner loop wasn't broken)
-                continue
-            break  # Inner loop was broken, break the outer
-        return entities_lst
-
-    def select_random_point_on_asix(
+    def pick_random_asix_value(
         self,
         axis_length: int,  # pixels
     ) -> int:
         return random.randrange(int(axis_length / TILESIZE))  # relative units
 
-    def form_coordinate(self) -> Coordinate:
-        x = self.select_random_point_on_asix(self.width)
-        y = self.select_random_point_on_asix(self.height)
-        return Coordinate(x, y)
-
-    def is_occupied(self, coordinate: Coordinate) -> bool:
+    def is_tile_occupied(self, coordinate: Coordinate) -> bool:
         if coordinate in self.entities:
             return True
         return False
 
-    def set_initial_coordinate(self) -> Coordinate:
+    def generate_initial_coordinate(self) -> Coordinate:
         attempts = 0
         while attempts < NUMBER_OF_ATTEMPTS:
-            coordinate = self.form_coordinate()
-            if self.is_occupied(coordinate):
+            coordinate = Coordinate(
+                x=self.pick_random_asix_value(self.width),
+                y=self.pick_random_asix_value(self.height)
+            )
+            if self.is_tile_occupied(coordinate):
                 attempts += 1
                 continue
             return coordinate
         raise NoUnoccupiedTilesError(
-            'На карте отсутствуют не занятые клетки. Уменьшите число сущностей или увеличьте размер карты в настройках'
+            'There are no unoccupied tiles on the map. Reduce the number of entities or increase the map size '
+            'in settings.'
         )
+
+    def setup_initial_entities_positions(self) -> None:
+        for class_name, instance_number in CLASSES_TO_CREATE.items():
+            for _ in range(instance_number):
+                coordinate = self.generate_initial_coordinate()
+
+                if issubclass(class_name, Creature):
+                    self.add_entity(
+                        coordinate=coordinate,
+                        entity=class_name(coordinate),  # type: ignore
+                    )
+                else:
+                    entity = class_name()  # type: ignore
+                    self.add_entity(
+                        coordinate=coordinate,
+                        entity=entity,
+                    )
+                    entity.place_rect_on_corresponding_coordinate(coordinate.x, coordinate.y)
+
+    def get_entity(self, coordinate: Coordinate) -> Entity | None:
+        return self.entities.get(coordinate)
+
+    def get_list_of_entities(self) -> list[tuple[tuple[int, int], Entity]]:
+        return [((coordinate.x, coordinate.y), entity) for coordinate, entity in self.entities.items()]
+
+    def remove_entity(self) -> None:
+        pass

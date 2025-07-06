@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from simulation.coordinate import Coordinate
 from simulation.exceptions import NoUnoccupiedTilesError
-from simulation.map_new import Map
+from simulation.map import Map
 from simulation.settings import TILESIZE
 
 

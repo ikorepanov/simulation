@@ -1,17 +1,28 @@
-import pygame as pg
+import sys
 
-from simulation.game import Game
+import pygame
+
+from simulation.exceptions import NoUnoccupiedTilesError
+from simulation.map import Map
+from simulation.simulation import Simulation
 
 
 def main() -> None:
-    g = Game()
-    g.show_start_screen()
+    m = Map()
+    try:
+        m.setup_initial_entities_positions()
+    except NoUnoccupiedTilesError as error:
+        print(f'No Unoccupied Tiles Error: {error.message}')
+        sys.exit(1)
 
-    while g.running:
-        g.new()
-        g.show_go_screen()
+    s = Simulation(m)
+    s.show_start_screen()
 
-    pg.quit()
+    while s.running:
+        s.new()
+        s.show_go_screen()
+
+    pygame.quit()
 
 
 if __name__ == '__main__':
