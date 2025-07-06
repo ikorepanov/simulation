@@ -1,47 +1,35 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Any, TYPE_CHECKING
-
-from pygame.sprite import AbstractGroup
-
-from simulation.entity import Entity
-
-if TYPE_CHECKING:
-    from simulation.map import Map
-
 from collections import deque
 
-import pygame
-
 from simulation.coordinate import Coordinate
+from simulation.entity import Entity
 from simulation.settings import HEIGHT, TILESIZE, WIDTH
 
 
 class Creature(Entity):
     def __init__(
         self,
-        map: Map,
+        coordinate: Coordinate,
         color: tuple[int, int, int],
         speed: int,  # сколько клеток может пройти за 1 ход
         hp: int,  # Health Points ("здоровье")
-        class_specific_groups: tuple[AbstractGroup[Any], ...] | None = None,
     ):
-        if class_specific_groups is not None:
-            sprite_groups = (map.game.creatures,) + (class_specific_groups)
-        else:
-            sprite_groups = (map.game.creatures,)
+        super().__init__(color)
 
-        super().__init__(map, color, class_specific_groups=sprite_groups)
-
+        # "... координата нужна только тому существу, которое ходит. Поэтому entities должны хранить координату только начиная с уровня Creature."
+        self.coordinate = coordinate
+        self.rect.x = self.coordinate.x * TILESIZE
+        self.rect.y = self.coordinate.y * TILESIZE
         self.speed = speed
         self.hp = hp
 
-        self.state = 'sniffing'
-        self.wait_time = 0
-        self.prey: type[Entity] = Entity
-        self.path: list[Coordinate] = []
-        self.next_node: Coordinate | None = None
+        # self.state = 'sniffing'
+        # self.wait_time = 0
+        # self.prey: type[Entity] = Entity
+        # self.path: list[Coordinate] = []
+        # self.next_node: Coordinate | None = None
 
     @abstractmethod
     def make_move(self) -> None:
@@ -137,48 +125,49 @@ class Creature(Entity):
         pass
 
     def update(self) -> None:
-        if self.state == 'sniffing':
-            self.pick_up_the_scent()
-            if self.path:
-                print(f'Path to prey: {[(node.x, node.y) for node in self.path]}')
-                self.state = 'checking'  # 'waiting'
+        pass
+        # if self.state == 'sniffing':
+        #     self.pick_up_the_scent()
+        #     if self.path:
+        #         print(f'Path to prey: {[(node.x, node.y) for node in self.path]}')
+        #         self.state = 'checking'  # 'waiting'
 
-        if self.state == 'checking':
-            if self.path:
-                self.next_node = self.path.pop(0)
-                self.state = 'moving'
-            else:
-                print('STOP')
-                self.state = 'stop'
+        # if self.state == 'checking':
+        #     if self.path:
+        #         self.next_node = self.path.pop(0)
+        #         self.state = 'moving'
+        #     else:
+        #         print('STOP')
+        #         self.state = 'stop'
 
-        if self.state == 'moving':
-            print(self.next_node.x, self.next_node.y)
-            print([(node.x, node.y) for node in self.path])
-            if self.next_node:
-                if self.rect.x != self.next_node.x * TILESIZE:
-                    self.rect.x += self.speed
-                    if self.rect.x >= self.next_node.x * TILESIZE:
-                        # self.state = 'stop'
-                        # self.state = 'waiting'
-                        self.state = 'checking'
-                        self.wait_time = pygame.time.get_ticks()
-                if self.rect.y != self.next_node.y * TILESIZE:
-                    self.rect.y += self.speed
-                    if self.rect.y >= self.next_node.y * TILESIZE:
-                        # self.state = 'stop'
-                        # self.state = 'waiting'
-                        self.state = 'checking'
-                        self.wait_time = pygame.time.get_ticks()
+        # if self.state == 'moving':
+        #     print(self.next_node.x, self.next_node.y)
+        #     print([(node.x, node.y) for node in self.path])
+        #     if self.next_node:
+        #         if self.rect.x != self.next_node.x * TILESIZE:
+        #             self.rect.x += self.speed
+        #             if self.rect.x >= self.next_node.x * TILESIZE:
+        #                 # self.state = 'stop'
+        #                 # self.state = 'waiting'
+        #                 self.state = 'checking'
+        #                 self.wait_time = pygame.time.get_ticks()
+        #         if self.rect.y != self.next_node.y * TILESIZE:
+        #             self.rect.y += self.speed
+        #             if self.rect.y >= self.next_node.y * TILESIZE:
+        #                 # self.state = 'stop'
+        #                 # self.state = 'waiting'
+        #                 self.state = 'checking'
+        #                 self.wait_time = pygame.time.get_ticks()
 
-        if self.state == 'stop':
-            pass
+        # if self.state == 'stop':
+        #     pass
 
-        if self.state == 'waiting':
-            now = pygame.time.get_ticks()
-            if now - self.wait_time >= 2000:
-                if self.path:
-                    self.next_node = self.path.pop(0)
-                    self.state = 'moving'
-                else:
-                    print('STOP')
-                    self.state = 'stop'
+        # if self.state == 'waiting':
+        #     now = pygame.time.get_ticks()
+        #     if now - self.wait_time >= 2000:
+        #         if self.path:
+        #             self.next_node = self.path.pop(0)
+        #             self.state = 'moving'
+        #         else:
+        #             print('STOP')
+        #             self.state = 'stop'
