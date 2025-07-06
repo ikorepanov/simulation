@@ -1,9 +1,12 @@
+from typing import Any
+
 import pygame
+from pygame.sprite import AbstractGroup
+
 # from simulation.action import Action
 from simulation.map_new import Map
-from pygame.sprite import AbstractGroup
-from typing import Any
 from simulation.settings import BGCOLOR, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
+
 # from simulation.action import MoveCreaturesAction, PlaceEntitiesAction
 
 

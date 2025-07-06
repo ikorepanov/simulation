@@ -18,7 +18,8 @@ class Creature(Entity):
     ):
         super().__init__(color)
 
-        # "... координата нужна только тому существу, которое ходит. Поэтому entities должны хранить координату только начиная с уровня Creature."
+        # "... координата нужна только тому существу, которое ходит.
+        # Поэтому entities должны хранить координату только начиная с уровня Creature."
         self.coordinate = coordinate
         self.rect.x = self.coordinate.x * TILESIZE
         self.rect.y = self.coordinate.y * TILESIZE

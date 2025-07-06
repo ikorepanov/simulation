@@ -1,15 +1,9 @@
 from __future__ import annotations
 
-
-
-from simulation.creature import Creature
-from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
-
-
-
-
 from simulation.coordinate import Coordinate
+from simulation.creature import Creature
 from simulation.grass import Grass
+from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
 
 
 class Herbivore(Creature):

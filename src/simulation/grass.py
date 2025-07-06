@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from simulation.entity import Entity
-
 from simulation.settings import AMOUNT_OF_GRASS, MINTWAVE
 
 

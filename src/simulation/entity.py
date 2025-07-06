@@ -1,7 +1,7 @@
+from abc import ABC
+
 import pygame
 from pygame.sprite import Sprite
-
-from abc import ABC
 
 from simulation.settings import TILESIZE
 
@@ -17,12 +17,11 @@ class Entity(Sprite, ABC):
         self.image.fill(color)
         self.rect = self.image.get_rect()  # Every sprite has to have (2)
 
-
     def __new__(cls, *args, **kwargs):  # type: ignore
         if cls is Entity:
             raise TypeError("Can't instantiate abstract class Entity (even without any abstract method)")
         return super().__new__(cls)
 
-    def place_rect_on_coordinate(self, x: int, y: int) -> None:
+    def place_rect_on_corresponding_coordinate(self, x: int, y: int) -> None:
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE

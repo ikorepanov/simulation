@@ -1,15 +1,10 @@
-import pygame
-
-from simulation.map_new import Map
-from simulation.simulation import Simulation
-
 import sys
 
+import pygame
 
-class NoUnoccupiedTilesError(Exception):
-    def __init__(self, message: str) -> None:
-        self.message = message
-        super().__init__(self.message)
+from simulation.exceptions import NoUnoccupiedTilesError
+from simulation.map_new import Map
+from simulation.simulation import Simulation
 
 
 def main() -> None:
@@ -18,7 +13,6 @@ def main() -> None:
         m.setup_initial_entities_positions()
     except NoUnoccupiedTilesError as error:
         print(f'No Unoccupied Tiles Error: {error.message}')
-        pygame.quit()
         sys.exit(1)
 
     s = Simulation(m)

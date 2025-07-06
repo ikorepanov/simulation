@@ -1,14 +1,10 @@
-from abc import ABC, abstractmethod
-from simulation.map_new import Map
 import random
-from simulation.settings import TILESIZE, NUMBER_OF_ATTEMPTS
+from abc import ABC, abstractmethod
+
 from simulation.coordinate import Coordinate
-
-
-class NoUnoccupiedTilesError(Exception):
-    def __init__(self, message: str) -> None:
-        self.message = message
-        super().__init__(self.message)
+from simulation.exceptions import NoUnoccupiedTilesError
+from simulation.map_new import Map
+from simulation.settings import TILESIZE
 
 
 class Action(ABC):
@@ -29,20 +25,21 @@ class PlaceEntitiesAction(Action):
             return True
         return False
 
-    def generate_initial_coordinate(self, map: Map) -> Coordinate:
-        attempts = 0
-        while attempts < NUMBER_OF_ATTEMPTS:
-            coordinate = Coordinate(
-                x=self.pick_random_asix_value(map.width),
-                y=self.pick_random_asix_value(map.height)
-            )
-            if self.is_occupied(coordinate, map):
-                attempts += 1
-                continue
-            return coordinate
-        raise NoUnoccupiedTilesError(
-            'На карте отсутствуют не занятые клетки. Уменьшите число сущностей или увеличьте размер карты в настройках'
-        )
+    # def generate_initial_coordinate(self, map: Map) -> Coordinate:
+    #     attempts = 0
+    #     while attempts < NUMBER_OF_ATTEMPTS:
+    #         coordinate = Coordinate(
+    #             x=self.pick_random_asix_value(map.width),
+    #             y=self.pick_random_asix_value(map.height)
+    #         )
+    #         if self.is_occupied(coordinate, map):
+    #             attempts += 1
+    #             continue
+    #         return coordinate
+    #     raise NoUnoccupiedTilesError(
+    #         'There are no unoccupied tiles on the map. Reduce the number of entities or increase the map size '
+    #         'in settings.'
+    #     )
 
     def execute(self, map: Map) -> None:
         for entity in ...:
