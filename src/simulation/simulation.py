@@ -8,6 +8,8 @@ from simulation.map import Map
 from simulation.settings import BGCOLOR, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
 
 from simulation.action import MoveCreaturesAction, PlaceEntitiesAction
+from simulation.herbivore import Herbivore
+from simulation.grass import Grass
 
 
 class Simulation:
@@ -48,6 +50,23 @@ class Simulation:
 
         for entity in self.map.entities.values():
             self.all_sprites.add(entity)
+
+        ############
+        coordinates = []
+
+        for coordinate, obj in self.map.entities.items():
+            if isinstance(obj, Herbivore):
+                coordinates.append(coordinate)
+            else:
+                continue
+
+        from simulation.pathfinder import Pathfinder
+        Pathfinder(
+            self.map,
+            coordinates[0],
+            Grass,
+        ).find_path()
+        #############
 
         self.run()
 
