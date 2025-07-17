@@ -52,21 +52,27 @@ class Simulation:
             self.all_sprites.add(entity)
 
         ############
-        coordinates = []
+        # coordinates = []
 
-        for coordinate, obj in self.map.entities.items():
-            if isinstance(obj, Herbivore):
-                coordinates.append(coordinate)
-            else:
-                continue
+        # for coordinate, obj in self.map.entities.items():
+        #     if isinstance(obj, Herbivore):
+        #         coordinates.append(coordinate)
+        #     else:
+        #         continue
 
-        from simulation.pathfinder import Pathfinder
-        Pathfinder(
-            self.map,
-            coordinates[0],
-            Grass,
-        ).find_path()
+        # from simulation.pathfinder import Pathfinder
+        # Pathfinder(
+        #     self.map,
+        #     coordinates[0],
+        #     Grass,
+        # ).find_path()
         #############
+
+        # ***********
+        for key, val in self.map.entities.items():
+            if isinstance(val, Herbivore):
+                print(f'NB! Available Tiles: {[(coordinate.x, coordinate.y) for coordinate in val.get_available_move_tiles(self.map)]}')
+        # ***********
 
         self.run()
 

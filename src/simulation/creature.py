@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from abc import abstractmethod
 
 from simulation.coordinate import Coordinate
 from simulation.entity import Entity
 from simulation.settings import TILESIZE
+from simulation.coordinate_shift import CoordinateShift
+if TYPE_CHECKING:
+    from simulation.map import Map
 
 
 class Creature(Entity):
@@ -34,6 +39,32 @@ class Creature(Entity):
     @abstractmethod
     def make_move(self) -> None:
         raise NotImplementedError
+
+    # Метод, который возвращает все координаты - доступных для перемещения полей
+    def get_available_move_tiles(self, map: Map) -> set[Coordinate]:
+        result: set[Coordinate] = set()
+
+        for shift in self.get_creature_moves():
+            if self.coordinate.can_shift(shift):
+                new_coordinate = self.coordinate.shift(shift)
+                if self.is_tile_available_for_move(new_coordinate, map):
+                    result.add(new_coordinate)
+        return result
+
+    # Получить сдвиги для сущности
+    def get_creature_moves(self) -> set[CoordinateShift]:
+        result: set[CoordinateShift] = set()
+
+        # x = self.coordinate.x
+        # y = self.coordinate.y
+
+        # for pair in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+        for pair in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+            result.add(CoordinateShift(pair[0], pair[1]))
+        return result
+
+    def is_tile_available_for_move(self, coordinate: Coordinate, map: Map) -> bool:
+        return not map.is_tile_occupied(coordinate)
 
     def check_if_movement_is_possible(self) -> bool:
         # Проверить - возможно ли "шагнуть" на ту или иную клетку
