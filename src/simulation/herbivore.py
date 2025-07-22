@@ -29,7 +29,7 @@ class Herbivore(Creature):
         # if self.state == 'eating':
         #     self.eat_grass()
 
-        path = Pathfinder(map, self.coordinate, self.prey).find_path()
+        path = Pathfinder().find_path(map, self.coordinate, self.prey)
         print(f'NB! Путь найден: {[(node.x, node.y) for node in path]}')
 
     def move_towards(self) -> None:

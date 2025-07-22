@@ -6,10 +6,10 @@ from simulation.entity import Entity
 
 
 class Pathfinder:
-    def __init__(self, map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
-        self.map = map
-        self.init_position = init_posititon
-        self.target_class = target_class
+    # def __init__(self, map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
+    #     self.map = map
+    #     self.init_position = init_posititon
+    #     self.target_class = target_class
 
     def is_on_map(self, coordinate: Coordinate) -> bool:
         if any(
@@ -44,11 +44,11 @@ class Pathfinder:
         while node:
             path.append(node)
             node = parents[node]
-        print(f'NB! {[(node.x, node.y) for node in path[-2:0:-1]]}')
+        # print(f'NB! {[(node.x, node.y) for node in path[-2:0:-1]]}')
         return path[-2:0:-1]
         # return path[1:-1]
 
-    def find_path(self) -> list[Coordinate]:
+    def find_path(self, map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -65,15 +65,15 @@ class Pathfinder:
         parents: dict[Coordinate, Coordinate | None] = {}
 
         # current_postition = Coordinate(int(self.rect.x / TILESIZE), int(self.rect.y / TILESIZE))
-        queue.appendleft(self.init_position)
-        parents[self.init_position] = None
+        queue.appendleft(init_position)
+        parents[init_position] = None
 
         while queue:
             node = queue.pop()
             visited.add(node)
 
-            if node in self.map.entities and isinstance(self.map.get_entity(node), self.target_class):
-                print('The path has been found')
+            if node in map.entities and isinstance(map.get_entity(node), target_class):
+                # print('The path has been found')
                 self.path = self.recover_path_from_parents_dict(node, parents)
                 break
 
@@ -88,3 +88,9 @@ class Pathfinder:
             print('Target entities are missing from the map or the path cannot be found')
 
         return self.path
+
+
+# TODO
+# Настроить обработку ситуации, когда путь не может быть найден (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
+# Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
+# Исправить curcular import для Map (сейчас - Map везде убраны);
