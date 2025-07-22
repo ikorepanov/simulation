@@ -1,12 +1,12 @@
 from collections import deque
 from simulation.settings import HEIGHT, TILESIZE, WIDTH
 from simulation.coordinate import Coordinate
-from simulation.map import Map
+# from simulation.map import Map
 from simulation.entity import Entity
 
 
 class Pathfinder:
-    def __init__(self, map: Map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
+    def __init__(self, map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
         self.map = map
         self.init_position = init_posititon
         self.target_class = target_class
@@ -48,7 +48,7 @@ class Pathfinder:
         return path[-2:0:-1]
         # return path[1:-1]
 
-    def find_path(self) -> None:
+    def find_path(self) -> list[Coordinate]:
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -86,3 +86,5 @@ class Pathfinder:
 
         else:
             print('Target entities are missing from the map or the path cannot be found')
+
+        return self.path

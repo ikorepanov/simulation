@@ -30,14 +30,14 @@ class Creature(Entity):
         self.speed = speed
         self.hp = hp
 
-        # self.state = 'sniffing'
+        self.state = 'idle'
         # self.wait_time = 0
         # self.prey: type[Entity] = Entity
         # self.path: list[Coordinate] = []
         # self.next_node: Coordinate | None = None
 
     @abstractmethod
-    def make_move(self) -> None:
+    def make_move(self, map: Map) -> None:
         raise NotImplementedError
 
     # Метод, который возвращает все координаты - доступных для перемещения полей

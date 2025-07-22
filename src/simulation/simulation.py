@@ -24,32 +24,40 @@ class Simulation:
 
         self.map = map
 
-        self.init_actions: list[Action] = [PlaceEntitiesAction()]
-        self.turn_actions: list[Action] = [MoveCreaturesAction()]
+        self.init_actions: list[Action] = [PlaceEntitiesAction(self.map)]
+        self.turn_actions: list[Action] = [MoveCreaturesAction(self.map)]
 
     def next_turn(self) -> None:
+        """Просимулировать и отрендерить один ход."""
+
         for action in self.turn_actions:
-            action.execute(self.map)
+            action.execute()
 
     def some(self) -> None:  # ?
         while True:
             self.next_turn()
 
     def start_simulation(self) -> None:
+        """Запустить бесконечный цикл симуляции и рендеринга."""
+
         pass
 
     def pause_simulation(self) -> None:
+        """Приостановить бесконечный цикл симуляции и рендеринга."""
+
         pass
 
     def new(self) -> None:
         # Start a new game (reset the game, not the whole program)
         self.all_sprites: AbstractGroup[Any] = pygame.sprite.Group()  # collection of sprites
 
-        # for action in self.init_actions:
-        #     action.execute(self.map)
+        for action in self.init_actions:
+            action.execute()
 
         for entity in self.map.entities.values():
             self.all_sprites.add(entity)
+
+        self.next_turn()
 
         ############
         # coordinates = []
@@ -69,9 +77,9 @@ class Simulation:
         #############
 
         # ***********
-        for key, val in self.map.entities.items():
-            if isinstance(val, Herbivore):
-                print(f'NB! Available Tiles: {[(coordinate.x, coordinate.y) for coordinate in val.get_available_move_tiles(self.map)]}')
+        # for key, val in self.map.entities.items():
+        #     if isinstance(val, Herbivore):
+        #         print(f'NB! Available Tiles: {[(coordinate.x, coordinate.y) for coordinate in val.get_available_move_tiles(self.map)]}')
         # ***********
 
         self.run()

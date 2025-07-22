@@ -4,6 +4,8 @@ from simulation.coordinate import Coordinate
 from simulation.creature import Creature
 from simulation.grass import Grass
 from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
+# from simulation.map import Map
+from simulation.pathfinder import Pathfinder
 
 
 class Herbivore(Creature):
@@ -19,11 +21,16 @@ class Herbivore(Creature):
         self.prey = Grass
         self.state = 'waiting'
 
-    def make_move(self) -> None:
-        if self.state == 'moving':
-            self.move_towards()
-        if self.state == 'eating':
-            self.eat_grass()
+    def make_move(self, map) -> None:
+        # print('Herbivore has just made move!')
+
+        # if self.state == 'moving':
+        #     self.move_towards()
+        # if self.state == 'eating':
+        #     self.eat_grass()
+
+        path = Pathfinder(map, self.coordinate, self.prey).find_path()
+        print(f'NB! Путь найден: {[(node.x, node.y) for node in path]}')
 
     def move_towards(self) -> None:
         pass
