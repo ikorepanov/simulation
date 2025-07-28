@@ -5,6 +5,11 @@ from simulation.coordinate import Coordinate
 from simulation.entity import Entity
 
 
+class CantFindPathError(Exception):
+    def __init__(self, message: str = 'Target entities are missing from the map, or the path cannot be found.'):
+        super().__init__(message)
+
+
 class Pathfinder:
     # def __init__(self, map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
     #     self.map = map
@@ -74,8 +79,7 @@ class Pathfinder:
 
             if node in map.entities and isinstance(map.get_entity(node), target_class):
                 # print('The path has been found')
-                self.path = self.recover_path_from_parents_dict(node, parents)
-                break
+                return self.recover_path_from_parents_dict(node, parents)
 
             adjacent_nodes = self.get_adjacents(node)
             for a_node in adjacent_nodes:
@@ -85,12 +89,10 @@ class Pathfinder:
                 parents[a_node] = node
 
         else:
-            print('Target entities are missing from the map or the path cannot be found')
-
-        return self.path
+            raise CantFindPathError()
 
 
 # TODO
-# Настроить обработку ситуации, когда путь не может быть найден (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
+# Done. Настроить обработку ситуации, когда путь не может быть найден (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
 # Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
 # Исправить curcular import для Map (сейчас - Map везде убраны);

@@ -5,7 +5,8 @@ from simulation.creature import Creature
 from simulation.grass import Grass
 from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
 # from simulation.map import Map
-from simulation.pathfinder import Pathfinder
+from simulation.pathfinder import Pathfinder, CantFindPathError
+import sys
 
 
 class Herbivore(Creature):
@@ -28,8 +29,11 @@ class Herbivore(Creature):
         #     self.move_towards()
         # if self.state == 'eating':
         #     self.eat_grass()
-
-        path = Pathfinder().find_path(map, self.coordinate, self.prey)
+        try:
+            path = Pathfinder().find_path(map, self.coordinate, self.prey)
+        except CantFindPathError as error:
+            print(f"Can't Find Path Error: {error}")
+            sys.exit(1)
         print(f'NB! Путь найден: {[(node.x, node.y) for node in path]}')
 
     def move_towards(self) -> None:
