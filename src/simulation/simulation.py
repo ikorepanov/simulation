@@ -11,6 +11,9 @@ from simulation.action import MoveCreaturesAction, PlaceEntitiesAction
 from simulation.herbivore import Herbivore
 from simulation.grass import Grass
 
+import sys
+from simulation.exceptions import NoUnoccupiedTilesError
+
 
 class Simulation:
     def __init__(self, map: Map) -> None:
@@ -52,7 +55,12 @@ class Simulation:
         self.all_sprites: AbstractGroup[Any] = pygame.sprite.Group()  # collection of sprites
 
         for action in self.init_actions:
-            action.execute()
+            try:
+                action.execute()
+            except NoUnoccupiedTilesError as error:
+                print(f'No Unoccupied Tiles Error: {error.message}')
+                sys.exit(1)
+
 
         for entity in self.map.entities.values():
             self.all_sprites.add(entity)

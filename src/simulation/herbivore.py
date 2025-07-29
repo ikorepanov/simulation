@@ -5,7 +5,8 @@ from simulation.creature import Creature
 from simulation.grass import Grass
 from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
 # from simulation.map import Map
-from simulation.pathfinder import Pathfinder, CantFindPathError
+from simulation.pathfinder import Pathfinder
+from simulation.exceptions import CantFindPathError
 import sys
 
 

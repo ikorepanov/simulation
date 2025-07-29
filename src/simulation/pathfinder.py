@@ -4,10 +4,7 @@ from simulation.coordinate import Coordinate
 # from simulation.map import Map
 from simulation.entity import Entity
 
-
-class CantFindPathError(Exception):
-    def __init__(self, message: str = 'Target entities are missing from the map, or the path cannot be found.'):
-        super().__init__(message)
+from simulation.exceptions import CantFindPathError
 
 
 class Pathfinder:
@@ -94,5 +91,5 @@ class Pathfinder:
 
 # TODO
 # Done. Настроить обработку ситуации, когда путь не может быть найден (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
-# Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
+# Done. Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
 # Исправить curcular import для Map (сейчас - Map везде убраны);

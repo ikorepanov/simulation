@@ -63,10 +63,7 @@ class Map:
                 attempts += 1
                 continue
             return coordinate
-        raise NoUnoccupiedTilesError(
-            'There are no unoccupied tiles on the map. Reduce the number of entities or increase the map size '
-            'in settings.'
-        )
+        raise NoUnoccupiedTilesError()
 
     def setup_initial_entities_positions(self) -> None:
         for class_name, instance_number in CLASSES_TO_CREATE.items():
