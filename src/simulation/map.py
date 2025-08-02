@@ -65,6 +65,27 @@ class Map:
             return coordinate
         raise NoUnoccupiedTilesError()
 
+    def setup_fixed_entities_positions(self) -> None:
+        """Поместить сущности на фиксированные начальные позиции: для отладки движения."""
+
+        for class_name, instance_number in CLASSES_TO_CREATE.items():
+            if issubclass(class_name, Creature):
+                coordinate = Coordinate(0, 0)
+
+                self.add_entity(
+                    coordinate=coordinate,
+                    entity=class_name(coordinate),  # type: ignore
+                )
+            else:
+                coordinate = Coordinate(3, 2)
+
+                entity = class_name()  # type: ignore
+                self.add_entity(
+                    coordinate=coordinate,
+                    entity=entity,
+                )
+                entity.place_rect_on_corresponding_coordinate(Coordinate(3, 2).x, Coordinate(3, 2).y)
+
     def setup_initial_entities_positions(self) -> None:
         for class_name, instance_number in CLASSES_TO_CREATE.items():
             for _ in range(instance_number):

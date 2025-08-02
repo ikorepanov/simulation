@@ -23,7 +23,10 @@ class PlaceEntitiesAction(Action):
         super().__init__(map)
 
     def execute(self) -> None:
-        self.map.setup_initial_entities_positions()
+        # self.map.setup_initial_entities_positions()
+
+        # Отладка движения
+        self.map.setup_fixed_entities_positions()
 
 
 class MoveCreaturesAction(Action):
