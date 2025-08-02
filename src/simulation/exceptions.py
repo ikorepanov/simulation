@@ -1,5 +1,11 @@
 class NoUnoccupiedTilesError(Exception):
-    def __init__(self, message: str = 'There are no unoccupied tiles on the map. Reduce the number of entities or increase the map size in settings.'):
+    def __init__(
+        self,
+        message: str = (
+            'There are no unoccupied tiles on the map. '
+            'Reduce the number of entities or increase the map size in settings.'
+        ),
+    ):
         self.message = message
         super().__init__(message)
 

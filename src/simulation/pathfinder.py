@@ -1,9 +1,15 @@
-from collections import deque
-from simulation.settings import HEIGHT, TILESIZE, WIDTH
-from simulation.coordinate import Coordinate
-# from simulation.map import Map
-from simulation.entity import Entity
+from __future__ import annotations
 
+from collections import deque
+from typing import TYPE_CHECKING
+
+from simulation.coordinate import Coordinate
+from simulation.settings import HEIGHT, TILESIZE, WIDTH
+
+if TYPE_CHECKING:
+    from simulation.map import Map
+
+from simulation.entity import Entity
 from simulation.exceptions import CantFindPathError
 
 
@@ -50,7 +56,7 @@ class Pathfinder:
         return path[-2:0:-1]
         # return path[1:-1]
 
-    def find_path(self, map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
+    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -90,6 +96,8 @@ class Pathfinder:
 
 
 # TODO
-# Done. Настроить обработку ситуации, когда путь не может быть найден (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
+# Done. Настроить обработку ситуации, когда путь не может быть найден
+# (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
+
 # Done. Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
-# Исправить curcular import для Map (сейчас - Map везде убраны);
+# Done. Исправить curcular import для Map (сейчас - Map везде убраны);

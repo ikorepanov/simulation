@@ -1,13 +1,13 @@
 from __future__ import annotations
 
+from abc import abstractmethod
 from typing import TYPE_CHECKING
 
-from abc import abstractmethod
-
 from simulation.coordinate import Coordinate
+from simulation.coordinate_shift import CoordinateShift
 from simulation.entity import Entity
 from simulation.settings import TILESIZE
-from simulation.coordinate_shift import CoordinateShift
+
 if TYPE_CHECKING:
     from simulation.map import Map
 

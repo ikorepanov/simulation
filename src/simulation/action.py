@@ -1,11 +1,12 @@
 # import random
 from abc import ABC, abstractmethod
 
+# from simulation.settings import TILESIZE
+from simulation.creature import Creature
+
 # from simulation.coordinate import Coordinate
 # from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
-# from simulation.settings import TILESIZE
-from simulation.creature import Creature
 
 
 class Action(ABC):

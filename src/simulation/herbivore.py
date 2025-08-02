@@ -1,13 +1,18 @@
 from __future__ import annotations
 
+import sys
+from typing import TYPE_CHECKING
+
 from simulation.coordinate import Coordinate
 from simulation.creature import Creature
-from simulation.grass import Grass
-from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
-# from simulation.map import Map
-from simulation.pathfinder import Pathfinder
 from simulation.exceptions import CantFindPathError
-import sys
+from simulation.grass import Grass
+
+if TYPE_CHECKING:
+    from simulation.map import Map
+
+from simulation.pathfinder import Pathfinder
+from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
 
 
 class Herbivore(Creature):
@@ -23,7 +28,7 @@ class Herbivore(Creature):
         self.prey = Grass
         self.state = 'waiting'
 
-    def make_move(self, map) -> None:
+    def make_move(self, map: Map) -> None:
         # print('Herbivore has just made move!')
 
         # if self.state == 'moving':

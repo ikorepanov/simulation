@@ -1,7 +1,8 @@
 
 from __future__ import annotations
+
 from simulation.coordinate_shift import CoordinateShift
-from simulation.settings import HEIGHT, WIDTH, TILESIZE
+from simulation.settings import HEIGHT, TILESIZE, WIDTH
 
 
 class Coordinate:

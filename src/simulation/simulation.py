@@ -1,18 +1,16 @@
+import sys
 from typing import Any
 
 import pygame
 from pygame.sprite import AbstractGroup
 
-from simulation.action import Action
+from simulation.action import Action, MoveCreaturesAction, PlaceEntitiesAction
+from simulation.exceptions import NoUnoccupiedTilesError
+
+# from simulation.grass import Grass
+# from simulation.herbivore import Herbivore
 from simulation.map import Map
 from simulation.settings import BGCOLOR, FPS, GRIDCOLOR, HEIGHT, TILESIZE, TITLE, WIDTH
-
-from simulation.action import MoveCreaturesAction, PlaceEntitiesAction
-from simulation.herbivore import Herbivore
-from simulation.grass import Grass
-
-import sys
-from simulation.exceptions import NoUnoccupiedTilesError
 
 
 class Simulation:
@@ -61,7 +59,6 @@ class Simulation:
                 print(f'No Unoccupied Tiles Error: {error.message}')
                 sys.exit(1)
 
-
         for entity in self.map.entities.values():
             self.all_sprites.add(entity)
 
@@ -87,7 +84,10 @@ class Simulation:
         # ***********
         # for key, val in self.map.entities.items():
         #     if isinstance(val, Herbivore):
-        #         print(f'NB! Available Tiles: {[(coordinate.x, coordinate.y) for coordinate in val.get_available_move_tiles(self.map)]}')
+        #         available_tiles = [
+        #             (coordinate.x, coordinate.y) for coordinate in val.get_available_move_tiles(self.map)
+        #         ]
+        #         print(f'NB! Available Tiles: {available_tiles}')
         # ***********
 
         self.run()
