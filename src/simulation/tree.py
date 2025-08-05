@@ -1,11 +1,7 @@
 from simulation.entity import Entity
-from simulation.settings import PURPLE
+from simulation.settings import TREE
 
 
 class Tree(Entity):
-    def __init__(
-        self,
-        color: tuple[int, int, int] = PURPLE,
-    ):
-
-        super().__init__(color)
+    def get_sprite(self) -> str:
+        return TREE

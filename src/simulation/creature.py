@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 from simulation.coordinate import Coordinate
 from simulation.coordinate_shift import CoordinateShift
 from simulation.entity import Entity
-from simulation.settings import TILESIZE
 
 if TYPE_CHECKING:
     from simulation.map import Map
@@ -16,21 +15,16 @@ class Creature(Entity):
     def __init__(
         self,
         coordinate: Coordinate,
-        color: tuple[int, int, int],
         speed: int,  # сколько клеток может пройти за 1 ход
         hp: int,  # Health Points ("здоровье")
     ):
-        super().__init__(color)
-
         # "... координата нужна только тому существу, которое ходит.
         # Поэтому entities должны хранить координату только начиная с уровня Creature."
         self.coordinate = coordinate
-        self.rect.x = self.coordinate.x * TILESIZE
-        self.rect.y = self.coordinate.y * TILESIZE
         self.speed = speed
         self.hp = hp
 
-        self.state = 'idle'
+        # self.state = 'idle'
         # self.wait_time = 0
         # self.prey: type[Entity] = Entity
         # self.path: list[Coordinate] = []

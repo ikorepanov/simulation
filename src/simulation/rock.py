@@ -1,10 +1,7 @@
 from simulation.entity import Entity
-from simulation.settings import LIGHTGREY
+from simulation.settings import ROCK
 
 
 class Rock(Entity):
-    def __init__(
-        self,
-        color: tuple[int, int, int] = LIGHTGREY,
-    ):
-        super().__init__(color)
+    def get_sprite(self) -> str:
+        return ROCK

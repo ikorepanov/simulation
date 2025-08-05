@@ -12,21 +12,23 @@ if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.pathfinder import Pathfinder
-from simulation.settings import HERBIVORE_HP, HERBIVORE_SPEED, VORTEX
+from simulation.settings import HERBIVORE, HERBIVORE_HP, HERBIVORE_SPEED
 
 
 class Herbivore(Creature):
     def __init__(
         self,
         coordinate: Coordinate,
-        color: tuple[int, int, int] = VORTEX,
         speed: int = HERBIVORE_SPEED,
         hp: int = HERBIVORE_HP,
     ):
-        super().__init__(coordinate, color, speed, hp)
+        super().__init__(coordinate, speed, hp)
 
         self.prey = Grass
         self.state = 'waiting'
+
+    def get_sprite(self) -> str:
+        return HERBIVORE
 
     def make_move(self, map: Map) -> None:
         # print('Herbivore has just made move!')

@@ -36,9 +36,13 @@ class Map:
         self.height = HEIGHT
         self.entities: dict[Coordinate, Entity] = {}
 
+    def is_tile_dark(self, coordinate: Coordinate) -> bool:
+        return (coordinate.x + coordinate.y) % 2 != 0
+
     def add_entity(self, coordinate: Coordinate, entity: Entity) -> None:
-        # if isinstance(entity, Creature):
-        #     entity.coordinate = coordinate
+        # Только Creature могут двигать => могут знать свою координату
+        if isinstance(entity, Creature):
+            entity.coordinate = coordinate
         self.entities[coordinate] = entity
 
     def pick_random_asix_value(
@@ -51,6 +55,9 @@ class Map:
         if coordinate in self.entities:
             return True
         return False
+
+    def is_tile_empty(self, coordinate: Coordinate) -> bool:
+        return coordinate not in self.entities
 
     def generate_initial_coordinate(self) -> Coordinate:
         attempts = 0
@@ -79,12 +86,11 @@ class Map:
             else:
                 coordinate = Coordinate(3, 2)
 
-                entity = class_name()  # type: ignore
+                entity = class_name()
                 self.add_entity(
                     coordinate=coordinate,
                     entity=entity,
                 )
-                entity.place_rect_on_corresponding_coordinate(Coordinate(3, 2).x, Coordinate(3, 2).y)
 
     def setup_initial_entities_positions(self) -> None:
         for class_name, instance_number in CLASSES_TO_CREATE.items():
@@ -97,12 +103,11 @@ class Map:
                         entity=class_name(coordinate),  # type: ignore
                     )
                 else:
-                    entity = class_name()  # type: ignore
+                    entity = class_name()
                     self.add_entity(
                         coordinate=coordinate,
                         entity=entity,
                     )
-                    entity.place_rect_on_corresponding_coordinate(coordinate.x, coordinate.y)
 
     def get_entity(self, coordinate: Coordinate) -> Entity | None:
         return self.entities.get(coordinate)

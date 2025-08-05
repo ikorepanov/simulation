@@ -1,9 +1,13 @@
 # import sys
 
-import pygame
+# import pygame
+
+from simulation.color_schemes import color_scheme
 
 # from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
+from simulation.consolerenderer import ConsoleRenderer
+from simulation.settings import COLOR_SCHEME
 from simulation.simulation import Simulation
 
 
@@ -18,11 +22,13 @@ def main() -> None:
     s = Simulation(m)
     s.show_start_screen()
 
-    while s.running:
-        s.new()
-        s.show_go_screen()
+    # while s.running:
+    #     s.new()
+    #     s.show_go_screen()
+    s.new()
 
-    pygame.quit()
+    renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
+    renderer.render(m)
 
 
 if __name__ == '__main__':
