@@ -1,13 +1,13 @@
 import random
 
 from simulation.coordinate import Coordinate
-from simulation.creature import Creature
-from simulation.entity import Entity
+from simulation.entity.creature import Creature
+from simulation.entity.entity import Entity
 from simulation.exceptions import NoUnoccupiedTilesError
-from simulation.grass import Grass
-from simulation.herbivore import Herbivore
-from simulation.predator import Predator
-from simulation.rock import Rock
+from simulation.entity.grass import Grass
+from simulation.entity.herbivore import Herbivore
+from simulation.entity.predator import Predator
+from simulation.entity.rock import Rock
 from simulation.settings import (
     GRASS_NUMBER,
     HEIGHT,
@@ -19,7 +19,7 @@ from simulation.settings import (
     TREE_NUMBER,
     WIDTH,
 )
-from simulation.tree import Tree
+from simulation.entity.tree import Tree
 
 CLASSES_TO_CREATE: dict[type[Entity], int] = {
     Predator: PREDATOR_NUMBER,

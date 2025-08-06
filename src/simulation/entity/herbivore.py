@@ -4,9 +4,9 @@ import sys
 from typing import TYPE_CHECKING
 
 from simulation.coordinate import Coordinate
-from simulation.creature import Creature
+from simulation.entity.creature import Creature
 from simulation.exceptions import CantFindPathError
-from simulation.grass import Grass
+from simulation.entity.grass import Grass
 
 if TYPE_CHECKING:
     from simulation.map import Map

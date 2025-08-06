@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 
 # from simulation.settings import TILESIZE
-from simulation.creature import Creature
+from simulation.entity.creature import Creature
 
 # from simulation.coordinate import Coordinate
 # from simulation.exceptions import NoUnoccupiedTilesError

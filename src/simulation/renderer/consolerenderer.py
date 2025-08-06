@@ -1,6 +1,6 @@
 """Этот модуль содержит класс рендерера и методы для отрисовки карты."""
 
-from simulation.color_schemes import ColorScheme
+from simulation.renderer.color_schemes import ColorScheme
 from simulation.coordinate import Coordinate
 from simulation.map import Map
 from simulation.settings import ANSI_RESET, ANSI_STYLE_END, BACKGROUND_256, EMPTY_TILE, ESC

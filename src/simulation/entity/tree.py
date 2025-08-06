@@ -1,4 +1,4 @@
-from simulation.entity import Entity
+from simulation.entity.entity import Entity
 from simulation.settings import TREE
 
 

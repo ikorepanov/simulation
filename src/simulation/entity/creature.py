@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from simulation.coordinate import Coordinate
 from simulation.coordinate_shift import CoordinateShift
-from simulation.entity import Entity
+from simulation.entity.entity import Entity
 
 if TYPE_CHECKING:
     from simulation.map import Map

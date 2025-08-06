@@ -9,7 +9,7 @@ from simulation.settings import HEIGHT, TILESIZE, WIDTH
 if TYPE_CHECKING:
     from simulation.map import Map
 
-from simulation.entity import Entity
+from simulation.entity.entity import Entity
 from simulation.exceptions import CantFindPathError
 
 
