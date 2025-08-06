@@ -45,8 +45,8 @@ class Map:
             entity.coordinate = coordinate
         self.entities[coordinate] = entity
 
+    @staticmethod
     def pick_random_asix_value(
-        self,
         axis_length: int,  # pixels
     ) -> int:
         return random.randrange(int(axis_length / TILESIZE))  # relative units

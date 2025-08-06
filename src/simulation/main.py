@@ -1,7 +1,5 @@
 # import sys
 
-# import pygame
-
 from simulation.color_schemes import color_scheme
 
 # from simulation.exceptions import NoUnoccupiedTilesError
@@ -20,7 +18,7 @@ def main() -> None:
     #     sys.exit(1)
 
     s = Simulation(m)
-    s.show_start_screen()
+    # s.show_start_screen()
 
     # while s.running:
     #     s.new()
