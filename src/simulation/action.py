@@ -1,3 +1,4 @@
+import random
 from abc import ABC, abstractmethod
 
 from simulation.coordinate import Coordinate
@@ -8,8 +9,16 @@ from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
 from simulation.entity.rock import Rock
 from simulation.entity.tree import Tree
+from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
-from simulation.settings import GRASS_NUMBER, HERBIVORE_NUMBER, PREDATOR_NUMBER, ROCK_NUMBER, TREE_NUMBER
+from simulation.settings import (
+    GRASS_NUMBER,
+    HERBIVORE_NUMBER,
+    NUMBER_OF_ATTEMPTS,
+    PREDATOR_NUMBER,
+    ROCK_NUMBER,
+    TREE_NUMBER,
+)
 
 
 class Action(ABC):
@@ -28,19 +37,38 @@ class PlaceEntitiesAction(Action):
             Grass: GRASS_NUMBER,
         }
 
-    def get_creator(self, entity_class: type[Entity], coord: Coordinate) -> Entity:
-        if entity_class is Herbivore:
+    def generate_initial_coordinate(self, map: Map) -> Coordinate:
+        attempts = 0
+        while attempts < NUMBER_OF_ATTEMPTS:
+            coordinate = Coordinate(
+                x=random.randrange(map.width),
+                y=random.randrange(map.height)
+            )
+            if not map.is_tile_empty(coordinate):
+                attempts += 1
+                continue
+            return coordinate
+        raise NoUnoccupiedTilesError()
+
+    def create_entity(self, entity_class: type[Entity], coord: Coordinate) -> Entity:
+        if entity_class is Predator:
+            return Predator(coord)
+        elif entity_class is Herbivore:
             return Herbivore(coord)
+        elif entity_class is Rock:
+            return Rock()
+        elif entity_class is Tree:
+            return Tree()
         elif entity_class is Grass:
             return Grass()
         else:
             raise ValueError(entity_class)
 
     def execute(self, map: Map) -> None:
-        for key, value in self.entities_to_create.items():
-            for _ in range(value):
-                coord = map.generate_initial_coordinate()
-                entity = self.get_creator(key, coord)
+        for class_name, number_of_instances in self.entities_to_create.items():
+            for _ in range(number_of_instances):
+                coord = self.generate_initial_coordinate(map)
+                entity = self.create_entity(class_name, coord)
                 map.add_entity(coord, entity)
 
 
