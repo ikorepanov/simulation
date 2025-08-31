@@ -24,12 +24,6 @@ class Creature(Entity):
         self.speed = speed
         self.hp = hp
 
-        # self.state = 'idle'
-        # self.wait_time = 0
-        # self.prey: type[Entity] = Entity
-        # self.path: list[Coordinate] = []
-        # self.next_node: Coordinate | None = None
-
     @abstractmethod
     def make_move(self, map: Map) -> None:
         raise NotImplementedError
@@ -73,51 +67,3 @@ class Creature(Entity):
     def act_as_intendent(self) -> None:
         # Атаковать - для хищников, есть (траву) - для травоядных
         pass
-
-    def update(self) -> None:
-        pass
-        # if self.state == 'sniffing':
-        #     self.pick_up_the_scent()
-        #     if self.path:
-        #         print(f'Path to prey: {[(node.x, node.y) for node in self.path]}')
-        #         self.state = 'checking'  # 'waiting'
-
-        # if self.state == 'checking':
-        #     if self.path:
-        #         self.next_node = self.path.pop(0)
-        #         self.state = 'moving'
-        #     else:
-        #         print('STOP')
-        #         self.state = 'stop'
-
-        # if self.state == 'moving':
-        #     print(self.next_node.x, self.next_node.y)
-        #     print([(node.x, node.y) for node in self.path])
-        #     if self.next_node:
-        #         if self.rect.x != self.next_node.x * TILESIZE:
-        #             self.rect.x += self.speed
-        #             if self.rect.x >= self.next_node.x * TILESIZE:
-        #                 # self.state = 'stop'
-        #                 # self.state = 'waiting'
-        #                 self.state = 'checking'
-        #                 self.wait_time = pygame.time.get_ticks()
-        #         if self.rect.y != self.next_node.y * TILESIZE:
-        #             self.rect.y += self.speed
-        #             if self.rect.y >= self.next_node.y * TILESIZE:
-        #                 # self.state = 'stop'
-        #                 # self.state = 'waiting'
-        #                 self.state = 'checking'
-        #                 self.wait_time = pygame.time.get_ticks()
-
-        # if self.state == 'stop':
-        #     pass
-
-        # if self.state == 'waiting':
-        #     now = pygame.time.get_ticks()
-        #     if now - self.wait_time >= 2000:
-        #         if self.path:
-        #             self.next_node = self.path.pop(0)
-        #             self.state = 'moving'
-        #         else:
-        #             print('STOP')
-        #             self.state = 'stop'

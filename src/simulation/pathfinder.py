@@ -47,9 +47,7 @@ class Pathfinder:
         while node:
             path.append(node)
             node = parents[node]
-        # print(f'NB! {[(node.x, node.y) for node in path[-2:0:-1]]}')
-        return path[-2:0:-1]
-        # return path[1:-1]
+        return path[-2::-1]
 
     def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
         # Запуск алгоритма поиска пути к ближайшей цели
