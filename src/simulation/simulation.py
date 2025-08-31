@@ -8,7 +8,6 @@ from simulation.renderer.consolerenderer import ConsoleRenderer
 
 class Simulation:
     def __init__(self, map: Map, renderer: ConsoleRenderer) -> None:
-        self.running = True
 
         self.map = map
         self.renderer = renderer
@@ -25,8 +24,9 @@ class Simulation:
     def start_simulation(self) -> None:
         """Запустить бесконечный цикл симуляции и рендеринга."""
 
-        while True:
-            self.next_turn()
+        # while True:
+        #     self.next_turn()
+        self.next_turn()
 
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
@@ -43,46 +43,4 @@ class Simulation:
                 sys.exit(1)
 
         self.renderer.render(self.map)
-
-        # self.next_turn()
-
-        ############
-        # coordinates = []
-
-        # for coordinate, obj in self.map.entities.items():
-        #     if isinstance(obj, Herbivore):
-        #         coordinates.append(coordinate)
-        #     else:
-        #         continue
-
-        # from simulation.pathfinder import Pathfinder
-        # Pathfinder(
-        #     self.map,
-        #     coordinates[0],
-        #     Grass,
-        # ).find_path()
-        #############
-
-        # ***********
-        # for key, val in self.map.entities.items():
-        #     if isinstance(val, Herbivore):
-        #         available_tiles = [
-        #             (coordinate.x, coordinate.y) for coordinate in val.get_available_move_tiles(self.map)
-        #         ]
-        #         print(f'NB! Available Tiles: {available_tiles}')
-        # ***********
-
-        self.run()
-
-    def run(self) -> None:
-        self.playing = True
-        # while self.playing:
-            # бесконечный цикл симуляции?
-
-    def show_start_screen(self) -> None:
-        # Game splash/start screen
-        pass
-
-    def show_go_screen(self) -> None:
-        # Game over/continue
-        pass
+        self.start_simulation()

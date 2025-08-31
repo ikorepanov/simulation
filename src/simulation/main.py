@@ -1,6 +1,3 @@
-# import sys
-
-# from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
 from simulation.renderer.color_schemes import color_scheme
 from simulation.renderer.consolerenderer import ConsoleRenderer
@@ -11,18 +8,7 @@ from simulation.simulation import Simulation
 def main() -> None:
     m = Map()
     r = ConsoleRenderer(color_scheme[COLOR_SCHEME])
-    # try:
-    #     m.setup_initial_entities_positions()
-    # except NoUnoccupiedTilesError as error:
-    #     print(f'No Unoccupied Tiles Error: {error.message}')
-    #     sys.exit(1)
-
     s = Simulation(m, r)
-    # s.show_start_screen()
-
-    # while s.running:
-    #     s.new()
-    #     s.show_go_screen()
     s.new()
 
 

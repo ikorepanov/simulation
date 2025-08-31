@@ -4,7 +4,7 @@ from collections import deque
 from typing import TYPE_CHECKING
 
 from simulation.coordinate import Coordinate
-from simulation.settings import HEIGHT, TILESIZE, WIDTH
+from simulation.settings import HEIGHT, WIDTH
 
 if TYPE_CHECKING:
     from simulation.map import Map
@@ -14,18 +14,13 @@ from simulation.exceptions import CantFindPathError
 
 
 class Pathfinder:
-    # def __init__(self, map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
-    #     self.map = map
-    #     self.init_position = init_posititon
-    #     self.target_class = target_class
-
     def is_on_map(self, coordinate: Coordinate) -> bool:
         if any(
             [
                 coordinate.x < 0,
-                coordinate.x >= WIDTH / TILESIZE,
+                coordinate.x >= WIDTH,
                 coordinate.y < 0,
-                coordinate.y >= HEIGHT / TILESIZE,
+                coordinate.y >= HEIGHT,
             ]
         ):
             return False
@@ -72,7 +67,6 @@ class Pathfinder:
         queue: deque[Coordinate] = deque()
         parents: dict[Coordinate, Coordinate | None] = {}
 
-        # current_postition = Coordinate(int(self.rect.x / TILESIZE), int(self.rect.y / TILESIZE))
         queue.appendleft(init_position)
         parents[init_position] = None
 
@@ -81,7 +75,6 @@ class Pathfinder:
             visited.add(node)
 
             if node in map.entities and isinstance(map.get_entity(node), target_class):
-                # print('The path has been found')
                 return self.recover_path_from_parents_dict(node, parents)
 
             adjacent_nodes = self.get_adjacents(node)
@@ -93,11 +86,3 @@ class Pathfinder:
 
         else:
             raise CantFindPathError()
-
-
-# TODO
-# Done. Настроить обработку ситуации, когда путь не может быть найден
-# (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
-
-# Done. Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
-# Done. Исправить curcular import для Map (сейчас - Map везде убраны);

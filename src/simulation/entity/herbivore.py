@@ -31,12 +31,6 @@ class Herbivore(Creature):
         return HERBIVORE
 
     def make_move(self, map: Map) -> None:
-        # print('Herbivore has just made move!')
-
-        # if self.state == 'moving':
-        #     self.move_towards()
-        # if self.state == 'eating':
-        #     self.eat_grass()
         try:
             path = Pathfinder().find_path(map, self.coordinate, self.prey)
         except CantFindPathError as error:

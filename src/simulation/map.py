@@ -19,7 +19,8 @@ class Map:
         self.entities[coordinate] = entity
 
     def get_entity(self, coordinate: Coordinate) -> Entity | None:
-        return self.entities.get(coordinate)
+        # return self.entities.get(coordinate)
+        return self.entities[coordinate]
 
     def remove_entity(self) -> None:
         pass
