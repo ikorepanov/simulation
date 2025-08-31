@@ -15,16 +15,15 @@ from simulation.settings import (
     NUMBER_OF_ATTEMPTS,
     PREDATOR_NUMBER,
     ROCK_NUMBER,
-    TILESIZE,
     TREE_NUMBER,
     WIDTH,
 )
 from simulation.entity.tree import Tree
 
-CLASSES_TO_CREATE: dict[type[Entity], int] = {
-    Predator: PREDATOR_NUMBER,
-    Herbivore: HERBIVORE_NUMBER,
-    Rock: ROCK_NUMBER,
+entites_to_create: dict[type[Entity], int] = {  # NB! Это надо перенести в - предположительно - action (которое init).
+    Predator: PREDATOR_NUMBER,  # Там же создавать сущности (а не в map, как сейчас). А затем вызывать методы map только
+    Herbivore: HERBIVORE_NUMBER,  # для генерации случайной координаты и добавленя сущности на карту
+    Rock: ROCK_NUMBER,  # (в словать entities)
     Tree: TREE_NUMBER,
     Grass: GRASS_NUMBER,
 }
@@ -41,20 +40,20 @@ class Map:
 
     def add_entity(self, coordinate: Coordinate, entity: Entity) -> None:
         # Только Creature могут двигать => могут знать свою координату
-        if isinstance(entity, Creature):
-            entity.coordinate = coordinate
+        # if isinstance(entity, Creature):
+        #     entity.coordinate = coordinate
         self.entities[coordinate] = entity
 
-    @staticmethod
-    def pick_random_asix_value(
-        axis_length: int,  # pixels
-    ) -> int:
-        return random.randrange(int(axis_length / TILESIZE))  # relative units
+    # @staticmethod
+    # def pick_random_asix_value(
+    #     axis_length: int,  # pixels
+    # ) -> int:
+    #     return random.randrange(int(axis_length / TILESIZE))  # relative units
 
-    def is_tile_occupied(self, coordinate: Coordinate) -> bool:
-        if coordinate in self.entities:
-            return True
-        return False
+    # def is_tile_occupied(self, coordinate: Coordinate) -> bool:
+    #     if coordinate in self.entities:
+    #         return True
+    #     return False
 
     def is_tile_empty(self, coordinate: Coordinate) -> bool:
         return coordinate not in self.entities
@@ -63,57 +62,60 @@ class Map:
         attempts = 0
         while attempts < NUMBER_OF_ATTEMPTS:
             coordinate = Coordinate(
-                x=self.pick_random_asix_value(self.width),
-                y=self.pick_random_asix_value(self.height)
+                x=random.randrange(self.width),
+                y=random.randrange(self.height)
             )
-            if self.is_tile_occupied(coordinate):
+            if not self.is_tile_empty(coordinate):
                 attempts += 1
                 continue
             return coordinate
         raise NoUnoccupiedTilesError()
 
-    def setup_fixed_entities_positions(self) -> None:
-        """Поместить сущности на фиксированные начальные позиции: для отладки движения."""
-
-        for class_name, instance_number in CLASSES_TO_CREATE.items():
-            if issubclass(class_name, Creature):
-                coordinate = Coordinate(0, 0)
-
-                self.add_entity(
-                    coordinate=coordinate,
-                    entity=class_name(coordinate),  # type: ignore
-                )
-            else:
-                coordinate = Coordinate(3, 2)
-
-                entity = class_name()
-                self.add_entity(
-                    coordinate=coordinate,
-                    entity=entity,
-                )
-
     def setup_initial_entities_positions(self) -> None:
-        for class_name, instance_number in CLASSES_TO_CREATE.items():
-            for _ in range(instance_number):
-                coordinate = self.generate_initial_coordinate()
+        # for class_name, instance_number in CLASSES_TO_CREATE.items():
+        #     for _ in range(instance_number):
+        #         coordinate = self.generate_initial_coordinate()
 
-                if issubclass(class_name, Creature):
-                    self.add_entity(
-                        coordinate=coordinate,
-                        entity=class_name(coordinate),  # type: ignore
-                    )
-                else:
-                    entity = class_name()
-                    self.add_entity(
-                        coordinate=coordinate,
-                        entity=entity,
-                    )
+        #         if issubclass(class_name, Creature):
+        #             self.add_entity(
+        #                 coordinate=coordinate,
+        #                 entity=class_name(coordinate),  # type: ignore
+        #             )
+        #         else:
+        #             entity = class_name()
+        #             self.add_entity(
+        #                 coordinate=coordinate,
+        #                 entity=entity,
+        #             )
+
+        # for _ in range(HERBIVORE_NUMBER):
+        #     coord = self.generate_initial_coordinate()
+        #     entity = Herbivore(coord)
+        #     self.add_entity(coord, entity)
+
+        # for _ in range(GRASS_NUMBER):
+        #     coord = self.generate_initial_coordinate()
+        #     entity = Grass()
+        #     self.add_entity(coord, entity)
+
+        for class_name, number_of_entities in entites_to_create.items():
+            for _ in range(number_of_entities):
+                coord = self.generate_initial_coordinate()
+                entity = class_name(coord) if issubclass(class_name, Creature) else class_name()  # type: ignore
+                self.add_entity(coord, entity)
 
     def get_entity(self, coordinate: Coordinate) -> Entity | None:
         return self.entities.get(coordinate)
 
-    def get_list_of_entities(self) -> list[tuple[tuple[int, int], Entity]]:
-        return [((coordinate.x, coordinate.y), entity) for coordinate, entity in self.entities.items()]
+    # def get_list_of_entities(self) -> list[tuple[tuple[int, int], Entity]]:
+    #     return [((coordinate.x, coordinate.y), entity) for coordinate, entity in self.entities.items()]
 
     def remove_entity(self) -> None:
         pass
+
+# if is_subclass(class_name, Creature):
+#     entity = class_name(coord)
+# else:
+#     entity = class_name()
+
+# entity = class_name(coord) if is_subclass(class_name, Creature) else class_name()

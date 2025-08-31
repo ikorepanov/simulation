@@ -7,33 +7,34 @@ from simulation.entity.creature import Creature
 # from simulation.coordinate import Coordinate
 # from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
+from simulation.entity_creator import EntityCreator
+from simulation.entity.grass import Grass
+from simulation.entity.herbivore import Herbivore
 
 
 class Action(ABC):
-    def __init__(self, map: Map) -> None:
-        self.map = map
-
     @abstractmethod
-    def execute(self) -> None:
+    def execute(self, map: Map) -> None:
         raise NotImplementedError
 
 
 class PlaceEntitiesAction(Action):
-    def __init__(self, map: Map) -> None:
-        super().__init__(map)
+    def execute(self, map: Map) -> None:
+        creator = EntityCreator()
 
-    def execute(self) -> None:
-        # self.map.setup_initial_entities_positions()
+        coord = map.generate_initial_coordinate()
+        entity = creator.create(coord, Grass)
+        map.add_entity(coord, entity)
 
-        # Отладка движения
-        self.map.setup_fixed_entities_positions()
+        coord = map.generate_initial_coordinate()
+        entity = creator.create(coord, Herbivore)
+        map.add_entity(coord, entity)
+
+        # map.setup_initial_entities_positions()
 
 
 class MoveCreaturesAction(Action):
-    def __init__(self, map: Map) -> None:
-        super().__init__(map)
-
-    def execute(self) -> None:
-        for coordinate, entitiy in self.map.entities.items():
+    def execute(self, map: Map) -> None:
+        for coordinate, entitiy in map.entities.items():
             if isinstance(entitiy, Creature):  # need to pass the instance's class, not instance itself
-                entitiy.make_move(self.map)
+                entitiy.make_move(map)

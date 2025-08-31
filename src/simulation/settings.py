@@ -1,23 +1,6 @@
-# define colors (R, G, B)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
-DARKGREY = (40, 40, 40)
-LIGHTGREY = (100, 100, 100)
-PURPLE = (128, 0, 128)
-VORTEX = (200, 0, 255)
-MINTWAVE = (0, 255, 100)
-
 # game options/settings
-TITLE = 'Simulation'
 WIDTH = 4
 HEIGHT = 3
-FPS = 30  # 60  # How many times per second does the game loop repeat?
-BGCOLOR = DARKGREY
-GRIDCOLOR = LIGHTGREY
 DEVELOPMENT_MODE = True
 
 TILESIZE = 100  # 32
@@ -52,9 +35,9 @@ ANSI_STYLE_END = 'm'  # Завершить escape-команду и примен
 HERBIVORE = '\U0001F411 '
 GRASS = '\U0001F33F '
 PREDATOR = '\U0001F43A '
-ROCK = '\U0001FAA8 '
+ROCK = '\U0001FAA8  '
 TREE = '\U0001F333 '
 EMPTY_TILE = '   '
 
-# current color scheme: industrial, midnight, ocean, forest, twilight, glacer, abyss
+# current color scheme: industrial, midnight, ocean, forest, twilight, glacier, abyss
 COLOR_SCHEME = 'abyss'
