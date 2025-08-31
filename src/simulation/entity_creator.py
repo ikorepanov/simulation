@@ -42,13 +42,3 @@ def _create_herbivore(coord: Coordinate) -> Herbivore:
 
 def _create_rock(_coord: Coordinate) -> Rock:
     return Rock()
-
-
-
-
-
-
-
-
-def _create_something(**kwargs) -> Entity:
-    pass    

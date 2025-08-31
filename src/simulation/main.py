@@ -1,9 +1,8 @@
 # import sys
 
-from simulation.renderer.color_schemes import color_scheme
-
 # from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
+from simulation.renderer.color_schemes import color_scheme
 from simulation.renderer.consolerenderer import ConsoleRenderer
 from simulation.settings import COLOR_SCHEME
 from simulation.simulation import Simulation

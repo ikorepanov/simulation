@@ -1,15 +1,15 @@
-# import random
 from abc import ABC, abstractmethod
 
-# from simulation.settings import TILESIZE
+from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
-
-# from simulation.coordinate import Coordinate
-# from simulation.exceptions import NoUnoccupiedTilesError
-from simulation.map import Map
-from simulation.entity_creator import EntityCreator
+from simulation.entity.entity import Entity
 from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
+from simulation.entity.predator import Predator
+from simulation.entity.rock import Rock
+from simulation.entity.tree import Tree
+from simulation.map import Map
+from simulation.settings import GRASS_NUMBER, HERBIVORE_NUMBER, PREDATOR_NUMBER, ROCK_NUMBER, TREE_NUMBER
 
 
 class Action(ABC):
@@ -19,22 +19,33 @@ class Action(ABC):
 
 
 class PlaceEntitiesAction(Action):
+    def __init__(self) -> None:
+        self.entities_to_create: dict[type[Entity], int] = {
+            Predator: PREDATOR_NUMBER,
+            Herbivore: HERBIVORE_NUMBER,
+            Rock: ROCK_NUMBER,
+            Tree: TREE_NUMBER,
+            Grass: GRASS_NUMBER,
+        }
+
+    def get_creator(self, entity_class: type[Entity], coord: Coordinate) -> Entity:
+        if entity_class is Herbivore:
+            return Herbivore(coord)
+        elif entity_class is Grass:
+            return Grass()
+        else:
+            raise ValueError(entity_class)
+
     def execute(self, map: Map) -> None:
-        creator = EntityCreator()
-
-        coord = map.generate_initial_coordinate()
-        entity = creator.create(coord, Grass)
-        map.add_entity(coord, entity)
-
-        coord = map.generate_initial_coordinate()
-        entity = creator.create(coord, Herbivore)
-        map.add_entity(coord, entity)
-
-        # map.setup_initial_entities_positions()
+        for key, value in self.entities_to_create.items():
+            for _ in range(value):
+                coord = map.generate_initial_coordinate()
+                entity = self.get_creator(key, coord)
+                map.add_entity(coord, entity)
 
 
 class MoveCreaturesAction(Action):
     def execute(self, map: Map) -> None:
         for coordinate, entitiy in map.entities.items():
-            if isinstance(entitiy, Creature):  # need to pass the instance's class, not instance itself
+            if isinstance(entitiy, Creature):
                 entitiy.make_move(map)

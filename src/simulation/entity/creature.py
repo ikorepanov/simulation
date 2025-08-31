@@ -58,7 +58,7 @@ class Creature(Entity):
         return result
 
     def is_tile_available_for_move(self, coordinate: Coordinate, map: Map) -> bool:
-        return not map.is_tile_occupied(coordinate)
+        return map.is_tile_empty(coordinate)
 
     def check_if_movement_is_possible(self) -> bool:
         # Проверить - возможно ли "шагнуть" на ту или иную клетку

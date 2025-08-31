@@ -1,13 +1,9 @@
 import sys
-from typing import Any
-
 
 from simulation.action import Action, MoveCreaturesAction, PlaceEntitiesAction
 from simulation.exceptions import NoUnoccupiedTilesError
-
 from simulation.map import Map
 from simulation.renderer.consolerenderer import ConsoleRenderer
-from simulation.entity_creator import EntityCreator
 
 
 class Simulation:
