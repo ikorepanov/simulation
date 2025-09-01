@@ -22,5 +22,5 @@ class Map:
         # return self.entities.get(coordinate)
         return self.entities[coordinate]
 
-    def remove_entity(self) -> None:
-        pass
+    def remove_entity(self, coordinate: Coordinate) -> Entity:
+        return self.entities.pop(coordinate)

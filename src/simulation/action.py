@@ -65,15 +65,22 @@ class PlaceEntitiesAction(Action):
             raise ValueError(entity_class)
 
     def execute(self, map: Map) -> None:
+        # for class_name, number_of_instances in self.entities_to_create.items():
+        #     for _ in range(number_of_instances):
+        #         coord = self.generate_initial_coordinate(map)
+        #         entity = self.create_entity(class_name, coord)
+        #         map.add_entity(coord, entity)
         for class_name, number_of_instances in self.entities_to_create.items():
-            for _ in range(number_of_instances):
-                coord = self.generate_initial_coordinate(map)
-                entity = self.create_entity(class_name, coord)
-                map.add_entity(coord, entity)
+            if class_name is Herbivore:
+                coord = Coordinate(0, 0)
+                map.add_entity(coord, self.create_entity(class_name, coord))
+            else:
+                coord = Coordinate(3, 2)
+                map.add_entity(coord, self.create_entity(class_name, coord))
 
 
 class MoveCreaturesAction(Action):
     def execute(self, map: Map) -> None:
-        for coordinate, entitiy in map.entities.items():
+        for coordinate, entitiy in map.entities.copy().items():
             if isinstance(entitiy, Creature):
                 entitiy.make_move(map)

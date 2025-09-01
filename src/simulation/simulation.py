@@ -27,6 +27,7 @@ class Simulation:
         # while True:
         #     self.next_turn()
         self.next_turn()
+        self.renderer.render(self.map)
 
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
