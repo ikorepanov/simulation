@@ -23,7 +23,7 @@ PREDATOR_NUMBER = 0
 HERBIVORE_NUMBER = 1
 ROCK_NUMBER = 0
 TREE_NUMBER = 0
-GRASS_NUMBER = 1
+GRASS_NUMBER = 2
 
 # ANSI
 ESC = '\033['  # Начало ANSI escape-последовательности

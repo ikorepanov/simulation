@@ -39,7 +39,7 @@ class Herbivore(Creature):
         print(f'NB! Путь найден: {[(node.x, node.y) for node in path]}')
 
         if len(path) == 1:
-            self.eat_grass()
+            self.eat_grass(path, map)
         else:
             self.move_towards(path, map)
 
@@ -48,8 +48,12 @@ class Herbivore(Creature):
         map.add_entity(path[self.speed - 1], entity)
         self.coordinate = path[self.speed - 1]
 
-    def eat_grass(self) -> None:
-        pass
+    def eat_grass(self, path: list[Coordinate], map: Map) -> None:
+        map.remove_entity(path[0])
+        entity = map.remove_entity(self.coordinate)
+        map.add_entity(path[0], entity)
+        self.coordinate = path[0]
+        print('Eaten!')
 
     def loose_hp(self) -> None:
         pass
