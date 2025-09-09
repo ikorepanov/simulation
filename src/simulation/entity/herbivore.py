@@ -36,7 +36,7 @@ class Herbivore(Creature):
         except CantFindPathError as error:
             print(f"Can't Find Path Error: {error}")
             sys.exit(1)
-        print(f'NB! Путь найден: {[(node.x, node.y) for node in path]}')
+        print(f'NB! Травоядное нашло путь: {[(node.x, node.y) for node in path]}')
 
         if len(path) == 1:
             self.eat_grass(path, map)
@@ -53,7 +53,7 @@ class Herbivore(Creature):
         entity = map.remove_entity(self.coordinate)
         map.add_entity(path[0], entity)
         self.coordinate = path[0]
-        print('Eaten!')
+        print('Траврядное съело траву')
 
     def loose_hp(self) -> None:
-        pass
+        self.hp -= 1

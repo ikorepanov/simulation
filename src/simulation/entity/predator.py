@@ -11,6 +11,10 @@ if TYPE_CHECKING:
 from simulation.coordinate import Coordinate
 from simulation.entity.herbivore import Herbivore
 from simulation.settings import PREDATOR
+from simulation.pathfinder import Pathfinder
+from simulation.exceptions import CantFindPathError
+import sys
+from simulation.entity.entity import Entity
 
 
 class Predator(Creature):
@@ -30,14 +34,31 @@ class Predator(Creature):
         return PREDATOR
 
     def make_move(self, map: Map) -> None:
-        # if self.state == 'moving':
-        #     self.move_towards()
-        # if self.state == 'eating':
-        #     self.attack_prey()
-        pass
+        try:
+            path = Pathfinder().find_path(map, self.coordinate, self.prey)
+        except CantFindPathError as error:
+            print(f"Can't Find Path Error: {error}")
+            sys.exit(1)
+        print(f'NB! Хищник нашёл путь: {[(node.x, node.y) for node in path]}')
 
-    def move_towards(self) -> None:
-        pass
+        if len(path) == 1:
+            self.attack_prey(path, map)
+        else:
+            self.move_towards(path, map)
 
-    def attack_prey(self) -> None:
-        pass
+    def move_towards(self, path: list[Coordinate], map: Map) -> None:
+        entity = map.remove_entity(self.coordinate)
+        map.add_entity(path[self.speed - 1], entity)
+        self.coordinate = path[self.speed - 1]
+
+    def attack_prey(self, path: list[Coordinate], map: Map) -> None:
+        prey_coord = path[0]
+        prey: Herbivore = map.get_entity(prey_coord)
+        prey.loose_hp()
+        print('Хищник укусил травоядное')
+        if prey.hp == 0:
+            map.remove_entity(path[0])
+            predator = map.remove_entity(self.coordinate)
+            map.add_entity(path[0], predator)
+            self.coordinate = path[0]
+            print('Хищник съел травоядное')
