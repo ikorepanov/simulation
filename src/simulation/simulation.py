@@ -30,7 +30,7 @@ class Simulation:
         count = 10
         while count > 0:
             self.next_turn()
-            self.renderer.render(self.map)
+            self.renderer.render(self.map)  # NB! Здесь надо убрать рендерер и рендерить не после каждого хода, а после каждого move сущности...
             count -= 1
 
     def pause_simulation(self) -> None:
@@ -43,6 +43,7 @@ class Simulation:
         for action in self.init_actions:
             try:
                 action.execute(self.map)
+                print('Сущности расставлены!')
             except NoUnoccupiedTilesError as error:
                 print(f'No Unoccupied Tiles Error: {error.message}')
                 sys.exit(1)

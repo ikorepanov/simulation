@@ -50,6 +50,7 @@ class Predator(Creature):
         entity = map.remove_entity(self.coordinate)
         map.add_entity(path[self.speed - 1], entity)
         self.coordinate = path[self.speed - 1]
+        print(f'Хищник сходил на {self.speed} клетку')
 
     def attack_prey(self, path: list[Coordinate], map: Map) -> None:
         prey_coord = path[0]
