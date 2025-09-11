@@ -1,6 +1,9 @@
 import random
 from abc import ABC, abstractmethod
 
+from simulation.renderer.color_schemes import color_scheme
+from simulation.settings import COLOR_SCHEME
+from simulation.renderer.consolerenderer import ConsoleRenderer
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.entity import Entity
@@ -65,21 +68,21 @@ class PlaceEntitiesAction(Action):
             raise ValueError(entity_class)
 
     def execute(self, map: Map) -> None:
-        for class_name, number_of_instances in self.entities_to_create.items():
-            for _ in range(number_of_instances):
-                coord = self.generate_initial_coordinate(map)
-                entity = self.create_entity(class_name, coord)
-                map.add_entity(coord, entity)
         # for class_name, number_of_instances in self.entities_to_create.items():
-        #     if class_name is Herbivore:
-        #         coord = Coordinate(0, 0)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
-        #     elif class_name is Grass:
-        #         coord = Coordinate(3, 2)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
-        #     elif class_name is Predator:
-        #         coord = Coordinate(0, 2)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
+        #     for _ in range(number_of_instances):
+        #         coord = self.generate_initial_coordinate(map)
+        #         entity = self.create_entity(class_name, coord)
+        #         map.add_entity(coord, entity)
+        for class_name, number_of_instances in self.entities_to_create.items():
+            if class_name is Herbivore:
+                coord = Coordinate(0, 0)
+                map.add_entity(coord, self.create_entity(class_name, coord))
+            elif class_name is Grass:
+                coord = Coordinate(3, 2)
+                map.add_entity(coord, self.create_entity(class_name, coord))
+            elif class_name is Predator:
+                coord = Coordinate(0, 2)
+                map.add_entity(coord, self.create_entity(class_name, coord))
 
 
 class MoveCreaturesAction(Action):
@@ -88,3 +91,6 @@ class MoveCreaturesAction(Action):
             if isinstance(entitiy, Creature):
                 entitiy.make_move(map)
                 # NB! Здесь нужно вызывать рендерер...
+                renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
+                renderer.render(map)
+                print('Сущность сходила!')

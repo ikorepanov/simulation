@@ -27,11 +27,12 @@ class Simulation:
         # while True:
         #     self.next_turn()
 
-        count = 10
+        count = 4
         while count > 0:
             self.next_turn()
-            self.renderer.render(self.map)  # NB! Здесь надо убрать рендерер и рендерить не после каждого хода, а после каждого move сущности...
+            # self.renderer.render(self.map)  # NB! Здесь надо убрать рендерер и рендерить не после каждого хода, а после каждого move сущности...
             count -= 1
+            print('Все сделали 1 ход')
 
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
