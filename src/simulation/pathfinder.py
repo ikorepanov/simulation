@@ -37,6 +37,12 @@ class Pathfinder:
                 adjacents.append(coordinate)
         return adjacents
 
+    def get_not_occupied(self, map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
+        return [
+            node for node in adjacents
+            if map.is_tile_empty(node) or isinstance(map.get_entity(node), target_class)
+        ]
+
     def recover_path_from_parents_dict(
         self,
         target_node: Coordinate,
@@ -76,7 +82,8 @@ class Pathfinder:
                 return self.recover_path_from_parents_dict(node, parents)
 
             adjacent_nodes = self.get_adjacents(node)
-            for a_node in adjacent_nodes:
+            available_nodes = self.get_not_occupied(map, adjacent_nodes, target_class)
+            for a_node in available_nodes:
                 if a_node in visited or a_node in queue:
                     continue
                 queue.appendleft(a_node)
