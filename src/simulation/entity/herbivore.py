@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import sys
 from typing import TYPE_CHECKING
 
 from simulation.coordinate import Coordinate
@@ -44,7 +43,8 @@ class Herbivore(Creature):
 
     def move_towards(self, path: list[Coordinate], map: Map) -> None:
         entity = map.remove_entity(self.coordinate)
-        map.add_entity(path[self.speed - 1], entity)
+        if map.is_tile_empty(path[self.speed - 1]):
+            map.add_entity(path[self.speed - 1], entity)
         self.coordinate = path[self.speed - 1]
         print(f'Травоядное сходило на {self.speed} клетку')
 
