@@ -80,12 +80,12 @@ class PlaceEntitiesAction(Action):
             elif class_name is Grass:
                 coord = Coordinate(3, 2)
                 map.add_entity(coord, self.create_entity(class_name, coord))
-            elif class_name is Predator:
-                coord = Coordinate(0, 2)
-                map.add_entity(coord, self.create_entity(class_name, coord))
-            elif class_name is Rock:
-                coord = Coordinate(2, 1)
-                map.add_entity(coord, self.create_entity(class_name, coord))
+            # elif class_name is Predator:
+            #     coord = Coordinate(0, 2)
+            #     map.add_entity(coord, self.create_entity(class_name, coord))
+            # elif class_name is Rock:
+            #     coord = Coordinate(2, 1)
+            #     map.add_entity(coord, self.create_entity(class_name, coord))
 
 
 class MoveCreaturesAction(Action):

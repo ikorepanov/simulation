@@ -79,7 +79,9 @@ class Pathfinder:
             visited.add(node)
 
             if node in map.entities and isinstance(map.get_entity(node), target_class):
-                return self.recover_path_from_parents_dict(node, parents)
+                path = self.recover_path_from_parents_dict(node, parents)
+                print(f'Путь найден: {[(node.x, node.y) for node in path]}')
+                return path
 
             adjacent_nodes = self.get_adjacents(node)
             available_nodes = self.get_not_occupied(map, adjacent_nodes, target_class)

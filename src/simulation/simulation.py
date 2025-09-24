@@ -27,7 +27,7 @@ class Simulation:
         # while True:
         #     self.next_turn()
 
-        count = 4
+        count = 5
         while count > 0:
             self.next_turn()
             # self.renderer.render(self.map)  # NB! Здесь надо убрать рендерер и рендерить не после каждого хода, а после каждого move сущности...
