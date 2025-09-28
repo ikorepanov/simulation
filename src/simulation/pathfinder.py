@@ -55,7 +55,7 @@ class Pathfinder:
             node = parents[node]
         return path[-2::-1]
 
-    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
+    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate] | None:
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -91,5 +91,7 @@ class Pathfinder:
                 queue.appendleft(a_node)
                 parents[a_node] = node
 
-        else:
-            raise CantFindPathError()
+        # else:
+        #     raise CantFindPathError()
+
+        return None

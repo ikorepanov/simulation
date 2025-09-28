@@ -34,12 +34,13 @@ class Predator(Creature):
 
     def make_move(self, map: Map) -> None:
         path = Pathfinder().find_path(map, self.coordinate, self.prey)
-        if len(path) == 1:
-            prey_coord = path[0]
-            self.attack_prey(prey_coord, map)
-        else:
-            new_coord = path[self.speed - 1]
-            self.move_towards(new_coord, map)
+        if path:
+            if len(path) == 1:
+                prey_coord = path[0]
+                self.attack_prey(prey_coord, map)
+            else:
+                new_coord = path[self.speed - 1]
+                self.move_towards(new_coord, map)
 
     def move_towards(self, coord: Coordinate, map: Map) -> None:
         predator = map.remove_entity(self.coordinate)
