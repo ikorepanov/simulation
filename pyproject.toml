@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "The second project of Sergey Zhukov's roadmap"
 authors = [{ name = "Ilia Korepanov" }]
 
-dependencies = []
+dependencies = [
+    "loguru==0.7.3",
+]
 
 requires-python = ">=3.9, <3.12"
 readme = "README.md"
