@@ -33,10 +33,10 @@ class Herbivore(Creature):
             herbivore = map.remove_entity(self.coordinate)
             if len(path) == 1:
                 new_coord = path[0]
-                print('Траврядное съело траву')
+                # print('Траврядное съело траву')
             else:
                 new_coord = path[self.speed - 1]
-                print(f'Травоядное сходило на {self.speed} клетку')
+                # print(f'Травоядное сходило на {self.speed} клетку')
             map.add_entity(new_coord, herbivore)
             self.coordinate = new_coord
 

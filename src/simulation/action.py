@@ -86,7 +86,7 @@ class PlaceEntitiesAction(Action):
             # elif class_name is Rock:
             #     coord = Coordinate(2, 1)
             #     map.add_entity(coord, self.create_entity(class_name, coord))
-        print('Сущности расставлены!')
+        # print('Сущности расставлены!')
 
 
 class MoveCreaturesAction(Action):
@@ -97,4 +97,4 @@ class MoveCreaturesAction(Action):
                 # NB! Здесь нужно вызывать рендерер...
                 renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
                 renderer.render(map)
-                print('Сущность сходила!')
+                # print('Сущность сходила!')
