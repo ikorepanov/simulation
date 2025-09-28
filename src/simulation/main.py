@@ -9,7 +9,7 @@ def main() -> None:
     m = Map()
     r = ConsoleRenderer(color_scheme[COLOR_SCHEME])
     s = Simulation(m, r)
-    s.new()
+    s.start_simulation()
 
 
 if __name__ == '__main__':

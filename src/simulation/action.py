@@ -86,6 +86,7 @@ class PlaceEntitiesAction(Action):
             # elif class_name is Rock:
             #     coord = Coordinate(2, 1)
             #     map.add_entity(coord, self.create_entity(class_name, coord))
+        print('Сущности расставлены!')
 
 
 class MoveCreaturesAction(Action):
