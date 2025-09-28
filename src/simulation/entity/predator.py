@@ -10,10 +10,9 @@ if TYPE_CHECKING:
 
 from simulation.coordinate import Coordinate
 from simulation.entity.herbivore import Herbivore
-from simulation.settings import PREDATOR
 from simulation.pathfinder import Pathfinder
-from simulation.exceptions import CantFindPathError
-import sys
+from simulation.settings import PREDATOR
+
 from simulation.entity.entity import Entity
 
 
@@ -24,42 +23,36 @@ class Predator(Creature):
         speed: int = PREDATOR_SPEED,
         hp: int = PREDATOR_HP,
         attack_power: int = ATTACK_POWER,
+        prey: type[Entity] = Herbivore,
     ):
-        super().__init__(coordinate, speed, hp)
+        super().__init__(coordinate, speed, hp, prey)
 
-        self.prey = Herbivore
         self.attack_power = attack_power
 
     def get_sprite(self) -> str:
         return PREDATOR
 
     def make_move(self, map: Map) -> None:
-        try:
-            path = Pathfinder().find_path(map, self.coordinate, self.prey)
-        except CantFindPathError as error:
-            print(f"Can't Find Path Error: {error}")
-            sys.exit(1)
-        print(f'NB! Хищник нашёл путь: {[(node.x, node.y) for node in path]}')
-
+        path = Pathfinder().find_path(map, self.coordinate, self.prey)
         if len(path) == 1:
-            self.attack_prey(path, map)
+            prey_coord = path[0]
+            self.attack_prey(prey_coord, map)
         else:
-            self.move_towards(path, map)
+            new_coord = path[self.speed - 1]
+            self.move_towards(new_coord, map)
 
-    def move_towards(self, path: list[Coordinate], map: Map) -> None:
-        entity = map.remove_entity(self.coordinate)
-        map.add_entity(path[self.speed - 1], entity)
-        self.coordinate = path[self.speed - 1]
+    def move_towards(self, coord: Coordinate, map: Map) -> None:
+        predator = map.remove_entity(self.coordinate)
+        map.add_entity(coord, predator)
+        self.coordinate = coord
         print(f'Хищник сходил на {self.speed} клетку')
 
-    def attack_prey(self, path: list[Coordinate], map: Map) -> None:
-        prey_coord = path[0]
-        prey: Herbivore = map.get_entity(prey_coord)
-        prey.loose_hp()
-        print('Хищник укусил травоядное')
-        if prey.hp == 0:
-            map.remove_entity(path[0])
-            predator = map.remove_entity(self.coordinate)
-            map.add_entity(path[0], predator)
-            self.coordinate = path[0]
-            print('Хищник съел травоядное')
+    def attack_prey(self, coord: Coordinate, map: Map) -> None:
+        entity = map.get_entity(coord)
+        if isinstance(entity, Herbivore):
+            prey = entity
+            prey.loose_hp()
+            print('Хищник укусил травоядное')
+            if prey.hp == 0:
+                self.move_towards(coord, map)
+                print('Хищник съел травоядное')

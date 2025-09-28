@@ -17,12 +17,14 @@ class Creature(Entity):
         coordinate: Coordinate,
         speed: int,  # сколько клеток может пройти за 1 ход
         hp: int,  # Health Points ("здоровье")
+        prey: type[Entity],
     ):
         # "... координата нужна только тому существу, которое ходит.
         # Поэтому entities должны хранить координату только начиная с уровня Creature."
         self.coordinate = coordinate
         self.speed = speed
         self.hp = hp
+        self.prey = prey
 
     @abstractmethod
     def make_move(self, map: Map) -> None:

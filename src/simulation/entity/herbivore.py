@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 
 from simulation.pathfinder import Pathfinder
 from simulation.settings import HERBIVORE, HERBIVORE_HP, HERBIVORE_SPEED
+from simulation.entity.entity import Entity
 
 
 class Herbivore(Creature):
@@ -19,11 +20,9 @@ class Herbivore(Creature):
         coordinate: Coordinate,
         speed: int = HERBIVORE_SPEED,
         hp: int = HERBIVORE_HP,
+        prey: type[Entity] = Grass,
     ):
-        super().__init__(coordinate, speed, hp)
-
-        self.prey = Grass
-        self.state = 'waiting'
+        super().__init__(coordinate, speed, hp, prey)
 
     def get_sprite(self) -> str:
         return HERBIVORE

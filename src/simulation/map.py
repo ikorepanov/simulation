@@ -18,7 +18,7 @@ class Map:
     def add_entity(self, coordinate: Coordinate, entity: Entity) -> None:
         self.entities[coordinate] = entity
 
-    def get_entity(self, coordinate: Coordinate) -> Entity | None:
+    def get_entity(self, coordinate: Coordinate) -> Entity:
         # return self.entities.get(coordinate)
         return self.entities[coordinate]
 
