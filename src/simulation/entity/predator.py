@@ -15,6 +15,8 @@ from simulation.settings import PREDATOR
 
 from simulation.entity.entity import Entity
 
+from loguru import logger
+
 
 class Predator(Creature):
     def __init__(
@@ -46,7 +48,7 @@ class Predator(Creature):
         predator = map.remove_entity(self.coordinate)
         map.add_entity(coord, predator)
         self.coordinate = coord
-        # print(f'Хищник сходил на {self.speed} клетку')
+        # logger.info(f'Хищник сходил на {self.speed} клетку')
 
     def attack_prey(self, coord: Coordinate, map: Map) -> None:
         entity = map.get_entity(coord)

@@ -54,7 +54,7 @@ class ConsoleRenderer:
             print(self.build_row_string(y, game_map))
             # sys.stdout.write(f'{self.build_row_string(y, game_map)}\n')
 
-        time.sleep(1)
+        # time.sleep(1)
 
     def apply_bg_color(self, sprite: str, is_tile_dark: bool) -> str:
         """Возвращает ANSI-последовательность для спрайта на фоне соответствующего цвета: ANSI 256-color background."""

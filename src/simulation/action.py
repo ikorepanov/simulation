@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import random
 from abc import ABC, abstractmethod
 
@@ -22,6 +26,14 @@ from simulation.settings import (
     ROCK_NUMBER,
     TREE_NUMBER,
 )
+
+from loguru import logger
+
+if TYPE_CHECKING:
+    from simulation.simulation import Simulation
+import time
+
+from typing import Callable
 
 
 class Action(ABC):
@@ -89,12 +101,22 @@ class PlaceEntitiesAction(Action):
         # print('Сущности расставлены!')
 
 
-class MoveCreaturesAction(Action):
+class MoveAction(Action):
+    def register_callback(self, cb: Callable[..., None]) -> None:
+        self.cb = cb
+
+    def execute_callback(self) -> None:
+        self.cb()
+
     def execute(self, map: Map) -> None:
         for coordinate, entitiy in map.entities.copy().items():
             if isinstance(entitiy, Creature):
                 entitiy.make_move(map)
                 # NB! Здесь нужно вызывать рендерер...
-                renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
-                renderer.render(map)
-                # print('Сущность сходила!')
+                # renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
+                # renderer.render(map)
+
+                self.execute_callback()
+
+                logger.info('Сущность сходила')
+                time.sleep(0.5)

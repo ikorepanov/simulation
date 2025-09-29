@@ -1,17 +1,29 @@
-from simulation.action import Action, MoveCreaturesAction, PlaceEntitiesAction
-from simulation.map import Map
-from simulation.renderer.consolerenderer import ConsoleRenderer
+from loguru import logger
+
+from simulation.action import Action, MoveAction, PlaceEntitiesAction
 from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
+from simulation.map import Map
+from simulation.renderer.color_schemes import color_scheme
+from simulation.renderer.consolerenderer import ConsoleRenderer
+from simulation.settings import COLOR_SCHEME
+import time
 
 
 class Simulation:
-    def __init__(self, map: Map, renderer: ConsoleRenderer) -> None:
-        self.map = map
-        self.renderer = renderer
+    def __init__(self) -> None:
+        self.map = Map()
+        # self.move_counter = MoveCounter()
+        self.renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
 
-        self.init_actions: list[Action] = [PlaceEntitiesAction()]
-        self.turn_actions: list[Action] = [MoveCreaturesAction()]
+        self.move_action = MoveAction()
+        self.move_action.register_callback(self.render_world)
+
+        self.init_actions = [PlaceEntitiesAction()]
+        self.turn_actions = [self.move_action]
+
+    def render_world(self) -> None:
+        self.renderer.render(self.map)
 
     def next_turn(self) -> None:
         """Просимулировать и отрендерить один ход."""
@@ -23,7 +35,9 @@ class Simulation:
         for action in self.init_actions:
             action.execute(self.map)
 
-        self.renderer.render(self.map)
+        self.render_world()
+        logger.info('Сущности расставлены')
+        time.sleep(0.5)
 
         while any(isinstance(entity, (Herbivore, Grass)) for entity in self.map.entities.values()):
             self.next_turn()
@@ -31,3 +45,7 @@ class Simulation:
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
         pass
+
+    # def callback(self) -> None:
+    #     self.render_world()
+    #     time.sleep(1)
