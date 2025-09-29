@@ -109,14 +109,8 @@ class MoveAction(Action):
         self.cb()
 
     def execute(self, map: Map) -> None:
-        for coordinate, entitiy in map.entities.copy().items():
+        for entitiy in map.entities.copy().values():
             if isinstance(entitiy, Creature):
                 entitiy.make_move(map)
-                # NB! Здесь нужно вызывать рендерер...
-                # renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
-                # renderer.render(map)
-
                 self.execute_callback()
-
                 logger.info('Сущность сходила')
-                time.sleep(0.5)
