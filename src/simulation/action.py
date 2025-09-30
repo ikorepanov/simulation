@@ -94,7 +94,7 @@ class PlaceEntitiesAction(Action):
             #     map.add_entity(coord, self.create_entity(class_name, coord))
         # print('Сущности расставлены!')
         self.execute_callback()
-        logger.info('Сущности расставлены')
+        # logger.info('Сущности расставлены')
 
 
 class MoveAction(Action):
@@ -103,4 +103,4 @@ class MoveAction(Action):
             if isinstance(entitiy, Creature):
                 entitiy.make_move(map)
                 self.execute_callback()
-                logger.info('Сущность сходила')
+                # logger.info('Сущность сходила')

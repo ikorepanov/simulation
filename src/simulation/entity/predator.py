@@ -47,14 +47,14 @@ class Predator(Creature):
         predator = map.remove_entity(self.coordinate)
         map.add_entity(coord, predator)
         self.coordinate = coord
-        # logger.info(f'Хищник сходил на {self.speed} клетку')
+        logger.info(f'Хищник сходил на {self.speed} клетку')
 
     def attack_prey(self, coord: Coordinate, map: Map) -> None:
         entity = map.get_entity(coord)
         if isinstance(entity, Herbivore):
             prey = entity
             prey.loose_hp()
-            # print('Хищник укусил травоядное')
+            logger.info('Хищник укусил травоядное')
             if prey.hp == 0:
                 self.move_towards(coord, map)
-                # print('Хищник съел травоядное')
+                logger.info('Хищник съел травоядное')

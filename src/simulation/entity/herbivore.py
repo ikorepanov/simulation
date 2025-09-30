@@ -13,6 +13,8 @@ from simulation.entity.entity import Entity
 from simulation.pathfinder import Pathfinder
 from simulation.settings import HERBIVORE, HERBIVORE_HP, HERBIVORE_SPEED
 
+from loguru import logger
+
 
 class Herbivore(Creature):
     def __init__(
@@ -33,12 +35,14 @@ class Herbivore(Creature):
             herbivore = map.remove_entity(self.coordinate)
             if len(path) == 1:
                 new_coord = path[0]
-                # print('Траврядное съело траву')
+                logger.info('Траврядное съело траву')
             else:
                 new_coord = path[self.speed - 1]
-                # print(f'Травоядное сходило на {self.speed} клетку')
+                logger.info(f'Травоядное сходило на {self.speed} клетку')
             map.add_entity(new_coord, herbivore)
             self.coordinate = new_coord
+        else:
+            logger.info('Травоядное курит')
 
     def loose_hp(self) -> None:
         self.hp -= 1
