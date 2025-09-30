@@ -1,13 +1,9 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import random
 from abc import ABC, abstractmethod
+from typing import Callable
 
-from simulation.renderer.color_schemes import color_scheme
-from simulation.settings import COLOR_SCHEME
-from simulation.renderer.consolerenderer import ConsoleRenderer
+from loguru import logger
+
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.entity import Entity
@@ -27,19 +23,17 @@ from simulation.settings import (
     TREE_NUMBER,
 )
 
-from loguru import logger
-
-if TYPE_CHECKING:
-    from simulation.simulation import Simulation
-import time
-
-from typing import Callable
-
 
 class Action(ABC):
     @abstractmethod
     def execute(self, map: Map) -> None:
         raise NotImplementedError
+
+    def register_callback(self, cb: Callable[..., None]) -> None:
+        self.cb = cb
+
+    def execute_callback(self) -> None:
+        self.cb()
 
 
 class PlaceEntitiesAction(Action):
@@ -99,15 +93,11 @@ class PlaceEntitiesAction(Action):
             #     coord = Coordinate(2, 1)
             #     map.add_entity(coord, self.create_entity(class_name, coord))
         # print('Сущности расставлены!')
+        self.execute_callback()
+        logger.info('Сущности расставлены')
 
 
 class MoveAction(Action):
-    def register_callback(self, cb: Callable[..., None]) -> None:
-        self.cb = cb
-
-    def execute_callback(self) -> None:
-        self.cb()
-
     def execute(self, map: Map) -> None:
         for entitiy in map.entities.copy().values():
             if isinstance(entitiy, Creature):

@@ -1,14 +1,13 @@
-from loguru import logger
+import time
+from typing import Callable
 
-from simulation.action import MoveAction, PlaceEntitiesAction
+from simulation.action import Action, MoveAction, PlaceEntitiesAction
 from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
 from simulation.map import Map
 from simulation.renderer.color_schemes import color_scheme
 from simulation.renderer.consolerenderer import ConsoleRenderer
-from simulation.settings import COLOR_SCHEME, PAUSE_LENGTH
-import time
-from simulation.action import Action
+from simulation.settings import COLOR_SCHEME, DELAY_DURATION
 
 
 class Simulation:
@@ -17,39 +16,26 @@ class Simulation:
         self.renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
 
         self.move_action = MoveAction()
-        self.move_action.register_callback(self.render_and_pause)
+        self.register_cb(self.move_action, self.render_and_delay)
 
-        self.init_actions = [PlaceEntitiesAction()]
+        self.place_entities_action = PlaceEntitiesAction()
+        self.register_cb(self.place_entities_action, self.render_and_delay)
+
+        self.init_actions = [self.place_entities_action]
         self.turn_actions = [self.move_action]
 
-    def render_board(self) -> None:
-        self.renderer.render(self.map)
-
-    def make_pause_after_rendering(self) -> None:
-        time.sleep(PAUSE_LENGTH)
-
-    def render_and_pause(self) -> None:
-        self.render_board()
-        self.make_pause_after_rendering()
-
-    def start_action(self, action: Action, map: Map) -> None:
-        action.execute(map)
+    def launch_action(self, action: Action) -> None:
+        action.execute(self.map)
 
     def next_turn(self) -> None:
         """Просимулировать и отрендерить один ход."""
         for action in self.turn_actions:
-            # action.execute(self.map)
-            self.start_action(action, self.map)
+            self.launch_action(action)
 
     def start_simulation(self) -> None:
         """Запустить бесконечный цикл симуляции и рендеринга."""
         for action in self.init_actions:
-            # action.execute(self.map)
-            self.start_action(action, self.map)
-
-        self.render_board()
-        logger.info('Сущности расставлены')
-        time.sleep(0.5)
+            self.launch_action(action)
 
         while any(isinstance(entity, (Herbivore, Grass)) for entity in self.map.entities.values()):
             self.next_turn()
@@ -57,3 +43,16 @@ class Simulation:
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
         pass
+
+    def render_board(self) -> None:
+        self.renderer.render(self.map)
+
+    def delay_execution(self) -> None:
+        time.sleep(DELAY_DURATION)
+
+    def render_and_delay(self) -> None:
+        self.render_board()
+        self.delay_execution()
+
+    def register_cb(self, action: Action, fn: Callable[..., None]) -> None:
+        action.register_callback(fn)

@@ -9,9 +9,9 @@ from simulation.entity.grass import Grass
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from simulation.entity.entity import Entity
 from simulation.pathfinder import Pathfinder
 from simulation.settings import HERBIVORE, HERBIVORE_HP, HERBIVORE_SPEED
-from simulation.entity.entity import Entity
 
 
 class Herbivore(Creature):

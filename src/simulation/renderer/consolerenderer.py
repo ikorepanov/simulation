@@ -48,7 +48,7 @@ class ConsoleRenderer:
 
     def render(self, game_map: Map) -> None:
         """Построчно отрисовывает карту в терминале."""
-        self.clear_screen_and_reset_cursor()
+        # self.clear_screen_and_reset_cursor()
 
         for y in range(game_map.height):
             print(self.build_row_string(y, game_map))

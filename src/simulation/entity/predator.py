@@ -8,14 +8,13 @@ from simulation.settings import ATTACK_POWER, PREDATOR_HP, PREDATOR_SPEED
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from loguru import logger
+
 from simulation.coordinate import Coordinate
+from simulation.entity.entity import Entity
 from simulation.entity.herbivore import Herbivore
 from simulation.pathfinder import Pathfinder
 from simulation.settings import PREDATOR
-
-from simulation.entity.entity import Entity
-
-from loguru import logger
 
 
 class Predator(Creature):
