@@ -55,7 +55,8 @@ class Pathfinder:
             node = parents[node]
         return path[-2::-1]
 
-    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate] | None:
+    # def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate] | None:
+    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -94,4 +95,4 @@ class Pathfinder:
         # else:
         #     raise CantFindPathError()
 
-        return None
+        # return None

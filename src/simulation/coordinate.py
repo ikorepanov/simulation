@@ -14,6 +14,9 @@ class Coordinate:
         self.x = x  # relative units
         self.y = y  # relative units
 
+    def __repr__(self) -> str:
+        return f'Coordinate {id(self)}'
+
     def shift(self, shift: CoordinateShift) -> Coordinate:
         return Coordinate(self.x + shift.x_shift, self.y + shift.y_shift)
 

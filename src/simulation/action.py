@@ -23,6 +23,8 @@ from simulation.settings import (
     TREE_NUMBER,
 )
 
+import pprint
+
 
 class Action(ABC):
     @abstractmethod
@@ -74,18 +76,18 @@ class PlaceEntitiesAction(Action):
             raise ValueError(entity_class)
 
     def execute(self, map: Map) -> None:
-        for class_name, number_of_instances in self.entities_to_create.items():
-            for _ in range(number_of_instances):
-                coord = self.generate_initial_coordinate(map)
-                entity = self.create_entity(class_name, coord)
-                map.add_entity(coord, entity)
         # for class_name, number_of_instances in self.entities_to_create.items():
-        #     if class_name is Herbivore:
-        #         coord = Coordinate(0, 0)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
-        #     elif class_name is Grass:
-        #         coord = Coordinate(3, 2)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
+        #     for _ in range(number_of_instances):
+        #         coord = self.generate_initial_coordinate(map)
+        #         entity = self.create_entity(class_name, coord)
+        #         map.add_entity(coord, entity)
+        for class_name, number_of_instances in self.entities_to_create.items():
+            if class_name is Herbivore:
+                coord = Coordinate(0, 0)
+                map.add_entity(coord, self.create_entity(class_name, coord))
+            elif class_name is Grass:
+                coord = Coordinate(2, 0)
+                map.add_entity(coord, self.create_entity(class_name, coord))
             # elif class_name is Predator:
             #     coord = Coordinate(0, 2)
             #     map.add_entity(coord, self.create_entity(class_name, coord))
@@ -94,13 +96,19 @@ class PlaceEntitiesAction(Action):
             #     map.add_entity(coord, self.create_entity(class_name, coord))
         # print('Сущности расставлены!')
         self.execute_callback()
+        pprint.pprint(map.entities)
         # logger.info('Сущности расставлены')
 
 
 class MoveAction(Action):
     def execute(self, map: Map) -> None:
-        for entitiy in map.entities.copy().values():
+        # logger.warning(list(map.entities.keys()))
+        # logger.warning(list(map.entities.values()))
+        entities = list(map.entities.values())
+        # for entitiy in map.entities.copy().values():
+        for entitiy in entities:
             if isinstance(entitiy, Creature):
                 entitiy.make_move(map)
                 self.execute_callback()
+                pprint.pprint(map.entities)
                 # logger.info('Сущность сходила')
