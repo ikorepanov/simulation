@@ -37,8 +37,7 @@ class Simulation:
         for action in self.init_actions:
             self.launch_action(action)
 
-        # while any(isinstance(entity, (Herbivore, Grass)) for entity in self.map.entities.values()):
-        while any(isinstance(entity, (Grass)) for entity in self.map.entities.values()):
+        while any(isinstance(entity, (Herbivore, Grass)) for entity in self.map.entities.values()):
             self.next_turn()
 
     def pause_simulation(self) -> None:

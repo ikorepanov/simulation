@@ -48,9 +48,15 @@ class Predator(Creature):
         self.occupy_new_position(self.coordinate, new_coord, map)
         logger.info(f'Хищник сходил на {self.speed} клетку')
 
+    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:
+        for obj in map.entities.keys():
+            if obj.x == coord.x and obj.y == coord.y:
+                return obj
+
     def finish_resource(self, path: list[Coordinate], map: Map) -> None:
+        prey_coordinate = self.get_exact_same_coordinate(path[0], map)
         map.remove_entity(path[0])
-        self.occupy_new_position(self.coordinate, path[0], map)
+        self.occupy_new_position(self.coordinate, prey_coordinate, map)
 
     def bite(self, prey: Herbivore, attack_power: int) -> None:
         prey.loose_hp(attack_power)

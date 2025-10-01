@@ -47,18 +47,15 @@ class Herbivore(Creature):
         self.occupy_new_position(self.coordinate, new_coord, map)
         logger.info(f'Травоядное сходило на {self.speed} клетку')
 
+    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:
+        for obj in map.entities.keys():
+            if obj.x == coord.x and obj.y == coord.y:
+                return obj
+
     def finish_resource(self, path: list[Coordinate], map: Map) -> None:
-        # print(f"""
-        # id координаты, на которой стоит трава: {id(path[0])}
-        # """)
+        prey_coordinate = self.get_exact_same_coordinate(path[0], map)
         map.remove_entity(path[0])
-        # print(f"""
-        # Айдишники координат до: {[id(key) for key in map.entities.keys()]}
-        # """)
-        self.occupy_new_position(self.coordinate, path[0], map)
-        # print(f"""
-        # Айдишники координат после: {[id(key) for key in map.entities.keys()]}
-        # """)
+        self.occupy_new_position(self.coordinate, prey_coordinate, map)
 
     def make_move(self, map: Map) -> None:
         # Ищем путь
