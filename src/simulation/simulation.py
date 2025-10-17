@@ -1,28 +1,25 @@
 import time
 from typing import Callable
 
-from simulation.action import Action, MoveAction, PlaceEntitiesAction
+from simulation.action import Action
 from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
 from simulation.map import Map
-from simulation.renderer.color_schemes import color_scheme
 from simulation.renderer.consolerenderer import ConsoleRenderer
-from simulation.settings import COLOR_SCHEME, DELAY_DURATION
+from simulation.settings import DELAY_DURATION
+
+from itertools import chain
 
 
 class Simulation:
-    def __init__(self) -> None:
-        self.map = Map()
-        self.renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
+    def __init__(self, map: Map, renderer: ConsoleRenderer, init_actions: list[Action], turn_actions: list[Action]) -> None:
+        self.map = map
+        self.renderer = renderer
+        self.init_actions = init_actions
+        self.turn_actions = turn_actions
 
-        self.move_action = MoveAction()
-        self.register_cb(self.move_action, self.render_and_delay)
-
-        self.place_entities_action = PlaceEntitiesAction()
-        self.register_cb(self.place_entities_action, self.render_and_delay)
-
-        self.init_actions = [self.place_entities_action]
-        self.turn_actions = [self.move_action]
+        for action in chain(self.init_actions, self.turn_actions):
+            self.register_cb(action, self.render_and_delay)
 
     def launch_action(self, action: Action) -> None:
         action.execute(self.map)
