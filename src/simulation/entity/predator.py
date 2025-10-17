@@ -30,33 +30,16 @@ class Predator(Creature):
 
         self.attack_power = attack_power
 
+    def __repr__(self) -> str:
+        return f'Predator {id(self)}'
+
     def get_sprite(self) -> str:
         return PREDATOR
-
-    def new_coord(self, path: list[Coordinate]) -> Coordinate:
-        index_1 = path.index(path[self.speed - 1])
-        index_2 = len(path) - 2
-        return path[min(index_1, index_2)]
-
-    def occupy_new_position(self, old_coord: Coordinate, new_coord: Coordinate, map: Map) -> None:
-        entity = map.remove_entity(old_coord)
-        map.add_entity(new_coord, entity)
-        self.coordinate = new_coord
 
     def get_closer(self, path: list[Coordinate], map: Map) -> None:
         new_coord = self.new_coord(path)
         self.occupy_new_position(self.coordinate, new_coord, map)
         logger.info(f'Хищник сходил на {self.speed} клетку')
-
-    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:
-        for obj in map.entities.keys():
-            if obj.x == coord.x and obj.y == coord.y:
-                return obj
-
-    def finish_resource(self, path: list[Coordinate], map: Map) -> None:
-        prey_coordinate = self.get_exact_same_coordinate(path[0], map)
-        map.remove_entity(path[0])
-        self.occupy_new_position(self.coordinate, prey_coordinate, map)
 
     def bite(self, prey: Herbivore, attack_power: int) -> None:
         prey.loose_hp(attack_power)
@@ -77,33 +60,8 @@ class Predator(Creature):
                 logger.info('Хищник укусил травоядное')
 
     def make_move(self, map: Map) -> None:
-        # Ищем путь
-        path = Pathfinder().find_path(map, self.coordinate, self.prey)
+        path = Pathfinder().find_path(map, self.coordinate, self.prey)  # Ищем путь
         if len(path) > 1:  # Далеко
             self.get_closer(path, map)  # Приблизиться
         if len(path) == 1:  # Близко
             self.attack(path, map)  # Атаковать
-
-    #     if path:
-    #         if len(path) == 1:
-    #             prey_coord = path[0]
-    #             self.attack_prey(prey_coord, map)
-    #         else:
-    #             new_coord = path[self.speed - 1]
-    #             self.move_towards(new_coord, map)
-
-    # def move_towards(self, coord: Coordinate, map: Map) -> None:
-    #     predator = map.remove_entity(self.coordinate)
-    #     map.add_entity(coord, predator)
-    #     self.coordinate = coord
-    #     logger.info(f'Хищник сходил на {self.speed} клетку')
-
-    # def attack_prey(self, coord: Coordinate, map: Map) -> None:
-    #     entity = map.get_entity(coord)
-    #     if isinstance(entity, Herbivore):
-    #         prey = entity
-    #         prey.loose_hp()
-    #         logger.info('Хищник укусил травоядное')
-    #         if prey.hp == 0:
-    #             self.move_towards(coord, map)
-    #             logger.info('Хищник съел травоядное')

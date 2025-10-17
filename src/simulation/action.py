@@ -2,8 +2,6 @@ import random
 from abc import ABC, abstractmethod
 from typing import Callable
 
-from loguru import logger
-
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.entity import Entity
@@ -22,9 +20,6 @@ from simulation.settings import (
     ROCK_NUMBER,
     TREE_NUMBER,
 )
-
-import pprint
-
 
 class Action(ABC):
     @abstractmethod
@@ -96,19 +91,19 @@ class PlaceEntitiesAction(Action):
             #     map.add_entity(coord, self.create_entity(class_name, coord))
         # print('Сущности расставлены!')
         self.execute_callback()
-        pprint.pprint(map.entities)
         # logger.info('Сущности расставлены')
 
 
 class MoveAction(Action):
     def execute(self, map: Map) -> None:
-        # logger.warning(list(map.entities.keys()))
-        # logger.warning(list(map.entities.values()))
-        entities = list(map.entities.values())
-        # for entitiy in map.entities.copy().values():
-        for entitiy in entities:
-            if isinstance(entitiy, Creature):
-                entitiy.make_move(map)
-                self.execute_callback()
-                pprint.pprint(map.entities)
-                # logger.info('Сущность сходила')
+        count = 1
+        some = list(map.entities.values())
+        for entitiy in some:
+            if entitiy in map.entities.values():
+                if isinstance(entitiy, Creature):
+                    entitiy.make_move(map)
+                    self.execute_callback()
+                    # logger.info('Сущность сходила')
+                count += 1
+            else:
+                print(f'{entitiy} was already deleted from map.entities.')

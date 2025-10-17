@@ -10,6 +10,8 @@ from simulation.entity.entity import Entity
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from loguru import logger
+
 
 class Creature(Entity):
     def __init__(
@@ -69,3 +71,25 @@ class Creature(Entity):
     def act_as_intendent(self) -> None:
         # Атаковать - для хищников, есть (траву) - для травоядных
         pass
+
+    def new_coord(self, path: list[Coordinate]) -> Coordinate:
+        index_1 = path.index(path[self.speed - 1])
+        index_2 = len(path) - 2
+        return path[min(index_1, index_2)]
+
+    def occupy_new_position(self, old_coord: Coordinate, new_coord: Coordinate, map: Map) -> None:
+        entity = map.remove_entity(old_coord)
+        map.add_entity(new_coord, entity)
+        self.coordinate = new_coord
+
+    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:
+        for obj in map.entities.keys():
+            if obj.x == coord.x and obj.y == coord.y:
+                return obj
+        return coord  # ?
+        # return [obj for obj in map.entities.keys() if obj.x == coord.x and obj.y == coord.y]
+
+    def finish_resource(self, path: list[Coordinate], map: Map) -> None:
+        prey_coordinate = self.get_exact_same_coordinate(path[0], map)
+        map.remove_entity(path[0])
+        self.occupy_new_position(self.coordinate, prey_coordinate, map)
