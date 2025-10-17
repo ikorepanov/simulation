@@ -21,13 +21,14 @@ from simulation.settings import (
     TREE_NUMBER,
 )
 
+
 class Action(ABC):
     @abstractmethod
     def execute(self, map: Map) -> None:
         raise NotImplementedError
 
-    def register_callback(self, cb: Callable[..., None]) -> None:
-        self.cb = cb
+    def register_callback(self, fn: Callable[..., None]) -> None:
+        self.cb = fn
 
     def execute_callback(self) -> None:
         self.cb()
