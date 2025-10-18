@@ -20,6 +20,7 @@ from simulation.settings import (
     ROCK_NUMBER,
     TREE_NUMBER,
 )
+from loguru import logger
 
 
 class Action(ABC):
@@ -97,14 +98,7 @@ class PlaceEntitiesAction(Action):
 
 class MoveAction(Action):
     def execute(self, map: Map) -> None:
-        count = 1
-        some = list(map.entities.values())
-        for entitiy in some:
-            if entitiy in map.entities.values():
-                if isinstance(entitiy, Creature):
-                    entitiy.make_move(map)
-                    self.execute_callback()
-                    # logger.info('Сущность сходила')
-                count += 1
-            else:
-                print(f'{entitiy} was already deleted from map.entities.')
+        for entitiy in map.entities.copy().values():
+            if isinstance(entitiy, Creature) and entitiy in map.entities.values():
+                entitiy.make_move(map)
+                self.execute_callback()
