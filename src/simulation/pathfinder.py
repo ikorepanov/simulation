@@ -10,7 +10,6 @@ if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.entity.entity import Entity
-# from simulation.exceptions import CantFindPathError
 
 
 class Pathfinder:
@@ -55,8 +54,11 @@ class Pathfinder:
             node = parents[node]
         return path[-2::-1]
 
-    # def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate] | None:
     def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
+        visited: set[Coordinate] = set()
+        queue: deque[Coordinate] = deque()
+        parents: dict[Coordinate, Coordinate | None] = {}
+
         # Запуск алгоритма поиска пути к ближайшей цели
 
         # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
@@ -68,10 +70,6 @@ class Pathfinder:
         #    из начального; завершить поиск с результатом «неудача».
         # 4. Вернуться к п. 2.
 
-        visited: set[Coordinate] = set()
-        queue: deque[Coordinate] = deque()
-        parents: dict[Coordinate, Coordinate | None] = {}
-
         queue.appendleft(init_position)
         parents[init_position] = None
 
@@ -80,9 +78,7 @@ class Pathfinder:
             visited.add(node)
 
             if node in map.entities and isinstance(map.get_entity(node), target_class):
-                path = self._recover_path_from_parents_dict(node, parents)
-                # print(f'Путь найден: {[(node.x, node.y) for node in path]}')
-                return path
+                return self._recover_path_from_parents_dict(node, parents)
 
             adjacent_nodes = self._get_adjacents(node)
             available_nodes = self._get_not_occupied(map, adjacent_nodes, target_class)
@@ -91,8 +87,5 @@ class Pathfinder:
                     continue
                 queue.appendleft(a_node)
                 parents[a_node] = node
-
-        # else:
-        #     raise CantFindPathError()
 
         return []

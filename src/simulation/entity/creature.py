@@ -57,7 +57,7 @@ class Creature(Entity):
         map.add_entity(new_coord, entity)
         self.coordinate = new_coord
 
-    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:
+    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:  # Надо этот метод убирать (раз уж hash и eq у нас переопределены...)
         for obj in map.entities.keys():
             if obj.x == coord.x and obj.y == coord.y:
                 return obj

@@ -24,3 +24,6 @@ class Map:
 
     def remove_entity(self, coordinate: Coordinate) -> Entity:
         return self.entities.pop(coordinate)
+
+    def is_tile_on_map(self) -> bool:  # возможно - нужно добавить метод здесь, и использовать в Pathfinder'е.
+        pass
