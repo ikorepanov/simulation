@@ -20,7 +20,6 @@ from simulation.settings import (
     ROCK_NUMBER,
     TREE_NUMBER,
 )
-from loguru import logger
 
 
 class Action(ABC):
@@ -78,27 +77,19 @@ class PlaceEntitiesAction(Action):
                 coord = self.generate_initial_coordinate(map)
                 entity = self.create_entity(class_name, coord)
                 map.add_entity(coord, entity)
-        # for class_name, number_of_instances in self.entities_to_create.items():
-        #     if class_name is Herbivore:
-        #         coord = Coordinate(0, 0)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
-        #     elif class_name is Grass:
-        #         coord = Coordinate(2, 0)
-        #         map.add_entity(coord, self.create_entity(class_name, coord))
-            # elif class_name is Predator:
-            #     coord = Coordinate(0, 2)
-            #     map.add_entity(coord, self.create_entity(class_name, coord))
-            # elif class_name is Rock:
-            #     coord = Coordinate(2, 1)
-            #     map.add_entity(coord, self.create_entity(class_name, coord))
-        # print('Сущности расставлены!')
         self.execute_callback()
-        # logger.info('Сущности расставлены')
 
 
 class MoveAction(Action):
+    def _get_creatures(self, map: Map) -> list[Creature]:
+        return [entity for entity in map.entities.values() if isinstance(entity, Creature)]
+
+    def _is_creature_still_alive(self, creature: Creature, map: Map) -> bool:
+        return creature in map.entities.values()
+
     def execute(self, map: Map) -> None:
-        for entitiy in map.entities.copy().values():
-            if isinstance(entitiy, Creature) and entitiy in map.entities.values():
-                entitiy.make_move(map)
+        creatures = self._get_creatures(map)
+        for creature in creatures:
+            if self._is_creature_still_alive(creature, map):
+                creature.make_move(map)
                 self.execute_callback()
