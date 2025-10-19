@@ -10,6 +10,7 @@ from simulation.renderer.color_schemes import ColorScheme
 from simulation.renderer.consolerenderer import ConsoleRenderer
 from simulation.settings import COLOR_SCHEME, GRASS_NUMBER, HERBIVORE_NUMBER, PREDATOR_NUMBER, ROCK_NUMBER, TREE_NUMBER
 from simulation.simulation import Simulation
+from simulation.entity_creator import EntityCreator
 
 
 def main() -> None:
@@ -26,21 +27,10 @@ def main() -> None:
     }
     renderer = ConsoleRenderer(color_scheme[COLOR_SCHEME])
 
-    entity_instance_counts: dict[type[Entity], int] = {
-        Predator: PREDATOR_NUMBER,
-        Herbivore: HERBIVORE_NUMBER,
-        Rock: ROCK_NUMBER,
-        Tree: TREE_NUMBER,
-        Grass: GRASS_NUMBER,
-    }
-
-    entities = []
-    for cls, count in entity_instance_counts.items():
-        for _ in range(count):
-            entities.append(cls())
+    entity_creator = EntityCreator()
 
     init_actions: list[Action] = [
-        PlaceEntitiesAction(entities),
+        PlaceEntitiesAction(entity_creator.run()),
     ]
 
     turn_actions: list[Action] = [

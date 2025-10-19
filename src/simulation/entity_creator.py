@@ -1,44 +1,22 @@
-from collections.abc import Callable
-
-from simulation.coordinate import Coordinate
 from simulation.entity.entity import Entity
 from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
 from simulation.entity.rock import Rock
+from simulation.entity.predator import Predator
+from simulation.entity.tree import Tree
+
+from simulation.settings import GRASS_NUMBER, HERBIVORE_NUMBER, PREDATOR_NUMBER, ROCK_NUMBER, TREE_NUMBER
 
 
 class EntityCreator:
-    def create(self, coord: Coordinate, entity_class: type[Entity]) -> Entity:
-        creator = get_creator(entity_class)
-        return creator(coord)
+    def __init__(self) -> None:
+        self.entity_instance_counts: dict[type[Entity], int] = {
+            Predator: PREDATOR_NUMBER,
+            Herbivore: HERBIVORE_NUMBER,
+            Rock: ROCK_NUMBER,
+            Tree: TREE_NUMBER,
+            Grass: GRASS_NUMBER,
+        }
 
-
-# some: dict[type[Entity], Callable[[Coordinate], Entity]] = {
-#     Herbivore: _create_herbivore,
-#     Grass: _create_grass,
-#     Rock: _create_rock,
-# }
-
-
-def get_creator(entity_class: type[Entity]) -> Callable[[Coordinate], Entity]:
-    if entity_class is Herbivore:
-        return _create_herbivore
-    elif entity_class is Grass:
-        return _create_grass
-    elif entity_class is Rock:
-        return _create_rock
-    else:
-        raise ValueError(entity_class)
-    # return some[entity_class]
-
-
-def _create_grass(_coord: Coordinate) -> Grass:
-    return Grass()
-
-
-def _create_herbivore(coord: Coordinate) -> Herbivore:
-    return Herbivore(coord)
-
-
-def _create_rock(_coord: Coordinate) -> Rock:
-    return Rock()
+    def run(self) -> list[Entity]:
+        return [cls() for cls, count in self.entity_instance_counts.items() for _ in range(count)]
