@@ -1,8 +1,8 @@
 """Этот модуль содержит класс рендерера и методы для отрисовки карты."""
 
-import os
+# import os
 import sys
-import time
+# import time
 
 from simulation.coordinate import Coordinate
 from simulation.map import Map
@@ -31,7 +31,7 @@ class ConsoleRenderer:
             else:
                 entity = game_map.get_entity(coord)
                 sprite = self.apply_bg_color(
-                    entity.get_sprite(),  # type: ignore
+                    entity.get_sprite(),
                     is_dark,
                 )
             row.append(sprite)

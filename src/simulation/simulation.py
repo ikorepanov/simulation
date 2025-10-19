@@ -1,5 +1,6 @@
 import time
-from typing import Callable
+from itertools import chain
+# from typing import Callable
 
 from simulation.action import Action
 from simulation.entity.grass import Grass
@@ -8,11 +9,11 @@ from simulation.map import Map
 from simulation.renderer.consolerenderer import ConsoleRenderer
 from simulation.settings import DELAY_DURATION
 
-from itertools import chain
-
 
 class Simulation:
-    def __init__(self, map: Map, renderer: ConsoleRenderer, init_actions: list[Action], turn_actions: list[Action]) -> None:
+    def __init__(
+            self, map: Map, renderer: ConsoleRenderer, init_actions: list[Action], turn_actions: list[Action]
+    ) -> None:
         self.map = map
         self.renderer = renderer
         self.init_actions = init_actions

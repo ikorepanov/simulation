@@ -10,16 +10,14 @@ from simulation.entity.entity import Entity
 if TYPE_CHECKING:
     from simulation.map import Map
 
-from loguru import logger
-
 
 class Creature(Entity):
     def __init__(
         self,
-        coordinate: Coordinate,
         speed: int,  # сколько клеток может пройти за 1 ход
         hp: int,  # Health Points ("здоровье")
         prey: type[Entity],
+        coordinate: Coordinate = Coordinate(0, 0),
     ):
         # "... координата нужна только тому существу, которое ходит.
         # Поэтому entities должны хранить координату только начиная с уровня Creature."

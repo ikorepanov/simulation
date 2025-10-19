@@ -9,22 +9,21 @@ from simulation.entity.grass import Grass
 if TYPE_CHECKING:
     from simulation.map import Map
 
+from loguru import logger
+
 from simulation.entity.entity import Entity
 from simulation.pathfinder import Pathfinder
 from simulation.settings import HERBIVORE, HERBIVORE_HP, HERBIVORE_SPEED
-
-from loguru import logger
 
 
 class Herbivore(Creature):
     def __init__(
         self,
-        coordinate: Coordinate,
         speed: int = HERBIVORE_SPEED,
         hp: int = HERBIVORE_HP,
         prey: type[Entity] = Grass,
     ):
-        super().__init__(coordinate, speed, hp, prey)
+        super().__init__(speed, hp, prey)
 
     def __repr__(self) -> str:
         return f'Herbivore {id(self)}'

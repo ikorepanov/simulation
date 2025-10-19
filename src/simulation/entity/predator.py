@@ -20,13 +20,12 @@ from simulation.settings import PREDATOR
 class Predator(Creature):
     def __init__(
         self,
-        coordinate: Coordinate,
         speed: int = PREDATOR_SPEED,
         hp: int = PREDATOR_HP,
-        attack_power: int = ATTACK_POWER,
         prey: type[Entity] = Herbivore,
+        attack_power: int = ATTACK_POWER,
     ):
-        super().__init__(coordinate, speed, hp, prey)
+        super().__init__(speed, hp, prey)
 
         self.attack_power = attack_power
 

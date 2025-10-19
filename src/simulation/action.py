@@ -5,21 +5,9 @@ from typing import Callable
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.entity import Entity
-from simulation.entity.grass import Grass
-from simulation.entity.herbivore import Herbivore
-from simulation.entity.predator import Predator
-from simulation.entity.rock import Rock
-from simulation.entity.tree import Tree
 from simulation.exceptions import NoUnoccupiedTilesError
 from simulation.map import Map
-from simulation.settings import (
-    GRASS_NUMBER,
-    HERBIVORE_NUMBER,
-    NUMBER_OF_ATTEMPTS,
-    PREDATOR_NUMBER,
-    ROCK_NUMBER,
-    TREE_NUMBER,
-)
+from simulation.settings import NUMBER_OF_ATTEMPTS
 
 
 class Action(ABC):
@@ -35,16 +23,10 @@ class Action(ABC):
 
 
 class PlaceEntitiesAction(Action):
-    def __init__(self) -> None:
-        self.entities_to_create: dict[type[Entity], int] = {
-            Predator: PREDATOR_NUMBER,
-            Herbivore: HERBIVORE_NUMBER,
-            Rock: ROCK_NUMBER,
-            Tree: TREE_NUMBER,
-            Grass: GRASS_NUMBER,
-        }
+    def __init__(self, entities_to_place: list[Entity]) -> None:
+        self.entities_to_place = entities_to_place
 
-    def generate_initial_coordinate(self, map: Map) -> Coordinate:
+    def _get_unoccupied_coordinate(self, map: Map) -> Coordinate:
         attempts = 0
         while attempts < NUMBER_OF_ATTEMPTS:
             coordinate = Coordinate(
@@ -57,26 +39,12 @@ class PlaceEntitiesAction(Action):
             return coordinate
         raise NoUnoccupiedTilesError()
 
-    def create_entity(self, entity_class: type[Entity], coord: Coordinate) -> Entity:
-        if entity_class is Predator:
-            return Predator(coord)
-        elif entity_class is Herbivore:
-            return Herbivore(coord)
-        elif entity_class is Rock:
-            return Rock()
-        elif entity_class is Tree:
-            return Tree()
-        elif entity_class is Grass:
-            return Grass()
-        else:
-            raise ValueError(entity_class)
-
     def execute(self, map: Map) -> None:
-        for class_name, number_of_instances in self.entities_to_create.items():
-            for _ in range(number_of_instances):
-                coord = self.generate_initial_coordinate(map)
-                entity = self.create_entity(class_name, coord)
-                map.add_entity(coord, entity)
+        for entity in self.entities_to_place:
+            coord = self._get_unoccupied_coordinate(map)
+            if isinstance(entity, Creature):
+                entity.coordinate = coord
+            map.add_entity(coord, entity)
         self.execute_callback()
 
 

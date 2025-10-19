@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from simulation.map import Map
 
 from simulation.entity.entity import Entity
-from simulation.exceptions import CantFindPathError
+# from simulation.exceptions import CantFindPathError
 
 
 class Pathfinder:
