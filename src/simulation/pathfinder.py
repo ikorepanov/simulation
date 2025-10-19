@@ -14,7 +14,7 @@ from simulation.entity.entity import Entity
 
 
 class Pathfinder:
-    def is_on_map(self, coordinate: Coordinate) -> bool:
+    def _is_on_map(self, coordinate: Coordinate) -> bool:
         if any(
             [
                 coordinate.x < 0,
@@ -26,24 +26,24 @@ class Pathfinder:
             return False
         return True
 
-    def get_adjacents(self, coordinate: Coordinate) -> list[Coordinate]:
+    def _get_adjacents(self, coordinate: Coordinate) -> list[Coordinate]:
         adjacents = []
         x = coordinate.x
         y = coordinate.y
         possible_x_y_pairs = [(x + 1, y),  (x, y + 1), (x - 1, y), (x, y - 1)]
         for pair in possible_x_y_pairs:
             coordinate = Coordinate(*pair)
-            if self.is_on_map(coordinate):
+            if self._is_on_map(coordinate):
                 adjacents.append(coordinate)
         return adjacents
 
-    def get_not_occupied(self, map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
+    def _get_not_occupied(self, map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
         return [
             node for node in adjacents
             if map.is_tile_empty(node) or isinstance(map.get_entity(node), target_class)
         ]
 
-    def recover_path_from_parents_dict(
+    def _recover_path_from_parents_dict(
         self,
         target_node: Coordinate,
         parents: dict[Coordinate, Coordinate | None],
@@ -80,12 +80,12 @@ class Pathfinder:
             visited.add(node)
 
             if node in map.entities and isinstance(map.get_entity(node), target_class):
-                path = self.recover_path_from_parents_dict(node, parents)
+                path = self._recover_path_from_parents_dict(node, parents)
                 # print(f'Путь найден: {[(node.x, node.y) for node in path]}')
                 return path
 
-            adjacent_nodes = self.get_adjacents(node)
-            available_nodes = self.get_not_occupied(map, adjacent_nodes, target_class)
+            adjacent_nodes = self._get_adjacents(node)
+            available_nodes = self._get_not_occupied(map, adjacent_nodes, target_class)
             for a_node in available_nodes:
                 if a_node in visited or a_node in queue:
                     continue
@@ -95,4 +95,4 @@ class Pathfinder:
         # else:
         #     raise CantFindPathError()
 
-        # return None
+        return []
