@@ -18,12 +18,11 @@ class Map:
     def add_entity(self, coordinate: Coordinate, entity: Entity) -> None:
         self.entities[coordinate] = entity
 
-    def get_entity(self, coordinate: Coordinate) -> Entity:
-        # return self.entities.get(coordinate)
-        return self.entities[coordinate]
+    def get_entity(self, coordinate: Coordinate) -> Entity | None:
+        return self.entities.get(coordinate)
 
     def remove_entity(self, coordinate: Coordinate) -> Entity:
         return self.entities.pop(coordinate)
 
-    def is_tile_on_map(self) -> bool:  # возможно - нужно добавить метод здесь, и использовать в Pathfinder'е.
-        pass
+    def is_on_map(self, coordinate: Coordinate) -> bool:
+        return coordinate.x >= 0 and coordinate.x < self.width and coordinate.y >= 0 and coordinate.y < self.height
