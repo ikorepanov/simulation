@@ -1,14 +1,12 @@
-from __future__ import annotations
-
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 from simulation.coordinate import Coordinate
 from simulation.entity.entity import Entity
 from simulation.pathfinder import Pathfinder
 
-if TYPE_CHECKING:
-    from simulation.game_map import Map
+from simulation.game_map import Map
+
+from loguru import logger
 
 
 class Creature(Entity):
@@ -30,24 +28,7 @@ class Creature(Entity):
     def make_move(self, game_map: Map) -> None:
         raise NotImplementedError
 
-    def is_tile_available_for_move(self, coord: Coordinate, game_map: Map) -> bool:
-        return game_map.is_empty_at(coord)
-
-    def check_if_movement_is_possible(self) -> bool:
-        # Проверить - возможно ли "шагнуть" на ту или иную клетку
-        is_possible: bool
-        return is_possible
-
-    def check_if_collide(self) -> bool:
-        # Проверяем, приблизились ли вплотную к цели
-        is_collide: bool
-        return is_collide
-
-    def act_as_intendent(self) -> None:
-        # Атаковать - для хищников, есть (траву) - для травоядных
-        pass
-
-    def new_coord(self, path: list[Coordinate]) -> Coordinate:
+    def get_new_coord(self, path: list[Coordinate]) -> Coordinate:
         index_1 = path.index(path[self.speed - 1])
         index_2 = len(path) - 2
         return path[min(index_1, index_2)]
@@ -68,3 +49,4 @@ class Creature(Entity):
         prey_coord = self.get_exact_same_coord(path[0], game_map)
         game_map.remove_entity_at(path[0])
         self.occupy_new_position(self.coord, prey_coord, game_map)
+        logger.info(f'{self} съел кого-то')

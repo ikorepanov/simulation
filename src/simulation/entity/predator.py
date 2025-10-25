@@ -1,12 +1,7 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from simulation.entity.creature import Creature
 from simulation.settings import ATTACK_POWER, PREDATOR_HP, PREDATOR_SPEED
 
-if TYPE_CHECKING:
-    from simulation.game_map import Map
+from simulation.game_map import Map
 
 from loguru import logger
 
@@ -29,11 +24,15 @@ class Predator(Creature):
 
         self.attack_power = attack_power
 
-    def __repr__(self) -> str:
-        return f'Predator {id(self)}'
-
     def get_sprite(self) -> str:
         return PREDATOR
+
+    def make_move(self, game_map: Map) -> None:
+        path = Pathfinder().find_path(game_map, self.coord, self.prey)  # Ищем путь
+        if len(path) > 1:  # Далеко
+            self.get_closer(path, game_map)  # Приблизиться
+        if len(path) == 1:  # Близко
+            self.attack(path, game_map)  # Атаковать
 
     def get_closer(self, path: list[Coordinate], game_map: Map) -> None:
         new_coord = self.new_coord(path)
@@ -54,13 +53,5 @@ class Predator(Creature):
                 self.finish_resource(path, game_map)
                 # game_map.remove_entity(path[0])  # NB!!! Надо как-то использовать ранее полученного herbivore для этого...
                 # self.occupy_new_position(self.coord, path[0], game_map)
-                logger.info('Хищник съел травоядное')
             else:
                 logger.info('Хищник укусил травоядное')
-
-    def make_move(self, game_map: Map) -> None:
-        path = Pathfinder().find_path(game_map, self.coord, self.prey)  # Ищем путь
-        if len(path) > 1:  # Далеко
-            self.get_closer(path, game_map)  # Приблизиться
-        if len(path) == 1:  # Близко
-            self.attack(path, game_map)  # Атаковать
