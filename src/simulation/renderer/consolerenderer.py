@@ -5,7 +5,7 @@ import sys
 # import time
 
 from simulation.coordinate import Coordinate
-from simulation.map import Map
+from simulation.game_map import Map
 from simulation.renderer.color_schemes import ColorScheme
 from simulation.settings import ANSI_RESET, ANSI_STYLE_END, BACKGROUND_256, EMPTY_TILE, ESC
 
@@ -21,15 +21,15 @@ class ConsoleRenderer:
 
         for x in range(game_map.width):
             coord = Coordinate(x, y)
-            is_dark = game_map.is_tile_dark(coord)
+            is_dark = game_map.is_dark_at(coord)
 
-            if game_map.is_tile_empty(coord):
+            if game_map.is_empty_at(coord):
                 sprite = self.apply_bg_color(
                     EMPTY_TILE,
                     is_dark,
                 )
             else:
-                entity = game_map.get_entity(coord)
+                entity = game_map.get_entity_at(coord)
                 sprite = self.apply_bg_color(
                     entity.get_sprite(),
                     is_dark,

@@ -7,7 +7,7 @@ from simulation.entity.creature import Creature
 from simulation.entity.grass import Grass
 
 if TYPE_CHECKING:
-    from simulation.map import Map
+    from simulation.game_map import Map
 
 from loguru import logger
 
@@ -27,22 +27,22 @@ class Herbivore(Creature):
     def get_sprite(self) -> str:
         return HERBIVORE
 
-    def get_closer(self, path: list[Coordinate], map: Map) -> None:
+    def get_closer(self, path: list[Coordinate], game_map: Map) -> None:
         new_coord = self.new_coord(path)
-        self.occupy_new_position(self.coordinate, new_coord, map)
+        self.occupy_new_position(self.coordinate, new_coord, game_map)
         logger.info(f'Травоядное сходило на {self.speed} клетку')
 
     def wander_or_idle(self) -> None:
         pass
 
-    def make_move(self, map: Map) -> None:
-        # path = Pathfinder().find_path(map, self.coordinate, self.prey)  # Ищем путь
-        path = self.pathfinder.find_path(map, self.coordinate, self.prey)  # Ищем путь
+    def make_move(self, game_map: Map) -> None:
+        # path = Pathfinder().find_path(game_map, self.coordinate, self.prey)  # Ищем путь
+        path = self.pathfinder.find_path(game_map, self.coordinate, self.prey)  # Ищем путь
         if path:
             if len(path) > 1:  # Далеко
-                self.get_closer(path, map)  # Приблизиться
+                self.get_closer(path, game_map)  # Приблизиться
             if len(path) == 1:  # Близко
-                self.finish_resource(path, map)  # Атаковать
+                self.finish_resource(path, game_map)  # Атаковать
                 logger.info('Травоядное съело траву')
         else:
             # self.wander_or_idle()

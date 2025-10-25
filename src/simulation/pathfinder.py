@@ -2,40 +2,11 @@ from collections import deque
 
 from simulation.coordinate import Coordinate
 from simulation.entity.entity import Entity
-from simulation.map import Map
+from simulation.game_map import Map
 
 
 class Pathfinder:
-    def _get_adjacents(self, map: Map, coordinate: Coordinate) -> list[Coordinate]:
-        adjacents = []
-        x = coordinate.x
-        y = coordinate.y
-        possible_x_y_pairs = [(x + 1, y),  (x, y + 1), (x - 1, y), (x, y - 1)]
-        for pair in possible_x_y_pairs:
-            coordinate = Coordinate(*pair)
-            if map.is_on_map(coordinate):
-                adjacents.append(coordinate)
-        return adjacents
-
-    def _get_not_occupied(self, map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
-        return [
-            node for node in adjacents
-            if map.is_tile_empty(node) or isinstance(map.get_entity(node), target_class)
-        ]
-
-    def _recover_path_from_parents_dict(
-        self,
-        target_node: Coordinate,
-        parents: dict[Coordinate, Coordinate | None],
-    ) -> list[Coordinate]:
-        node: Coordinate | None = target_node
-        path = []
-        while node:
-            path.append(node)
-            node = parents[node]
-        return path[-2::-1]
-
-    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
+    def find_path(self, game_map: Map, start_coord: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
         """
         Запуск алгоритма поиска пути к ближайшей цели
 
@@ -48,26 +19,59 @@ class Pathfinder:
            из начального; завершить поиск с результатом «неудача».
         4. Вернуться к п. 2.
         """
-        visited: set[Coordinate] = set()
         queue: deque[Coordinate] = deque()
+        visited: set[Coordinate] = set()
         parents: dict[Coordinate, Coordinate | None] = {}
 
-        queue.appendleft(init_position)
-        parents[init_position] = None
+        queue.appendleft(start_coord)
+        parents[start_coord] = None
 
         while queue:
-            node = queue.pop()
-            visited.add(node)
+            coord = queue.pop()
+            visited.add(coord)
 
-            if node in map.entities and isinstance(map.get_entity(node), target_class):
-                return self._recover_path_from_parents_dict(node, parents)
+            if game_map.is_occupied_at(coord) and self._is_entity_of_target_class(game_map, coord, target_class):
+                return self._recover_path_from_parents_dict(coord, parents)
 
-            adjacent_nodes = self._get_adjacents(map, node)
-            available_nodes = self._get_not_occupied(map, adjacent_nodes, target_class)
-            for a_node in available_nodes:
-                if a_node in visited or a_node in queue:
+            adjacent_coords = self._get_adjacents(game_map, coord)
+            available_coords = self._get_available_for_move(game_map, adjacent_coords, target_class)
+
+            for a_coord in available_coords:
+                if a_coord in visited or a_coord in queue:
                     continue
-                queue.appendleft(a_node)
-                parents[a_node] = node
+                queue.appendleft(a_coord)
+                parents[a_coord] = coord
 
         return []
+
+    def _recover_path_from_parents_dict(
+        self,
+        target_coord: Coordinate,
+        parents: dict[Coordinate, Coordinate | None],
+    ) -> list[Coordinate]:
+        coord: Coordinate | None = target_coord
+        path = []
+        while coord:
+            path.append(coord)
+            coord = parents[coord]
+        return path[-2::-1]
+
+    def _get_adjacents(self, game_map: Map, coord: Coordinate) -> list[Coordinate]:
+        possible_x_y_pairs = [
+            (coord.x + 1, coord.y),
+            (coord.x, coord.y + 1),
+            (coord.x - 1, coord.y),
+            (coord.x, coord.y - 1),
+        ]
+
+        return [Coordinate(*pair) for pair in possible_x_y_pairs if game_map.is_on_map(Coordinate(*pair))]
+
+    def _get_available_for_move(self, game_map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
+        return [
+            coord for coord in adjacents
+            if game_map.is_empty_at(coord) or self._is_entity_of_target_class(game_map, coord, target_class)
+        ]
+
+    def _is_entity_of_target_class(self, game_map: Map, coord: Coordinate, target_class: type[Entity]) -> bool:
+        entity = game_map.get_entity_at(coord)
+        return isinstance(entity, target_class)

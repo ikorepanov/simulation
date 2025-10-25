@@ -8,7 +8,7 @@ from simulation.entity.entity import Entity
 from simulation.pathfinder import Pathfinder
 
 if TYPE_CHECKING:
-    from simulation.map import Map
+    from simulation.game_map import Map
 
 
 class Creature(Entity):
@@ -27,11 +27,11 @@ class Creature(Entity):
         self.coordinate = coordinate
 
     @abstractmethod
-    def make_move(self, map: Map) -> None:
+    def make_move(self, game_map: Map) -> None:
         raise NotImplementedError
 
-    def is_tile_available_for_move(self, coordinate: Coordinate, map: Map) -> bool:
-        return map.is_tile_empty(coordinate)
+    def is_tile_available_for_move(self, coordinate: Coordinate, game_map: Map) -> bool:
+        return game_map.is_empty_at(coordinate)
 
     def check_if_movement_is_possible(self) -> bool:
         # Проверить - возможно ли "шагнуть" на ту или иную клетку
@@ -52,19 +52,19 @@ class Creature(Entity):
         index_2 = len(path) - 2
         return path[min(index_1, index_2)]
 
-    def occupy_new_position(self, old_coord: Coordinate, new_coord: Coordinate, map: Map) -> None:
-        entity = map.remove_entity(old_coord)
-        map.add_entity(new_coord, entity)
+    def occupy_new_position(self, old_coord: Coordinate, new_coord: Coordinate, game_map: Map) -> None:
+        entity = game_map.remove_entity_at(old_coord)
+        game_map.add_entity_at(new_coord, entity)
         self.coordinate = new_coord
 
-    def get_exact_same_coordinate(self, coord: Coordinate, map: Map) -> Coordinate:  # Надо этот метод убирать (раз уж hash и eq у нас переопределены...)
-        for obj in map.entities.keys():
+    def get_exact_same_coordinate(self, coord: Coordinate, game_map: Map) -> Coordinate:  # Надо этот метод убирать (раз уж hash и eq у нас переопределены...)
+        for obj in game_map.entities.keys():
             if obj.x == coord.x and obj.y == coord.y:
                 return obj
         return coord  # ?
-        # return [obj for obj in map.entities.keys() if obj.x == coord.x and obj.y == coord.y]
+        # return [obj for obj in game_map.entities.keys() if obj.x == coord.x and obj.y == coord.y]
 
-    def finish_resource(self, path: list[Coordinate], map: Map) -> None:
-        prey_coordinate = self.get_exact_same_coordinate(path[0], map)
-        map.remove_entity(path[0])
-        self.occupy_new_position(self.coordinate, prey_coordinate, map)
+    def finish_resource(self, path: list[Coordinate], game_map: Map) -> None:
+        prey_coordinate = self.get_exact_same_coordinate(path[0], game_map)
+        game_map.remove_entity_at(path[0])
+        self.occupy_new_position(self.coordinate, prey_coordinate, game_map)
