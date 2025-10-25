@@ -37,7 +37,7 @@ class Predator(Creature):
 
     def get_closer(self, path: list[Coordinate], game_map: Map) -> None:
         new_coord = self.new_coord(path)
-        self.occupy_new_position(self.coordinate, new_coord, game_map)
+        self.occupy_new_position(self.coord, new_coord, game_map)
         logger.info(f'Хищник сходил на {self.speed} клетку')
 
     def bite(self, prey: Herbivore, attack_power: int) -> None:
@@ -53,13 +53,13 @@ class Predator(Creature):
             if self.is_done(herbivore):
                 self.finish_resource(path, game_map)
                 # game_map.remove_entity(path[0])  # NB!!! Надо как-то использовать ранее полученного herbivore для этого...
-                # self.occupy_new_position(self.coordinate, path[0], game_map)
+                # self.occupy_new_position(self.coord, path[0], game_map)
                 logger.info('Хищник съел травоядное')
             else:
                 logger.info('Хищник укусил травоядное')
 
     def make_move(self, game_map: Map) -> None:
-        path = Pathfinder().find_path(game_map, self.coordinate, self.prey)  # Ищем путь
+        path = Pathfinder().find_path(game_map, self.coord, self.prey)  # Ищем путь
         if len(path) > 1:  # Далеко
             self.get_closer(path, game_map)  # Приблизиться
         if len(path) == 1:  # Близко

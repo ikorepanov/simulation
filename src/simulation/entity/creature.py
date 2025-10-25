@@ -19,19 +19,19 @@ class Creature(Entity):
         speed: int,
         hp: int,
         prey: type[Entity],
-        coordinate: Coordinate = Coordinate(0, 0),
+        coord: Coordinate = Coordinate(0, 0),
     ):
         self.speed = speed
         self.hp = hp
         self.prey = prey
-        self.coordinate = coordinate
+        self.coord = coord
 
     @abstractmethod
     def make_move(self, game_map: Map) -> None:
         raise NotImplementedError
 
-    def is_tile_available_for_move(self, coordinate: Coordinate, game_map: Map) -> bool:
-        return game_map.is_empty_at(coordinate)
+    def is_tile_available_for_move(self, coord: Coordinate, game_map: Map) -> bool:
+        return game_map.is_empty_at(coord)
 
     def check_if_movement_is_possible(self) -> bool:
         # Проверить - возможно ли "шагнуть" на ту или иную клетку
@@ -55,9 +55,9 @@ class Creature(Entity):
     def occupy_new_position(self, old_coord: Coordinate, new_coord: Coordinate, game_map: Map) -> None:
         entity = game_map.remove_entity_at(old_coord)
         game_map.add_entity_at(new_coord, entity)
-        self.coordinate = new_coord
+        self.coord = new_coord
 
-    def get_exact_same_coordinate(self, coord: Coordinate, game_map: Map) -> Coordinate:  # Надо этот метод убирать (раз уж hash и eq у нас переопределены...)
+    def get_exact_same_coord(self, coord: Coordinate, game_map: Map) -> Coordinate:  # Надо этот метод убирать (раз уж hash и eq у нас переопределены...)
         for obj in game_map.entities.keys():
             if obj.x == coord.x and obj.y == coord.y:
                 return obj
@@ -65,6 +65,6 @@ class Creature(Entity):
         # return [obj for obj in game_map.entities.keys() if obj.x == coord.x and obj.y == coord.y]
 
     def finish_resource(self, path: list[Coordinate], game_map: Map) -> None:
-        prey_coordinate = self.get_exact_same_coordinate(path[0], game_map)
+        prey_coord = self.get_exact_same_coord(path[0], game_map)
         game_map.remove_entity_at(path[0])
-        self.occupy_new_position(self.coordinate, prey_coordinate, game_map)
+        self.occupy_new_position(self.coord, prey_coord, game_map)

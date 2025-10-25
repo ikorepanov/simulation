@@ -26,24 +26,24 @@ class PlaceEntitiesAction(Action):
     def __init__(self, entities_to_place: list[Entity]) -> None:
         self.entities_to_place = entities_to_place
 
-    def _get_unoccupied_coordinate(self, game_map: Map) -> Coordinate:
+    def _get_unoccupied_coord(self, game_map: Map) -> Coordinate:
         attempts = 0
         while attempts < NUMBER_OF_ATTEMPTS:
-            coordinate = Coordinate(
+            coord = Coordinate(
                 x=random.randrange(game_map.width),
                 y=random.randrange(game_map.height)
             )
-            if not game_map.is_empty_at(coordinate):
+            if not game_map.is_empty_at(coord):
                 attempts += 1
                 continue
-            return coordinate
+            return coord
         raise NoUnoccupiedTilesError()
 
     def execute(self, game_map: Map) -> None:
         for entity in self.entities_to_place:
-            coord = self._get_unoccupied_coordinate(game_map)
+            coord = self._get_unoccupied_coord(game_map)
             if isinstance(entity, Creature):
-                entity.coordinate = coord
+                entity.coord = coord
             game_map.add_entity_at(coord, entity)
         self.execute_callback()
 
