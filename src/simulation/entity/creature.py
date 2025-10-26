@@ -28,25 +28,25 @@ class Creature(Entity):
     def make_move(self, game_map: Map) -> None:
         raise NotImplementedError
 
+    def get_closer(self, path: list[Coordinate], game_map: Map) -> None:
+        new_coord = self.get_new_coord(path)
+        self.move_to_new_coord(self.coord, new_coord, game_map)
+
     def get_new_coord(self, path: list[Coordinate]) -> Coordinate:
-        index_1 = path.index(path[self.speed - 1])
-        index_2 = len(path) - 2
-        return path[min(index_1, index_2)]
+        nearest_coord_index = len(path) - 2
+        try:
+            speed_determined_coord_index = path.index(path[self.speed - 1])
+            return path[min(speed_determined_coord_index, nearest_coord_index)]
+        except IndexError:
+            return path[nearest_coord_index]
 
-    def occupy_new_position(self, old_coord: Coordinate, new_coord: Coordinate, game_map: Map) -> None:
-        entity = game_map.remove_entity_at(old_coord)
-        game_map.add_entity_at(new_coord, entity)
+    def move_to_new_coord(self, old_coord: Coordinate, new_coord: Coordinate, game_map: Map) -> None:
+        game_map.remove_entity_at(old_coord)
+        game_map.add_entity_at(new_coord, self)
         self.coord = new_coord
-
-    def get_exact_same_coord(self, coord: Coordinate, game_map: Map) -> Coordinate:  # Надо этот метод убирать (раз уж hash и eq у нас переопределены...)
-        for obj in game_map.entities.keys():
-            if obj.x == coord.x and obj.y == coord.y:
-                return obj
-        return coord  # ?
-        # return [obj for obj in game_map.entities.keys() if obj.x == coord.x and obj.y == coord.y]
+        logger.info(f'Крича переместилась с {old_coord.x, old_coord.y} на {new_coord.x, new_coord.y}')
 
     def finish_resource(self, path: list[Coordinate], game_map: Map) -> None:
-        prey_coord = self.get_exact_same_coord(path[0], game_map)
         game_map.remove_entity_at(path[0])
-        self.occupy_new_position(self.coord, prey_coord, game_map)
         logger.info(f'{self} съел кого-то')
+        self.move_to_new_coord(self.coord, path[0], game_map)

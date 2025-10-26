@@ -34,13 +34,8 @@ class Herbivore(Creature):
             # self.wander_or_idle()
             logger.info('Травоядное курит')
 
-    def get_closer(self, path: list[Coordinate], game_map: Map) -> None:
-        new_coord = self.get_new_coord(path)
-        self.occupy_new_position(self.coord, new_coord, game_map)
-        logger.info(f'Травоядное сходило на {self.speed} клетку')
-
     def eat(self, path: list[Coordinate], game_map: Map) -> None:
-        pass
+        self.finish_resource(path, game_map)
 
     def wander_or_idle(self) -> None:
         pass

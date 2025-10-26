@@ -34,11 +34,6 @@ class Predator(Creature):
         if len(path) == 1:  # Близко
             self.attack(path, game_map)  # Атаковать
 
-    def get_closer(self, path: list[Coordinate], game_map: Map) -> None:
-        new_coord = self.new_coord(path)
-        self.occupy_new_position(self.coord, new_coord, game_map)
-        logger.info(f'Хищник сходил на {self.speed} клетку')
-
     def bite(self, prey: Herbivore, attack_power: int) -> None:
         prey.loose_hp(attack_power)
 
