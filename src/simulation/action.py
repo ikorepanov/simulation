@@ -58,6 +58,6 @@ class MoveAction(Action):
     def execute(self, game_map: Map) -> None:
         creatures = self._get_creatures(game_map)
         for creature in creatures:
-            if self._is_creature_still_alive(creature, game_map):
+            if self._is_creature_still_alive(creature, game_map):  # Может уже не быть в оригинале, но всё ещё быть в копии
                 creature.make_move(game_map)
                 self.execute_callback()

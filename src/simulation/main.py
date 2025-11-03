@@ -1,14 +1,8 @@
 from simulation.action import Action, MoveAction, PlaceEntitiesAction
-from simulation.entity.entity import Entity
-from simulation.entity.grass import Grass
-from simulation.entity.herbivore import Herbivore
-from simulation.entity.predator import Predator
-from simulation.entity.rock import Rock
-from simulation.entity.tree import Tree
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import ColorScheme
 from simulation.renderer.consolerenderer import ConsoleRenderer
-from simulation.settings import COLOR_SCHEME, GRASS_NUMBER, HERBIVORE_NUMBER, PREDATOR_NUMBER, ROCK_NUMBER, TREE_NUMBER
+from simulation.settings import COLOR_SCHEME
 from simulation.simulation import Simulation
 from simulation.entity_creator import EntityCreator
 
