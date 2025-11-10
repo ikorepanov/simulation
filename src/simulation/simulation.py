@@ -1,3 +1,4 @@
+import sys
 import time
 from itertools import chain
 
@@ -24,13 +25,21 @@ class Simulation:
         for action in chain(self.init_actions, self.turn_actions):
             action.register_callback(self._on_event)
 
-        self.playing = True
+        self.running = True
+        self.paused = False
 
-    def get_input(self) -> None:
-        while any(isinstance(entity, (Herbivore, Grass)) for entity in self.game_map.entities.values()):
-            inp = input('Для старта / паузы симуляции - введите любой символ: ')
-            if inp:
-                self.pause_simulation()
+    def get_and_process_input(self) -> str:
+        while True:
+            inp = input()
+            if inp == 'p':
+                logger.info('Simulation is paused')
+                self.paused = True
+            if inp == 'r':
+                logger.info('Simulation is running')
+                self.paused = False
+            if inp == 'q':
+                logger.info('Simulation is finished')
+                self.running = False
 
     def next_turn(self) -> None:
         """Просимулировать и отрендерить один ход."""
@@ -42,12 +51,15 @@ class Simulation:
         for action in self.init_actions:
             action.execute(self.game_map)
 
-        t = Thread(target=self.get_input)
+        t = Thread(target=self.get_and_process_input)
+        t.daemon = True
         t.start()
 
         while any(isinstance(entity, (Herbivore, Grass)) for entity in self.game_map.entities.values()):
-            if self.playing:
+            if not self.paused:
                 self.next_turn()
+            if not self.running:
+                sys.exit()
 
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
