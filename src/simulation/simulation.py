@@ -17,6 +17,7 @@ class Simulation:
             self, game_map: Map, renderer: ConsoleRenderer, init_actions: list[Action], turn_actions: list[Action]
     ) -> None:
         self.game_map = game_map
+        self.move_counter = 1
         self.renderer = renderer
         self.init_actions = init_actions
         self.turn_actions = turn_actions
@@ -44,28 +45,39 @@ class Simulation:
 
     def start_simulation(self) -> None:
         """Запустить бесконечный цикл симуляции и рендеринга."""
-        for action in self.init_actions:
-            action.execute(self.game_map)
-        self._on_event()
+        while any(isinstance(entity, (Herbivore, Grass)) for entity in self.game_map.entities.values()):
+            logger.info(f'Ход №{self.move_counter}')
 
+            if self.paused:
+                self.pause_simulation()
+
+            if not self.running:
+                sys.exit()
+
+            self.next_turn()
+
+            self._delay_execution()
+            self.move_counter += 1
+
+    def run(self) -> None:
+        # запустили второй поток: слушаем инпут от юзера
         t = Thread(target=self.get_and_process_input)
         t.daemon = True
         t.start()
 
-        while any(isinstance(entity, (Herbivore, Grass)) for entity in self.game_map.entities.values()):
-            if not self.paused:
-                self.next_turn()
-                self._delay_execution()
-            if not self.running:
-                sys.exit()
+        # расставили сущности на карте
+        for action in self.init_actions:
+            action.execute(self.game_map)
+        self.render_board()
+        self._delay_execution()
+        logger.info('Все расставлены, всё готово')
+
+        # запустили бесконечный цикл симуляции и рендеринга
+        self.start_simulation()
 
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
-        self.playing = not self.playing
-        if self.playing:
-            logger.info('Симуляция возобновлена')
-        else:
-            logger.info('Симуляция на паузе')
+        logger.info('Симуляция на паузе')
 
     def render_board(self) -> None:
         self.renderer.render(self.game_map)

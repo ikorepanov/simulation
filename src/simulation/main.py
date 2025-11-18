@@ -37,7 +37,7 @@ def main() -> None:
         init_actions=init_actions,
         turn_actions=turn_actions,
     )
-    simulation.start_simulation()
+    simulation.run()
 
 
 if __name__ == '__main__':
