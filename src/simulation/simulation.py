@@ -1,6 +1,5 @@
 import sys
 import time
-from itertools import chain
 
 from simulation.action import Action
 from simulation.entity.grass import Grass
@@ -21,10 +20,6 @@ class Simulation:
         self.renderer = renderer
         self.init_actions = init_actions
         self.turn_actions = turn_actions
-
-        for action in chain(self.init_actions, self.turn_actions):
-            action.register_callback(self._on_event)
-
         self.running = True
         self.paused = False
 
@@ -45,11 +40,13 @@ class Simulation:
         """Просимулировать и отрендерить один ход."""
         for action in self.turn_actions:
             action.execute(self.game_map)
+        self.render_board()
 
     def start_simulation(self) -> None:
         """Запустить бесконечный цикл симуляции и рендеринга."""
         for action in self.init_actions:
             action.execute(self.game_map)
+        self._on_event()
 
         t = Thread(target=self.get_and_process_input)
         t.daemon = True
@@ -58,6 +55,7 @@ class Simulation:
         while any(isinstance(entity, (Herbivore, Grass)) for entity in self.game_map.entities.values()):
             if not self.paused:
                 self.next_turn()
+                self._delay_execution()
             if not self.running:
                 sys.exit()
 

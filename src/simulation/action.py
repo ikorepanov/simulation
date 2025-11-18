@@ -1,6 +1,5 @@
 import random
 from abc import ABC, abstractmethod
-from typing import Callable
 
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
@@ -14,12 +13,6 @@ class Action(ABC):
     @abstractmethod
     def execute(self, game_map: Map) -> None:
         raise NotImplementedError
-
-    def register_callback(self, fn: Callable[..., None]) -> None:
-        self.cb = fn
-
-    def execute_callback(self) -> None:
-        self.cb()
 
 
 class PlaceEntitiesAction(Action):
@@ -45,7 +38,6 @@ class PlaceEntitiesAction(Action):
             if isinstance(entity, Creature):
                 entity.coord = coord
             game_map.add_entity_at(coord, entity)
-        self.execute_callback()
 
 
 class MoveAction(Action):
@@ -60,4 +52,3 @@ class MoveAction(Action):
         for creature in creatures:
             if self._is_creature_still_alive(creature, game_map):  # Может уже не быть в оригинале, но всё ещё быть в копии
                 creature.make_move(game_map)
-                self.execute_callback()
