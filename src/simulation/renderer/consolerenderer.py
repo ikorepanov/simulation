@@ -14,7 +14,7 @@ class ConsoleRenderer:
     def __init__(self, color_scheme: ColorScheme):
         self.color_scheme = color_scheme
 
-    def build_row_string(self, y: int, game_map: Map) -> str:
+    def _build_row_string(self, y: int, game_map: Map) -> str:
         """Формирует текстовую строку для заданной строки карты (y)."""
 
         row = []
@@ -24,24 +24,24 @@ class ConsoleRenderer:
             is_dark = game_map.is_dark_at(coord)
 
             if game_map.is_empty_at(coord):
-                sprite = self.apply_bg_color(
+                sprite = self._apply_bg_color(
                     EMPTY_TILE,
                     is_dark,
                 )
             else:
                 entity = game_map.get_entity_at(coord)
-                sprite = self.apply_bg_color(
+                sprite = self._apply_bg_color(
                     entity.get_sprite(),
                     is_dark,
                 )
             row.append(sprite)
 
-        row.append(self.reset_style())
+        row.append(self._reset_style())
 
         return ''.join(row)
 
     @staticmethod
-    def reset_style() -> str:
+    def _reset_style() -> str:
         """Возвращает ANSI-последовательность для завершения ANSI-стилей в конце строки."""
 
         return ANSI_RESET + ANSI_STYLE_END
@@ -53,18 +53,18 @@ class ConsoleRenderer:
         # print('Press "p" to pause, "r" to resume or "q" to quit Simulation')
 
         for y in range(game_map.height):
-            print(self.build_row_string(y, game_map))
+            print(self._build_row_string(y, game_map))
             # sys.stdout.write(f'{self.build_row_string(y, game_map)}\n')
 
         # time.sleep(1)
 
-    def apply_bg_color(self, sprite: str, is_tile_dark: bool) -> str:
+    def _apply_bg_color(self, sprite: str, is_tile_dark: bool) -> str:
         """Возвращает ANSI-последовательность для спрайта на фоне соответствующего цвета: ANSI 256-color background."""
 
         bg = self.color_scheme.bg_dark if is_tile_dark else self.color_scheme.bg_light
         return f'{ESC}{BACKGROUND_256}{bg}{ANSI_STYLE_END}{sprite}'
 
-    def clear_screen_and_reset_cursor(self) -> None:
+    def _clear_screen_and_reset_cursor(self) -> None:
         # os.system('cls' if os.name == 'nt' else 'clear')  # Clears screen based on OS
         # print("\x1b[H", end="")  # Move cursor to home (without new line)
 
