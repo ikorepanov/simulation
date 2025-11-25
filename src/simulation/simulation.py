@@ -1,14 +1,12 @@
 import time
 
 from simulation.action import Action
-from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
 from simulation.game_map import Map
 from simulation.renderer.consolerenderer import ConsoleRenderer
 from simulation.settings import DELAY_DURATION
 
 from threading import Thread
-from loguru import logger
 from collections import deque
 
 
@@ -25,29 +23,23 @@ class Simulation:
         self.paused = False
         self.input_queue: deque[str] = deque()
 
-    def new(self) -> None:
-        # start a new game
-        self.prepare_simulation()
+        self.execute_actions(self.init_actions)
         self.run_second_thread()
-        self.start_simulation()
-
-    def prepare_simulation(self) -> None:
-        # расставили сущности на карте
-        for action in self.init_actions:
-            action.execute(self.game_map)
-        self.render_board()
-        self._delay_execution()
-        logger.info('Все расставлены, всё готово')
 
     def run_second_thread(self) -> None:
         t = Thread(target=self.get_user_input, args=(self.input_queue,))
         t.daemon = True
         t.start()
 
+    def run_game(self) -> None:
+        self.render_map()
+        self._delay_execution()
+        self.start_simulation()
+
     def start_simulation(self) -> None:
         # Game Loop
         self.playing = True
-        while self.playing and any(isinstance(entity, (Herbivore, Grass)) for entity in self.game_map.entities.values()):
+        while self.playing and any(isinstance(entity, Herbivore) for entity in self.game_map.entities.values()):
             if self.input_queue:
                 self.process_user_input(self.input_queue)
             if not self.paused and self.running:
@@ -70,9 +62,8 @@ class Simulation:
 
     def next_turn(self) -> None:
         """Просимулировать и отрендерить один ход."""
-        for action in self.turn_actions:
-            action.execute(self.game_map)
-        self.render_board()
+        self.execute_actions(self.turn_actions)
+        self.render_map()
 
     def pause_simulation(self) -> None:
         """Приостановить бесконечный цикл симуляции и рендеринга."""
@@ -83,7 +74,7 @@ class Simulation:
             self.playing = False
         self.running = False
 
-    def render_board(self) -> None:
+    def render_map(self) -> None:
         self.renderer.render(self.game_map)
 
     def _delay_execution(self) -> None:
@@ -91,3 +82,7 @@ class Simulation:
 
     def count_moves(self) -> None:
         self.move_counter += 1
+
+    def execute_actions(self, actions: list[Action]) -> None:
+        for action in actions:
+            action.execute(self.game_map)

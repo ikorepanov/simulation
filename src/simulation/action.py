@@ -39,6 +39,21 @@ class PlaceEntitiesAction(Action):
                 entity.coord = coord
             game_map.add_entity_at(coord, entity)
 
+        # ent_1 = self.entities_to_place[0]
+        # coord = Coordinate(3, 2)
+        # ent_1.coord = coord
+        # game_map.add_entity_at(coord, ent_1)
+
+        # ent_2 = self.entities_to_place[1]
+        # coord = Coordinate(2, 2)
+        # ent_2.coord = coord
+        # game_map.add_entity_at(coord, ent_2)
+
+        # ent_3 = self.entities_to_place[2]
+        # coord = Coordinate(2, 0)
+        # ent_3.coord = coord
+        # game_map.add_entity_at(coord, ent_3)
+
 
 class MoveAction(Action):
     def _get_creatures(self, game_map: Map) -> list[Creature]:

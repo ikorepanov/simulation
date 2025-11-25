@@ -39,14 +39,9 @@ def main() -> None:
         turn_actions=turn_actions,
     )
 
-    print('HELLO')
-
     while simulation.running:
-        simulation.new()
-        print('GAME OVER')
+        simulation.run_game()
         sys.exit()  # потом добавить экран выбора - продолжить, или выйти
-
-    print('BYE')
 
 
 if __name__ == '__main__':

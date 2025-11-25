@@ -29,9 +29,9 @@ class Herbivore(Creature):
                 self._get_closer(path, game_map)
             if len(path) == 1:
                 self._eat_at(path[0], game_map)
-        else:
+        # else:
             # self.wander_or_idle()
-            logger.info('Травоядное курит')
+            # logger.info('Травоядное курит')
 
     def _eat_at(self, coord: Coordinate, game_map: Map) -> None:
         self._finish_resource_at(coord, game_map)

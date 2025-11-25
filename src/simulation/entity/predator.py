@@ -37,4 +37,6 @@ class Predator(Creature):
         entity = game_map.get_entity_at(coord)
         if isinstance(entity, self.prey_class):
             entity._loose_hp(self.attack_power)
-            self._finish_resource_at(coord, game_map) if entity.hp == 0 else logger.info('Хищник укусил травоядное')
+            # self._finish_resource_at(coord, game_map) if entity.hp == 0 else logger.info('Хищник укусил травоядное')
+            if entity.hp == 0:
+                self._finish_resource_at(coord, game_map)
