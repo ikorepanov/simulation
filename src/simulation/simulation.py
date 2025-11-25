@@ -19,7 +19,6 @@ class Simulation:
         self.renderer = renderer
         self.init_actions = init_actions
         self.turn_actions = turn_actions
-        self.running = True
         self.paused = False
         self.input_queue: deque[str] = deque()
 
@@ -31,18 +30,15 @@ class Simulation:
         t.daemon = True
         t.start()
 
-    def run_game(self) -> None:
+    def start_simulation(self) -> None:
         self._render_map()
         self._delay_execution()
-        self._start_simulation()
 
-    def _start_simulation(self) -> None:
-        # Game Loop
         self.playing = True
         while self.playing and any(isinstance(entity, Herbivore) for entity in self.game_map.entities.values()):
             if self.input_queue:
                 self._process_user_input(self.input_queue)
-            if not self.paused and self.running:
+            if not self.paused and self.playing:
                 self._next_turn()
                 self._count_moves()
                 self._delay_execution()
@@ -72,7 +68,6 @@ class Simulation:
     def _quit_simulation(self) -> None:
         if self.playing:
             self.playing = False
-        self.running = False
 
     def _render_map(self) -> None:
         self.renderer.render(self.game_map)

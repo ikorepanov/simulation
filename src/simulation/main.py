@@ -1,4 +1,3 @@
-import sys
 from simulation.action import Action, MoveAction, PlaceEntitiesAction
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import color_schemes
@@ -30,9 +29,7 @@ def main() -> None:
         turn_actions=turn_actions,
     )
 
-    while simulation.running:
-        simulation.run_game()
-        sys.exit()  # потом добавить экран выбора - продолжить, или выйти
+    simulation.start_simulation()
 
 
 if __name__ == '__main__':
