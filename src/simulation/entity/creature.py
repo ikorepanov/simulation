@@ -42,7 +42,7 @@ class Creature(Entity):
 
     def _finish_resource_at(self, coord: Coordinate, game_map: Map) -> None:
         game_map.remove_entity_at(coord)
-        # logger.info('Кто-то съел кого-то')
+        logger.info('Кто-то съел кого-то')
         self._move_to(coord, game_map)
 
     def _move_to(self, new_coord: Coordinate, game_map: Map) -> None:
@@ -50,4 +50,4 @@ class Creature(Entity):
         game_map.remove_entity_at(old_coord)
         game_map.add_entity_at(new_coord, self)
         self.coord = new_coord
-        # logger.info(f'Крича переместилась с {old_coord.x, old_coord.y} на {new_coord.x, new_coord.y}')
+        logger.info(f'Крича переместилась с {old_coord.x, old_coord.y} на {new_coord.x, new_coord.y}')

@@ -40,17 +40,20 @@ class PlaceEntitiesAction(Action):
             game_map.add_entity_at(coord, entity)
 
         # ent_1 = self.entities_to_place[0]
-        # coord = Coordinate(3, 2)
+        # # coord = Coordinate(2, 2)  # Расстановка №1 для отдатки move in circles
+        # coord = Coordinate(3, 2)  # Расстановка №2 для отдатки move in circles
         # ent_1.coord = coord
         # game_map.add_entity_at(coord, ent_1)
 
         # ent_2 = self.entities_to_place[1]
-        # coord = Coordinate(2, 2)
+        # # coord = Coordinate(0, 0)  # Расстановка №1 для отдатки move in circles
+        # coord = Coordinate(0, 0)  # Расстановка №2 для отдатки move in circles
         # ent_2.coord = coord
         # game_map.add_entity_at(coord, ent_2)
 
         # ent_3 = self.entities_to_place[2]
-        # coord = Coordinate(2, 0)
+        # # coord = Coordinate(1, 2)  # Расстановка №1 для отдатки move in circles
+        # coord = Coordinate(3, 0)  # Расстановка №2 для отдатки move in circles
         # ent_3.coord = coord
         # game_map.add_entity_at(coord, ent_3)
 
