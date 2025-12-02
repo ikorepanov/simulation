@@ -2,6 +2,9 @@ from abc import abstractmethod
 
 from simulation.coordinate import Coordinate
 from simulation.entity.entity import Entity
+# from simulation.entity.grass import Grass
+# from simulation.entity.herbivore import Herbivore
+# from simulation.entity.predator import Predator
 from simulation.pathfinder import Pathfinder
 
 from simulation.game_map import Map
@@ -24,6 +27,9 @@ class Creature(Entity):
         self.prey_class = prey_class
         self.coord = coord
 
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__}'
+
     @abstractmethod
     def make_move(self, game_map: Map) -> None:
         raise NotImplementedError
@@ -42,7 +48,7 @@ class Creature(Entity):
 
     def _finish_resource_at(self, coord: Coordinate, game_map: Map) -> None:
         game_map.remove_entity_at(coord)
-        logger.info('Кто-то съел кого-то')
+        logger.info(f'{self} ate {self.prey_class.__name__}')
         self._move_to(coord, game_map)
 
     def _move_to(self, new_coord: Coordinate, game_map: Map) -> None:
@@ -50,4 +56,4 @@ class Creature(Entity):
         game_map.remove_entity_at(old_coord)
         game_map.add_entity_at(new_coord, self)
         self.coord = new_coord
-        logger.info(f'Крича переместилась с {old_coord.x, old_coord.y} на {new_coord.x, new_coord.y}')
+        logger.info(f'{self} moved from {old_coord.x, old_coord.y} to {new_coord.x, new_coord.y}')

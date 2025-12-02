@@ -31,7 +31,7 @@ class Herbivore(Creature):
                 self._eat_at(path[0], game_map)
         else:
             # self._wander_or_idle()
-            logger.info('Травоядное курит')
+            logger.info('Herbivore remains in place because of no grass')
 
     def _eat_at(self, coord: Coordinate, game_map: Map) -> None:
         self._finish_resource_at(coord, game_map)

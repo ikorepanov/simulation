@@ -29,7 +29,7 @@ class Predator(Creature):
 
     def make_move(self, game_map: Map) -> None:
         if self.is_in_circles():
-            logger.info('Умный хищник остаётся на месте')
+            logger.info('Predator remains in place to avoid walking in circles')
             self.prev_coords.clear()
             pass
         else:
@@ -57,6 +57,6 @@ class Predator(Creature):
         entity = game_map.get_entity_at(coord)
         if isinstance(entity, self.prey_class):
             entity._loose_hp(self.attack_power)
-            self._finish_resource_at(coord, game_map) if entity.hp == 0 else logger.info('Хищник укусил травоядное')
+            self._finish_resource_at(coord, game_map) if entity.hp == 0 else logger.info('Predator bit Herbivore')
             # if entity.hp == 0:
             #     self._finish_resource_at(coord, game_map)
