@@ -1,5 +1,6 @@
+import random
 from simulation.entity.creature import Creature
-from simulation.settings import ATTACK_POWER, PREDATOR_HP, PREDATOR_SPEED
+from simulation.settings import MAX_ATTACK_POWER, PREDATOR_HP, PREDATOR_SPEED
 
 from simulation.game_map import Map
 
@@ -17,7 +18,7 @@ class Predator(Creature):
         speed: int = PREDATOR_SPEED,
         hp: int = PREDATOR_HP,
         prey_class: type[Herbivore] = Herbivore,
-        attack_power: int = ATTACK_POWER,
+        attack_power: int = random.randint(1, MAX_ATTACK_POWER),
     ):
         super().__init__(speed, hp, prey_class)
 
@@ -43,9 +44,7 @@ class Predator(Creature):
                 self._attack_at(path[0], game_map)
 
     def is_in_circles(self) -> bool:
-        # print([(coord.x, coord.y) for coord in self.prev_coords])
         if len(self.prev_coords) > 3:
-            logger.info(f'In circles: { self.prev_coords[0] == self.prev_coords[2] and self.prev_coords[1] == self.prev_coords[3]}')
             return self.prev_coords[0] == self.prev_coords[2] and self.prev_coords[1] == self.prev_coords[3]
         else:
             return False
@@ -57,6 +56,4 @@ class Predator(Creature):
         entity = game_map.get_entity_at(coord)
         if isinstance(entity, self.prey_class):
             entity._loose_hp(self.attack_power)
-            self._finish_resource_at(coord, game_map) if entity.hp == 0 else logger.info('Predator bit Herbivore')
-            # if entity.hp == 0:
-            #     self._finish_resource_at(coord, game_map)
+            self._finish_resource_at(coord, game_map) if entity.hp <= 0 else logger.info(f'Predator bit Herbivore with attack power of {self.attack_power}')
