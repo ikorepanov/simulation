@@ -25,6 +25,9 @@ class Predator(Creature):
         self.attack_power = attack_power
         self.prev_coords: list[Coordinate] = []
 
+    def __str__(self) -> str:
+        return f'Predator, attack power: {self.attack_power}'
+
     def get_sprite(self) -> str:
         return PREDATOR
 
@@ -32,7 +35,7 @@ class Predator(Creature):
         if self.is_in_circles():
             logger.info('Predator remains in place to avoid walking in circles')
             self.prev_coords.clear()
-            pass
+            pass  # убрать?
         else:
             path = Pathfinder().find_path(game_map, self.coord, self.prey_class)
             if len(path) > 1:
@@ -54,6 +57,6 @@ class Predator(Creature):
 
     def _attack_at(self, coord: Coordinate, game_map: Map) -> None:
         entity = game_map.get_entity_at(coord)
-        if isinstance(entity, self.prey_class):
+        if entity and isinstance(entity, Herbivore):
             entity._loose_hp(self.attack_power)
-            self._finish_resource_at(coord, game_map) if entity.hp <= 0 else logger.info(f'Predator bit Herbivore with attack power of {self.attack_power}')
+            self._finish_resource_at(coord, game_map) if entity.hp <= 0 else logger.info(f'{self} bit Herbivore')

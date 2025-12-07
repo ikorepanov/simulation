@@ -7,7 +7,7 @@ from simulation.game_map import Map
 
 from loguru import logger
 
-from simulation.settings import HERBIVORE, HERBIVORE_HP, HERBIVORE_SPEED
+from simulation.settings import HERBIVORE, MAX_HERBIVORE_HP, HERBIVORE_SPEED
 
 
 class Herbivore(Creature):
@@ -15,10 +15,13 @@ class Herbivore(Creature):
     def __init__(
         self,
         speed: int = HERBIVORE_SPEED,
-        hp: int = HERBIVORE_HP,
+        hp: int = random.randint(2, MAX_HERBIVORE_HP),
         prey_class: type[Grass] = Grass,
     ):
         super().__init__(speed, hp, prey_class)
+
+    def __str__(self) -> str:
+        return f'Herbivore, HP: {self.hp}'
 
     def get_sprite(self) -> str:
         return HERBIVORE
@@ -32,7 +35,6 @@ class Herbivore(Creature):
                 self._eat_at(path[0], game_map)
         else:
             self._wander_or_idle(game_map)
-            # logger.info('Herbivore remains in place because of no grass')
 
     def _eat_at(self, coord: Coordinate, game_map: Map) -> None:
         self._finish_resource_at(coord, game_map)
