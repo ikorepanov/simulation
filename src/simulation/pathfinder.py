@@ -30,10 +30,10 @@ class Pathfinder:
             coord = queue.pop()
             visited.add(coord)
 
-            if game_map.is_occupied_at(coord) and self._is_entity_of_target_class(game_map, coord, target_class):
+            if game_map.is_occupied_by_certain_class(coord, target_class):
                 return self._recover_path_from_parents_dict(coord, parents)
 
-            adjacent_coords = self._get_adjacents(game_map, coord)
+            adjacent_coords = game_map.get_adjacents(coord)
             available_coords = self._get_available_for_move(game_map, adjacent_coords, target_class)
 
             for a_coord in available_coords:
@@ -56,22 +56,8 @@ class Pathfinder:
             coord = parents[coord]
         return path[-2::-1]
 
-    def _get_adjacents(self, game_map: Map, coord: Coordinate) -> list[Coordinate]:
-        possible_x_y_pairs = [
-            (coord.x + 1, coord.y),
-            (coord.x, coord.y + 1),
-            (coord.x - 1, coord.y),
-            (coord.x, coord.y - 1),
-        ]
-
-        return [Coordinate(*pair) for pair in possible_x_y_pairs if game_map.is_on_map(Coordinate(*pair))]
-
     def _get_available_for_move(self, game_map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
         return [
             coord for coord in adjacents
-            if game_map.is_empty_at(coord) or self._is_entity_of_target_class(game_map, coord, target_class)
+            if game_map.is_empty_at(coord) or game_map.is_occupied_by_certain_class(coord, target_class)
         ]
-
-    def _is_entity_of_target_class(self, game_map: Map, coord: Coordinate, target_class: type[Entity]) -> bool:
-        entity = game_map.get_entity_at(coord)
-        return isinstance(entity, target_class)

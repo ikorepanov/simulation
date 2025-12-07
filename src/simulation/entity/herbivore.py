@@ -1,3 +1,4 @@
+import random
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.grass import Grass
@@ -30,14 +31,28 @@ class Herbivore(Creature):
             if len(path) == 1:
                 self._eat_at(path[0], game_map)
         else:
-            # self._wander_or_idle()
-            logger.info('Herbivore remains in place because of no grass')
+            self._wander_or_idle(game_map)
+            # logger.info('Herbivore remains in place because of no grass')
 
     def _eat_at(self, coord: Coordinate, game_map: Map) -> None:
         self._finish_resource_at(coord, game_map)
 
-    def _wander_or_idle(self) -> None:
-        pass
+    def _wander_or_idle(self, game_map: Map) -> None:
+        what_to_do = ['wander', 'idle']
+        weights = (1/3, 2/3)
+
+        some = random.choices(what_to_do, weights=weights)[0]
+
+        if some == 'wander':
+            adjacent_coords = game_map.get_adjacents(self.coord)
+            while True:
+                random_coord = random.choice(adjacent_coords)
+                if game_map.is_empty_at(random_coord):
+                    break
+            self._move_to(random_coord, game_map)
+            logger.info('(Herbivore was wandering)')
+        else:
+            logger.info('Herbivore remains in place because it does not know what to do')
 
     def _loose_hp(self, attack_power: int) -> None:
         self.hp -= attack_power
