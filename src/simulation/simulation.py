@@ -3,7 +3,7 @@ import time
 from simulation.action import Action
 from simulation.entity.herbivore import Herbivore
 from simulation.game_map import Map
-from simulation.renderer.consolerenderer import ConsoleRenderer
+from simulation.renderer.renderer import Renderer
 from simulation.settings import DELAY_DURATION
 
 from threading import Thread
@@ -12,7 +12,7 @@ from collections import deque
 
 class Simulation:
     def __init__(
-            self, game_map: Map, renderer: ConsoleRenderer, init_actions: list[Action], turn_actions: list[Action]
+            self, game_map: Map, renderer: Renderer, init_actions: list[Action], turn_actions: list[Action]
     ) -> None:
         self.game_map = game_map
         self.move_counter = 1

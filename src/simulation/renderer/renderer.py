@@ -10,7 +10,7 @@ from simulation.renderer.color_schemes import ColorScheme
 from simulation.settings import ANSI_RESET, ANSI_STYLE_END, BACKGROUND_256, EMPTY_TILE, ESC
 
 
-class ConsoleRenderer:
+class Renderer:
     def __init__(self, color_scheme: ColorScheme):
         self.color_scheme = color_scheme
 

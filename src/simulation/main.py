@@ -1,7 +1,7 @@
 from simulation.action import Action, MoveAction, PlaceEntitiesAction
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import color_schemes
-from simulation.renderer.consolerenderer import ConsoleRenderer
+from simulation.renderer.renderer import Renderer
 from simulation.settings import COLOR_SCHEME
 from simulation.simulation import Simulation
 from simulation.entity_creator import EntityCreator
@@ -10,7 +10,7 @@ from simulation.entity_creator import EntityCreator
 def main() -> None:
     game_map = Map()
 
-    renderer = ConsoleRenderer(color_schemes[COLOR_SCHEME])
+    renderer = Renderer(color_schemes[COLOR_SCHEME])
 
     entity_creator = EntityCreator()
 
