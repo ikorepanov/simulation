@@ -9,8 +9,11 @@ from loguru import logger
 
 from simulation.settings import HERBIVORE, MAX_HERBIVORE_HP, HERBIVORE_SPEED
 
+from itertools import count
+
 
 class Herbivore(Creature):
+    _ids = count(1)
 
     def __init__(
         self,
@@ -20,8 +23,10 @@ class Herbivore(Creature):
     ):
         super().__init__(speed, hp, prey_class)
 
+        self.id = next(self._ids)
+
     def __str__(self) -> str:
-        return f'Herbivore, HP: {self.hp}'
+        return f'{self.__class__.__name__}-{self.id} (HP: {self.hp})'
 
     def get_sprite(self) -> str:
         return HERBIVORE
@@ -40,7 +45,7 @@ class Herbivore(Creature):
         grass = game_map.get_entity_at(coord)
         if grass and isinstance(grass, Grass):
             grass.to_be_eaten()
-            self._finish_resource_at(coord, game_map) if grass.height == 0 else logger.info(f'{self} eat {grass}')
+            self._finish_resource_at(coord, game_map) if grass.height <= 0 else logger.info(f'{self} is eating {grass}')
 
     def _wander_or_idle(self, game_map: Map) -> None:
         what_to_do = ['wander', 'idle']
@@ -54,10 +59,10 @@ class Herbivore(Creature):
                 random_coord = random.choice(adjacent_coords)
                 if game_map.is_empty_at(random_coord):
                     break
+            logger.info(f'{self} is wandering and')
             self._move_to(random_coord, game_map)
-            logger.info('(Herbivore was wandering)')
         else:
-            logger.info('Herbivore remains in place because it does not know what to do')
+            logger.info(f'{self} chose to stay in place')
 
     def _loose_hp(self, attack_power: int) -> None:
         self.hp -= attack_power

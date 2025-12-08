@@ -27,9 +27,6 @@ class Creature(Entity):
         self.prey_class = prey_class
         self.coord = coord
 
-    def __str__(self) -> str:
-        return f'{self.__class__.__name__}'
-
     @abstractmethod
     def make_move(self, game_map: Map) -> None:
         raise NotImplementedError
@@ -47,8 +44,8 @@ class Creature(Entity):
             return path[nearest_coord_index]
 
     def _finish_resource_at(self, coord: Coordinate, game_map: Map) -> None:
-        game_map.remove_entity_at(coord)
-        logger.info(f'{self} ate {self.prey_class.__name__}')
+        prey = game_map.remove_entity_at(coord)
+        logger.info(f'{self} has eaten {prey}')
         self._move_to(coord, game_map)
 
     def _move_to(self, new_coord: Coordinate, game_map: Map) -> None:

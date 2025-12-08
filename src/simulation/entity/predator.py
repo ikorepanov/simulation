@@ -11,8 +11,12 @@ from simulation.entity.herbivore import Herbivore
 from simulation.pathfinder import Pathfinder
 from simulation.settings import PREDATOR
 
+from itertools import count
+
 
 class Predator(Creature):
+    _ids = count(1)
+
     def __init__(
         self,
         speed: int = PREDATOR_SPEED,
@@ -24,9 +28,10 @@ class Predator(Creature):
 
         self.attack_power = attack_power
         self.prev_coords: list[Coordinate] = []
+        self.id = next(self._ids)
 
     def __str__(self) -> str:
-        return f'Predator, attack power: {self.attack_power}'
+        return f'{self.__class__.__name__}-{self.id} (a.p.: {self.attack_power})'
 
     def get_sprite(self) -> str:
         return PREDATOR
@@ -56,7 +61,7 @@ class Predator(Creature):
         pass
 
     def _attack_at(self, coord: Coordinate, game_map: Map) -> None:
-        entity = game_map.get_entity_at(coord)
-        if entity and isinstance(entity, Herbivore):
-            entity._loose_hp(self.attack_power)
-            self._finish_resource_at(coord, game_map) if entity.hp <= 0 else logger.info(f'{self} bit Herbivore')
+        herbivore = game_map.get_entity_at(coord)
+        if herbivore and isinstance(herbivore, Herbivore):
+            herbivore._loose_hp(self.attack_power)
+            self._finish_resource_at(coord, game_map) if herbivore.hp <= 0 else logger.info(f'{self} bit {herbivore}')

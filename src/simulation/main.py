@@ -4,7 +4,7 @@ from simulation.renderer.color_schemes import color_schemes
 from simulation.renderer.renderer import Renderer
 from simulation.settings import COLOR_SCHEME
 from simulation.simulation import Simulation
-from simulation.entity_creator import EntityCreator
+from simulation.entity.entity_creator import EntityCreator
 
 
 def main() -> None:
