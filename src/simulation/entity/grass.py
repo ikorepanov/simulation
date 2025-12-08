@@ -10,8 +10,8 @@ class Grass(Entity):
     ):
         self.height = height
 
-    def __repr__(self) -> str:
-        return f'Grass {id(self)}'
+    def __str__(self) -> str:
+        return f'Grass, current height: {self.height}'
 
     def to_be_eaten(self) -> None:
         self.height -= 1

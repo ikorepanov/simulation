@@ -37,7 +37,10 @@ class Herbivore(Creature):
             self._wander_or_idle(game_map)
 
     def _eat_at(self, coord: Coordinate, game_map: Map) -> None:
-        self._finish_resource_at(coord, game_map)
+        grass = game_map.get_entity_at(coord)
+        if grass and isinstance(grass, Grass):
+            grass.to_be_eaten()
+            self._finish_resource_at(coord, game_map) if grass.height == 0 else logger.info(f'{self} eat {grass}')
 
     def _wander_or_idle(self, game_map: Map) -> None:
         what_to_do = ['wander', 'idle']
