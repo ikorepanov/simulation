@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.entity import Entity
-from simulation.exceptions import NoUnoccupiedTilesError
+from simulation.exceptions import NoUnoccupiedCoordsError
 from simulation.game_map import Map
 from simulation.settings import NUMBER_OF_ATTEMPTS
 
@@ -30,7 +30,7 @@ class PlaceEntitiesAction(Action):
                 attempts += 1
                 continue
             return coord
-        raise NoUnoccupiedTilesError()
+        raise NoUnoccupiedCoordsError()
 
     def execute(self, game_map: Map) -> None:
         for entity in self.entities_to_place:
