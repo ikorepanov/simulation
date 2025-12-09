@@ -1,4 +1,6 @@
 import time
+from collections import deque
+from threading import Thread
 
 from simulation.action import Action
 from simulation.entity.herbivore import Herbivore
@@ -6,13 +8,14 @@ from simulation.game_map import Map
 from simulation.renderer.renderer import Renderer
 from simulation.settings import DELAY_DURATION
 
-from threading import Thread
-from collections import deque
-
 
 class Simulation:
     def __init__(
-            self, game_map: Map, renderer: Renderer, init_actions: list[Action], turn_actions: list[Action]
+        self,
+        game_map: Map,
+        renderer: Renderer,
+        init_actions: list[Action],
+        turn_actions: list[Action],
     ) -> None:
         self.game_map = game_map
         self.move_counter = 1
@@ -35,7 +38,9 @@ class Simulation:
         self._delay_execution()
 
         self.playing = True
-        while self.playing and any(isinstance(entity, Herbivore) for entity in self.game_map.entities.values()):
+        while self.playing and any(
+            isinstance(entity, Herbivore) for entity in self.game_map.entities.values()
+        ):
             if self.input_queue:
                 self._process_user_input(self.input_queue)
             if not self.paused and self.playing:

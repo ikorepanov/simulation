@@ -1,11 +1,16 @@
 from simulation.entity.entity import Entity
 from simulation.entity.grass import Grass
 from simulation.entity.herbivore import Herbivore
-from simulation.entity.rock import Rock
 from simulation.entity.predator import Predator
+from simulation.entity.rock import Rock
 from simulation.entity.tree import Tree
-
-from simulation.settings import GRASS_NUMBER, HERBIVORE_NUMBER, PREDATOR_NUMBER, ROCK_NUMBER, TREE_NUMBER
+from simulation.settings import (
+    GRASS_NUMBER,
+    HERBIVORE_NUMBER,
+    PREDATOR_NUMBER,
+    ROCK_NUMBER,
+    TREE_NUMBER,
+)
 
 
 class EntityCreator:
@@ -19,4 +24,8 @@ class EntityCreator:
         }
 
     def run(self) -> list[Entity]:
-        return [cls() for cls, count in self.entity_instance_counts.items() for _ in range(count)]
+        return [
+            cls()
+            for cls, count in self.entity_instance_counts.items()
+            for _ in range(count)
+        ]

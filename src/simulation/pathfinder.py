@@ -6,7 +6,9 @@ from simulation.game_map import Map
 
 
 class Pathfinder:
-    def find_path(self, game_map: Map, start_coord: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
+    def find_path(
+        self, game_map: Map, start_coord: Coordinate, target_class: type[Entity]
+    ) -> list[Coordinate]:
         """
         Запуск алгоритма поиска пути к ближайшей цели
 
@@ -34,7 +36,9 @@ class Pathfinder:
                 return self._recover_path_from_parents_dict(coord, parents)
 
             adjacent_coords = game_map.get_adjacents(coord)
-            available_coords = self._get_available_for_move(game_map, adjacent_coords, target_class)
+            available_coords = self._get_available_for_move(
+                game_map, adjacent_coords, target_class
+            )
 
             for a_coord in available_coords:
                 if a_coord in visited or a_coord in queue:
@@ -56,8 +60,12 @@ class Pathfinder:
             coord = parents[coord]
         return path[-2::-1]
 
-    def _get_available_for_move(self, game_map: Map, adjacents: list[Coordinate], target_class: type[Entity]) -> list[Coordinate]:
+    def _get_available_for_move(
+        self, game_map: Map, adjacents: list[Coordinate], target_class: type[Entity]
+    ) -> list[Coordinate]:
         return [
-            coord for coord in adjacents
-            if game_map.is_empty_at(coord) or game_map.is_occupied_by_certain_class(coord, target_class)
+            coord
+            for coord in adjacents
+            if game_map.is_empty_at(coord)
+            or game_map.is_occupied_by_certain_class(coord, target_class)
         ]

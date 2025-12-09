@@ -1,5 +1,6 @@
 class SimulationError(Exception):
     """Базовый класс для всех исключений в Симуляции."""
+
     pass
 
 

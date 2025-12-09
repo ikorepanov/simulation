@@ -1,2 +1,2 @@
 def main() -> None:
-    print("Hello from simulation!")
+    print('Hello from simulation!')

@@ -1,8 +1,8 @@
 import random
+from itertools import count
+
 from simulation.entity.entity import Entity
 from simulation.settings import GRASS, MAX_GRASS_HEIGHT
-
-from itertools import count
 
 
 class Grass(Entity):

@@ -3,7 +3,13 @@
 from simulation.coordinate import Coordinate
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import ColorScheme
-from simulation.settings import ANSI_RESET, ANSI_STYLE_END, BACKGROUND_256, EMPTY_TILE, ESC
+from simulation.settings import (
+    ANSI_RESET,
+    ANSI_STYLE_END,
+    BACKGROUND_256,
+    EMPTY_TILE,
+    ESC,
+)
 
 
 class Renderer:

@@ -1,17 +1,14 @@
 import random
-from simulation.entity.creature import Creature
-from simulation.settings import MAX_ATTACK_POWER, PREDATOR_HP, PREDATOR_SPEED
-
-from simulation.game_map import Map
+from itertools import count
 
 from loguru import logger
 
 from simulation.coordinate import Coordinate
+from simulation.entity.creature import Creature
 from simulation.entity.herbivore import Herbivore
+from simulation.game_map import Map
 from simulation.pathfinder import Pathfinder
-from simulation.settings import PREDATOR
-
-from itertools import count
+from simulation.settings import MAX_ATTACK_POWER, PREDATOR, PREDATOR_HP, PREDATOR_SPEED
 
 
 class Predator(Creature):
@@ -53,7 +50,10 @@ class Predator(Creature):
 
     def is_in_circles(self) -> bool:
         if len(self.prev_coords) > 3:
-            return self.prev_coords[0] == self.prev_coords[2] and self.prev_coords[1] == self.prev_coords[3]
+            return (
+                self.prev_coords[0] == self.prev_coords[2]
+                and self.prev_coords[1] == self.prev_coords[3]
+            )
         else:
             return False
 
@@ -64,4 +64,6 @@ class Predator(Creature):
         herbivore = game_map.get_entity_at(coord)
         if herbivore and isinstance(herbivore, Herbivore):
             herbivore._loose_hp(self.attack_power)
-            self._finish_resource_at(coord, game_map) if herbivore.hp <= 0 else logger.info(f'{self} bit {herbivore}')
+            self._finish_resource_at(
+                coord, game_map
+            ) if herbivore.hp <= 0 else logger.info(f'{self} bit {herbivore}')

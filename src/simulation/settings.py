@@ -26,14 +26,16 @@ GRASS_NUMBER = 1
 ESC = '\033['  # Начало ANSI escape-последовательности
 BACKGROUND_256 = '48;5;'  # Установить цвет фона; использовать 256-цветный режим
 ANSI_RESET = '\033[0'
-ANSI_STYLE_END = 'm'  # Завершить escape-команду и применить стили (конец описания стиля)
+ANSI_STYLE_END = (
+    'm'  # Завершить escape-команду и применить стили (конец описания стиля)
+)
 
 # sprites
-HERBIVORE = '\U0001F411 '
-GRASS = '\U0001F33F '
-PREDATOR = '\U0001F43A '
-ROCK = '\U0001FAA8  '
-TREE = '\U0001F333 '
+HERBIVORE = '\U0001f411 '
+GRASS = '\U0001f33f '
+PREDATOR = '\U0001f43a '
+ROCK = '\U0001faa8  '
+TREE = '\U0001f333 '
 EMPTY_TILE = '   '
 
 # current color scheme: industrial, midnight, ocean, forest, twilight, glacier, abyss
