@@ -43,3 +43,6 @@ if __name__ == '__main__':
     except NoUnoccupiedCoordsError as error:
         logger.error(error)
         sys.exit()
+    except Exception as error:
+        logger.error(error)
+        sys.exit()
