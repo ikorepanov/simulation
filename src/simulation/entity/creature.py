@@ -39,11 +39,6 @@ class Creature(Entity):
         except IndexError:
             return path[nearest_coord_index]
 
-    def _finish_resource_at(self, coord: Coordinate, game_map: Map) -> None:
-        prey = game_map.remove_entity_at(coord)
-        logger.info(f'{self} has eaten {prey}')
-        self._move_to(coord, game_map)
-
     def _move_to(self, new_coord: Coordinate, game_map: Map) -> None:
         old_coord = self.coord
         game_map.remove_entity_at(old_coord)
@@ -53,3 +48,8 @@ class Creature(Entity):
             f'{self} moved from {old_coord.x, old_coord.y} '
             f'to {new_coord.x, new_coord.y}'
         )
+
+    def _finish_resource_at(self, coord: Coordinate, game_map: Map) -> None:
+        prey = game_map.remove_entity_at(coord)
+        logger.info(f'{self} has eaten {prey}')
+        self._move_to(coord, game_map)
