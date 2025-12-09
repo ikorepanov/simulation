@@ -8,7 +8,13 @@ from simulation.entity.creature import Creature
 from simulation.entity.herbivore import Herbivore
 from simulation.game_map import Map
 from simulation.pathfinder import Pathfinder
-from simulation.settings import MAX_ATTACK_POWER, PREDATOR, PREDATOR_HP, PREDATOR_SPEED
+from simulation.settings import (
+    MAX_ATTACK_POWER,
+    MIN_ATTACK_POWER,
+    PREDATOR,
+    PREDATOR_HP,
+    PREDATOR_SPEED,
+)
 
 
 class Predator(Creature):
@@ -19,7 +25,7 @@ class Predator(Creature):
         speed: int = PREDATOR_SPEED,
         hp: int = PREDATOR_HP,
         prey_class: type[Herbivore] = Herbivore,
-        attack_power: int = random.randint(1, MAX_ATTACK_POWER),
+        attack_power: int = random.randint(MIN_ATTACK_POWER, MAX_ATTACK_POWER),
     ):
         super().__init__(speed, hp, prey_class)
 
@@ -34,10 +40,9 @@ class Predator(Creature):
         return PREDATOR
 
     def make_move(self, game_map: Map) -> None:
-        if self.is_in_circles():
-            logger.info('Predator remains in place to avoid walking in circles')
+        if self._is_in_circles():
+            logger.info(f'{self} remains in place to avoid walking in circles')
             self.prev_coords.clear()
-            pass  # убрать?
         else:
             path = Pathfinder().find_path(game_map, self.coord, self.prey_class)
             if len(path) > 1:
@@ -48,7 +53,7 @@ class Predator(Creature):
             if len(path) == 1:
                 self._attack_at(path[0], game_map)
 
-    def is_in_circles(self) -> bool:
+    def _is_in_circles(self) -> bool:
         if len(self.prev_coords) > 3:
             return (
                 self.prev_coords[0] == self.prev_coords[2]
@@ -56,9 +61,6 @@ class Predator(Creature):
             )
         else:
             return False
-
-    def stay(self) -> None:
-        pass
 
     def _attack_at(self, coord: Coordinate, game_map: Map) -> None:
         herbivore = game_map.get_entity_at(coord)
