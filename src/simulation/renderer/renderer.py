@@ -1,9 +1,5 @@
 """Этот модуль содержит класс рендерера и методы для отрисовки карты."""
 
-# import os
-import sys
-# import time
-
 from simulation.coordinate import Coordinate
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import ColorScheme
@@ -14,9 +10,13 @@ class Renderer:
     def __init__(self, color_scheme: ColorScheme):
         self.color_scheme = color_scheme
 
+    def render(self, game_map: Map) -> None:
+        """Построчно отрисовывает карту в терминале."""
+        for y in range(game_map.height):
+            print(self._build_row_string(y, game_map))
+
     def _build_row_string(self, y: int, game_map: Map) -> str:
         """Формирует текстовую строку для заданной строки карты (y)."""
-
         row = []
 
         for x in range(game_map.width):
@@ -30,10 +30,11 @@ class Renderer:
                 )
             else:
                 entity = game_map.get_entity_at(coord)
-                sprite = self._apply_bg_color(
-                    entity.get_sprite(),
-                    is_dark,
-                )
+                if entity:
+                    sprite = self._apply_bg_color(
+                        entity.get_sprite(),
+                        is_dark,
+                    )
             row.append(sprite)
 
         row.append(self._reset_style())
@@ -43,31 +44,9 @@ class Renderer:
     @staticmethod
     def _reset_style() -> str:
         """Возвращает ANSI-последовательность для завершения ANSI-стилей в конце строки."""
-
         return ANSI_RESET + ANSI_STYLE_END
-
-    def render(self, game_map: Map) -> None:
-        """Построчно отрисовывает карту в терминале."""
-        # self.clear_screen_and_reset_cursor()
-
-        # print('Press "p" to pause, "r" to resume or "q" to quit Simulation')
-
-        for y in range(game_map.height):
-            print(self._build_row_string(y, game_map))
-            # sys.stdout.write(f'{self.build_row_string(y, game_map)}\n')
-
-        # time.sleep(1)
 
     def _apply_bg_color(self, sprite: str, is_tile_dark: bool) -> str:
         """Возвращает ANSI-последовательность для спрайта на фоне соответствующего цвета: ANSI 256-color background."""
-
         bg = self.color_scheme.bg_dark if is_tile_dark else self.color_scheme.bg_light
         return f'{ESC}{BACKGROUND_256}{bg}{ANSI_STYLE_END}{sprite}'
-
-    def _clear_screen_and_reset_cursor(self) -> None:
-        # os.system('cls' if os.name == 'nt' else 'clear')  # Clears screen based on OS
-        # print("\x1b[H", end="")  # Move cursor to home (without new line)
-
-        sys.stdout.write("\033[4A")  # курсор вверх на 3 строки
-        sys.stdout.write("\033[J")   # очистить всё от курсора до конца экрана
-        sys.stdout.flush()
