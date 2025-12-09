@@ -47,12 +47,12 @@ class Renderer:
 
         return ''.join(row)
 
-    @staticmethod
-    def _reset_style() -> str:
-        """Возвращает ANSI-последовательность для завершения ANSI-стилей в конце строки."""
-        return ANSI_RESET + ANSI_STYLE_END
-
     def _apply_bg_color(self, sprite: str, is_tile_dark: bool) -> str:
         """Возвращает ANSI-последовательность для спрайта на фоне соответствующего цвета: ANSI 256-color background."""
         bg = self.color_scheme.bg_dark if is_tile_dark else self.color_scheme.bg_light
         return f'{ESC}{BACKGROUND_256}{bg}{ANSI_STYLE_END}{sprite}'
+
+    @staticmethod
+    def _reset_style() -> str:
+        """Возвращает ANSI-последовательность для завершения ANSI-стилей в конце строки."""
+        return ANSI_RESET + ANSI_STYLE_END
