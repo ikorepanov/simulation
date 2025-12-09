@@ -12,9 +12,6 @@ class Map:
     def is_dark_at(self, coord: Coordinate) -> bool:
         return (coord.x + coord.y) % 2 != 0
 
-    def _has_entity_at(self, coord: Coordinate) -> bool:
-        return coord in self.entities
-
     def is_empty_at(self, coord: Coordinate) -> bool:
         return not self._has_entity_at(coord)
 
@@ -57,3 +54,6 @@ class Map:
     ) -> bool:
         entity = self.get_entity_at(coord)
         return isinstance(entity, ent_class) if entity else False
+
+    def _has_entity_at(self, coord: Coordinate) -> bool:
+        return coord in self.entities
