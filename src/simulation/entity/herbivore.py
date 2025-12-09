@@ -7,7 +7,12 @@ from simulation.coordinate import Coordinate
 from simulation.entity.creature import Creature
 from simulation.entity.grass import Grass
 from simulation.game_map import Map
-from simulation.settings import HERBIVORE, HERBIVORE_SPEED, MAX_HERBIVORE_HP
+from simulation.settings import (
+    HERBIVORE,
+    HERBIVORE_SPEED,
+    MAX_HERBIVORE_HP,
+    MIN_HERBIVORE_HP,
+)
 
 
 class Herbivore(Creature):
@@ -16,7 +21,7 @@ class Herbivore(Creature):
     def __init__(
         self,
         speed: int = HERBIVORE_SPEED,
-        hp: int = random.randint(2, MAX_HERBIVORE_HP),
+        hp: int = random.randint(MIN_HERBIVORE_HP, MAX_HERBIVORE_HP),
         prey_class: type[Grass] = Grass,
     ):
         super().__init__(speed, hp, prey_class)
