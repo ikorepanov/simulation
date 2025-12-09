@@ -69,6 +69,8 @@ ignore = [
     "RUF001", # Checks for ambiguous Unicode characters in strings.
     "D203", # incorrect-blank-line-before-class
     "D212", # multi-line-summary-first-line
+    "D",
+    "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
 ]
 
 [tool.ruff.format]

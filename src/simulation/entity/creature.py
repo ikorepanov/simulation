@@ -5,10 +5,6 @@ from loguru import logger
 from simulation.coordinate import Coordinate
 from simulation.entity.entity import Entity
 from simulation.game_map import Map
-
-# from simulation.entity.grass import Grass
-# from simulation.entity.herbivore import Herbivore
-# from simulation.entity.predator import Predator
 from simulation.pathfinder import Pathfinder
 
 
@@ -54,5 +50,6 @@ class Creature(Entity):
         game_map.add_entity_at(new_coord, self)
         self.coord = new_coord
         logger.info(
-            f'{self} moved from {old_coord.x, old_coord.y} to {new_coord.x, new_coord.y}'
+            f'{self} moved from {old_coord.x, old_coord.y} '
+            f'to {new_coord.x, new_coord.y}'
         )
