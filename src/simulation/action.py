@@ -19,6 +19,13 @@ class PlaceEntitiesAction(Action):
     def __init__(self, entities_to_place: list[Entity]) -> None:
         self.entities_to_place = entities_to_place
 
+    def execute(self, game_map: Map) -> None:
+        for entity in self.entities_to_place:
+            coord = self._get_unoccupied_coord(game_map)
+            if isinstance(entity, Creature):
+                entity.coord = coord
+            game_map.add_entity_at(coord, entity)
+
     def _get_unoccupied_coord(self, game_map: Map) -> Coordinate:
         attempts = 0
         while attempts < NUMBER_OF_ATTEMPTS:
@@ -31,15 +38,14 @@ class PlaceEntitiesAction(Action):
             return coord
         raise NoUnoccupiedCoordsError()
 
-    def execute(self, game_map: Map) -> None:
-        for entity in self.entities_to_place:
-            coord = self._get_unoccupied_coord(game_map)
-            if isinstance(entity, Creature):
-                entity.coord = coord
-            game_map.add_entity_at(coord, entity)
-
 
 class MoveAction(Action):
+    def execute(self, game_map: Map) -> None:
+        creatures = self._get_creatures(game_map)
+        for creature in creatures:
+            if self._is_creature_still_alive(creature, game_map):  # Может уже не быть
+                creature.make_move(game_map)  # в оригинале, но всё ещё быть в копии
+
     def _get_creatures(self, game_map: Map) -> list[Creature]:
         return [
             entity
@@ -49,9 +55,3 @@ class MoveAction(Action):
 
     def _is_creature_still_alive(self, creature: Creature, game_map: Map) -> bool:
         return creature in game_map.entities.values()
-
-    def execute(self, game_map: Map) -> None:
-        creatures = self._get_creatures(game_map)
-        for creature in creatures:
-            if self._is_creature_still_alive(creature, game_map):  # Может уже не быть
-                creature.make_move(game_map)  # в оригинале, но всё ещё быть в копии
