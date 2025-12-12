@@ -13,6 +13,7 @@ MIN_GRASS_HEIGHT = 1
 MAX_GRASS_HEIGHT = MIN_GRASS_HEIGHT + 2
 MIN_HERBIVORE_HP = 2
 MAX_HERBIVORE_HP = MIN_HERBIVORE_HP + 2
+PREDATOR_HP = 100
 PREDATOR_SPEED = 1
 HERBIVORE_SPEED = 1
 
@@ -41,3 +42,20 @@ EMPTY_TILE = '   '
 
 # current color scheme: industrial, midnight, ocean, forest, twilight, glacier, abyss
 COLOR_SCHEME = 'abyss'
+
+# HANGMAN
+
+# ANSI-последовательности для управления терминалом
+CLEAR_SCREEN_TO_END = '\033[J'
+# Минимальные размеры терминала для правильного отображения сцен игры
+MIN_TERMINAL_HEIGHT = 30  # строк
+MIN_TERMINAL_WIDTH = 65  # столбцов
+
+WELCOME_MESSAGE = """
+ _____________________________________________________________
+|                                                             |
+|              Вас приветствует игра "Виселица!               |
+|                                                             |
+|               Отгадайте зашифрованное слово                 |
+|_____________________________________________________________|
+"""
