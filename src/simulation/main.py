@@ -4,7 +4,7 @@ from loguru import logger
 
 from simulation.action import Action, MoveAction, PlaceEntitiesAction
 from simulation.entity.entity_creator import EntityCreator
-from simulation.exceptions import NoUnoccupiedCoordsError
+from simulation.exceptions import NoPredatorsOnGameMap, NoUnoccupiedCoordsError
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import color_schemes
 from simulation.renderer.renderer import Renderer
@@ -41,6 +41,9 @@ if __name__ == '__main__':
     try:
         main()
     except NoUnoccupiedCoordsError as error:
+        logger.error(error)
+        sys.exit()
+    except NoPredatorsOnGameMap as error:
         logger.error(error)
         sys.exit()
     except Exception as error:

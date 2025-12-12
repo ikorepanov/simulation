@@ -55,5 +55,8 @@ class Map:
         entity = self.get_entity_at(coord)
         return isinstance(entity, ent_class) if entity else False
 
+    def is_entity_present(self, ent_class: type[Entity]) -> bool:
+        return any(isinstance(entity, ent_class) for entity in self.entities.values())
+
     def _has_entity_at(self, coord: Coordinate) -> bool:
         return coord in self.entities
