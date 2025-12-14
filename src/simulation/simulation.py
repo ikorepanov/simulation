@@ -2,6 +2,8 @@ import time
 from collections import deque
 from threading import Thread
 
+from loguru import logger
+
 from simulation.action import Action
 from simulation.entity.herbivore import Herbivore
 from simulation.entity.predator import Predator
@@ -75,6 +77,7 @@ class Simulation:
 
     def _next_turn(self) -> None:
         """Просимулировать и отрендерить один ход."""
+        logger.info(f'Move #{self.move_counter}')
         self._execute_actions(self.turn_actions)
         self._render_map()
 
