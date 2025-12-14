@@ -35,7 +35,11 @@ class Simulation:
         self._delay_execution()
 
         if not self.game_map.is_entity_present(Predator):
-            raise NoPredatorsOnGameMap()
+            raise NoPredatorsOnGameMap(
+                'There are no predators on map. '
+                'Add at least one in settings (otherwise '
+                'there will be no one to eat the herbivores.)'
+            )
 
         self.playing = True
         while self.playing and self.game_map.is_entity_present(Herbivore):

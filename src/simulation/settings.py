@@ -3,7 +3,7 @@ WIDTH = 4
 HEIGHT = 3
 DELAY_DURATION = 1
 
-# finding free tile
+# finding free coord
 NUMBER_OF_ATTEMPTS = 1000
 
 # entities settings
@@ -40,7 +40,7 @@ GRASS_SPRITE = '\U0001f33f '
 PREDATOR_SPRITE = '\U0001f43a '
 ROCK_SPRITE = '\U0001faa8  '
 TREE_SPRITE = '\U0001f333 '
-EMPTY_TILE_SPRITE = '   '
+EMPTY_COORD_SPRITE = '   '
 
 # current color scheme: industrial, midnight, ocean, forest, twilight, glacier, abyss
 COLOR_SCHEME = 'abyss'

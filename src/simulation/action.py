@@ -36,7 +36,10 @@ class PlaceEntitiesAction(Action):
                 attempts += 1
                 continue
             return coord
-        raise NoUnoccupiedCoordsError()
+        raise NoUnoccupiedCoordsError(
+            'There are no unoccupied coordinates on the map. '
+            'Reduce the number of entities or increase the map size in settings.'
+        )
 
 
 class MoveAction(Action):

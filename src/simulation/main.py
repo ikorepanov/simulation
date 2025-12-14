@@ -41,11 +41,11 @@ if __name__ == '__main__':
     try:
         main()
     except NoUnoccupiedCoordsError as error:
-        logger.error(error)
+        logger.error(f'No empty coords: {error}')
         sys.exit()
     except NoPredatorsOnGameMap as error:
-        logger.error(error)
+        logger.error(f'No preditors: {error}')
         sys.exit()
-    except Exception as error:
-        logger.error(error)
+    except Exception:
+        logger.exception('Непредвиденная ошибка')
         sys.exit()
