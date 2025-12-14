@@ -33,6 +33,9 @@ class Simulation:
         self._run_second_thread()
 
     def start_simulation(self) -> None:
+        logger.warning(
+            'Press "p" (followed by Enter) for pause, "q" (followed by Enter) for quit'
+        )
         self._render_map()
         self._delay_execution()
 
