@@ -2,7 +2,7 @@ import random
 from itertools import count
 
 from simulation.entity.entity import Entity
-from simulation.settings import GRASS, MAX_GRASS_HEIGHT, MIN_GRASS_HEIGHT
+from simulation.settings import GRASS_SPRITE, MAX_GRASS_HEIGHT, MIN_GRASS_HEIGHT
 
 
 class Grass(Entity):
@@ -21,7 +21,7 @@ class Grass(Entity):
         return f'{self.__class__.__name__}-{self.id} (h.: {self.height})'
 
     def get_sprite(self) -> str:
-        return GRASS
+        return GRASS_SPRITE
 
     def to_be_eaten(self) -> None:
         self.height -= 1

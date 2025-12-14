@@ -7,7 +7,7 @@ from simulation.settings import (
     ANSI_RESET,
     ANSI_STYLE_END,
     BACKGROUND_256,
-    EMPTY_TILE,
+    EMPTY_TILE_SPRITE,
     ESC,
 )
 
@@ -31,7 +31,7 @@ class Renderer:
 
             if game_map.is_empty_at(coord):
                 sprite = self._apply_bg_color(
-                    EMPTY_TILE,
+                    EMPTY_TILE_SPRITE,
                     is_dark,
                 )
             else:

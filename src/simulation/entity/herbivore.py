@@ -8,8 +8,8 @@ from simulation.entity.creature import Creature
 from simulation.entity.grass import Grass
 from simulation.game_map import Map
 from simulation.settings import (
-    HERBIVORE,
     HERBIVORE_SPEED,
+    HERBIVORE_SPRITE,
     MAX_HERBIVORE_HP,
     MIN_HERBIVORE_HP,
 )
@@ -32,7 +32,7 @@ class Herbivore(Creature):
         return f'{self.__class__.__name__}-{self.id} (HP: {self.hp})'
 
     def get_sprite(self) -> str:
-        return HERBIVORE
+        return HERBIVORE_SPRITE
 
     def make_move(self, game_map: Map) -> None:
         path = self.pathfinder.find_path(game_map, self.coord, self.prey_class)

@@ -11,9 +11,9 @@ from simulation.pathfinder import Pathfinder
 from simulation.settings import (
     MAX_ATTACK_POWER,
     MIN_ATTACK_POWER,
-    PREDATOR,
     PREDATOR_HP,
     PREDATOR_SPEED,
+    PREDATOR_SPRITE,
 )
 
 
@@ -37,7 +37,7 @@ class Predator(Creature):
         return f'{self.__class__.__name__}-{self.id} (a.p.: {self.attack_power})'
 
     def get_sprite(self) -> str:
-        return PREDATOR
+        return PREDATOR_SPRITE
 
     def make_move(self, game_map: Map) -> None:
         if self._is_in_circles():
