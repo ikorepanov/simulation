@@ -25,6 +25,3 @@ class Grass(Entity):
 
     def to_be_eaten(self) -> None:
         self.height -= 1
-
-    def to_grow(self) -> None:
-        self.height += 1
