@@ -10,9 +10,10 @@ from simulation.game_map import Map
 from simulation.pathfinder import Pathfinder
 from simulation.settings import (
     MAX_ATTACK_POWER,
+    MAX_PREDATOR_SPEED,
     MIN_ATTACK_POWER,
+    MIN_PREDATOR_SPEED,
     PREDATOR_HP,
-    PREDATOR_SPEED,
     PREDATOR_SPRITE,
 )
 
@@ -22,7 +23,7 @@ class Predator(Creature):
 
     def __init__(
         self,
-        speed: int = PREDATOR_SPEED,
+        speed: int = random.randint(MIN_PREDATOR_SPEED, MAX_PREDATOR_SPEED),
         hp: int = PREDATOR_HP,
         prey_class: type[Herbivore] = Herbivore,
         attack_power: int = random.randint(MIN_ATTACK_POWER, MAX_ATTACK_POWER),

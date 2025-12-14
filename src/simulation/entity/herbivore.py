@@ -8,10 +8,11 @@ from simulation.entity.creature import Creature
 from simulation.entity.grass import Grass
 from simulation.game_map import Map
 from simulation.settings import (
-    HERBIVORE_SPEED,
     HERBIVORE_SPRITE,
     MAX_HERBIVORE_HP,
+    MAX_HERBIVORE_SPEED,
     MIN_HERBIVORE_HP,
+    MIN_HERBIVORE_SPEED,
 )
 
 
@@ -20,7 +21,7 @@ class Herbivore(Creature):
 
     def __init__(
         self,
-        speed: int = HERBIVORE_SPEED,
+        speed: int = random.randint(MIN_HERBIVORE_SPEED, MAX_HERBIVORE_SPEED),
         hp: int = random.randint(MIN_HERBIVORE_HP, MAX_HERBIVORE_HP),
         prey_class: type[Grass] = Grass,
     ):
