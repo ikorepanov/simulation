@@ -61,12 +61,19 @@ class Herbivore(Creature):
 
         if some == 'wander':
             adjacent_coords = game_map.get_adjacents(self.coord)
-            while True:
+            count = len(adjacent_coords)
+            new_coord = None
+            while count > 0:
                 random_coord = random.choice(adjacent_coords)
                 if game_map.is_empty_at(random_coord):
+                    new_coord = random_coord
                     break
-            logger.info(f'{self} is wandering and')
-            self._move_to(random_coord, game_map)
+                count -= 1
+            if new_coord:
+                logger.info(f'{self} is wandering and')
+                self._move_to(new_coord, game_map)
+            else:
+                logger.info(f"{self} want to go somewhere but doesn't have place to go")
         else:
             logger.info(f'{self} chose to stay in place')
 
