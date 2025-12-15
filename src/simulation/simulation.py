@@ -1,3 +1,5 @@
+import getpass
+import sys
 import time
 from collections import deque
 from threading import Thread
@@ -10,7 +12,12 @@ from simulation.entity.predator import Predator
 from simulation.exceptions import NoPredatorsOnGameMap
 from simulation.game_map import Map
 from simulation.renderer.renderer import Renderer
-from simulation.settings import DELAY_DURATION
+from simulation.settings import (
+    ANSI_BEGINNING_PREV_LINE,
+    ANSI_CLEAR_LINE,
+    ANSI_ESC,
+    DELAY_DURATION,
+)
 
 
 class Simulation:
@@ -89,7 +96,17 @@ class Simulation:
 
     def _get_user_input(self, q: deque[str]) -> None:
         while True:
-            user_data = input()
+            user_data = getpass.getpass('').strip()
+
+            sys.stdout.write(
+                ANSI_ESC + ANSI_BEGINNING_PREV_LINE + ANSI_ESC + ANSI_CLEAR_LINE
+            )
+            sys.stdout.flush()
+
+            if user_data in ('p', 'q'):
+                logger.warning(f'You entered {user_data}')
+            else:
+                logger.warning(f'You entered "{user_data}"; use "p" or "q" instead')
             q.append(user_data)
 
     def _pause_simulation(self) -> None:

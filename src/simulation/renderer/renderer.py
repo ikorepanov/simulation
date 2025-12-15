@@ -1,14 +1,16 @@
 """Этот модуль содержит класс рендерера и методы для отрисовки карты."""
 
+import sys
+
 from simulation.coordinate import Coordinate
 from simulation.game_map import Map
 from simulation.renderer.color_schemes import ColorScheme
 from simulation.settings import (
+    ANSI_BACKGROUND_256,
+    ANSI_ESC,
     ANSI_RESET,
     ANSI_STYLE_END,
-    BACKGROUND_256,
     EMPTY_COORD_SPRITE,
-    ESC,
 )
 
 
@@ -17,9 +19,9 @@ class Renderer:
         self.color_scheme = color_scheme
 
     def render(self, game_map: Map) -> None:
-        """Построчно отрисовывает карту в терминале."""
+        """Построчно отрисовывает карту, каждый раз перенося курсор на новую строку"""
         for y in range(game_map.height):
-            print(self._build_row_string(y, game_map))
+            sys.stdout.write(f'{self._build_row_string(y, game_map)}\n')
 
     def _build_row_string(self, y: int, game_map: Map) -> str:
         """Формирует текстовую строку для заданной строки карты (y)."""
@@ -50,9 +52,9 @@ class Renderer:
     def _apply_bg_color(self, sprite: str, is_coord_dark: bool) -> str:
         """Возвращает ANSI-последовательность для спрайта на фоне соответствующего цвета: ANSI 256-color background."""
         bg = self.color_scheme.bg_dark if is_coord_dark else self.color_scheme.bg_light
-        return f'{ESC}{BACKGROUND_256}{bg}{ANSI_STYLE_END}{sprite}'
+        return ANSI_ESC + ANSI_BACKGROUND_256 + str(bg) + ANSI_STYLE_END + sprite
 
     @staticmethod
     def _reset_style() -> str:
         """Возвращает ANSI-последовательность для завершения ANSI-стилей в конце строки."""
-        return ANSI_RESET + ANSI_STYLE_END
+        return ANSI_ESC + ANSI_RESET + ANSI_STYLE_END
