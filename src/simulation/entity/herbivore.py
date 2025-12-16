@@ -53,7 +53,6 @@ class Herbivore(Creature):
         grass = game_map.get_entity_at(coord)
         if grass and isinstance(grass, Grass):
             grass.to_be_eaten()
-            logger.info(f'{self} is eating {grass}')
             self._finish_resource_at(
                 coord, game_map
             ) if grass.height <= 0 else logger.info(f'{self} is eating {grass}')
