@@ -1,6 +1,6 @@
 # game options/settings
-WIDTH = 20
-HEIGHT = 10
+WIDTH = 40
+HEIGHT = 20
 DELAY_DURATION = 1
 
 # finding free coord
@@ -21,10 +21,10 @@ MAX_HERBIVORE_SPEED = MIN_HERBIVORE_SPEED + 2
 
 # number of entities
 PREDATOR_NUMBER = 10
-HERBIVORE_NUMBER = 10
-ROCK_NUMBER = 10
-TREE_NUMBER = 10
-GRASS_NUMBER = 25
+HERBIVORE_NUMBER = 50
+ROCK_NUMBER = 50
+TREE_NUMBER = 50
+GRASS_NUMBER = 200
 
 # ANSI
 ANSI_ESC = '\033'  # Начало ANSI escape-последовательности

@@ -10,10 +10,12 @@ class Grass(Entity):
 
     def __init__(
         self,
-        height: int = random.randint(MIN_GRASS_HEIGHT, MAX_GRASS_HEIGHT),
+        height: int | None = None,
     ):
-        super().__init__()
+        if height is None:
+            height = random.randint(MIN_GRASS_HEIGHT, MAX_GRASS_HEIGHT)
 
+        super().__init__()
         self.height = height
         self.id = next(self._ids)
 

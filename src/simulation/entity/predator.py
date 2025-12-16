@@ -23,13 +23,17 @@ class Predator(Creature):
 
     def __init__(
         self,
-        speed: int = random.randint(MIN_PREDATOR_SPEED, MAX_PREDATOR_SPEED),
+        speed: int | None = None,
         hp: int = PREDATOR_HP,
         prey_class: type[Herbivore] = Herbivore,
-        attack_power: int = random.randint(MIN_ATTACK_POWER, MAX_ATTACK_POWER),
+        attack_power: int | None = None,
     ):
-        super().__init__(speed, hp, prey_class)
+        if speed is None:
+            speed = random.randint(MIN_PREDATOR_SPEED, MAX_PREDATOR_SPEED)
+        if attack_power is None:
+            attack_power = random.randint(MIN_ATTACK_POWER, MAX_ATTACK_POWER)
 
+        super().__init__(speed, hp, prey_class)
         self.attack_power = attack_power
         self.prev_coords: list[Coordinate] = []
         self.id = next(self._ids)

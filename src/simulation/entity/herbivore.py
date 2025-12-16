@@ -21,12 +21,16 @@ class Herbivore(Creature):
 
     def __init__(
         self,
-        speed: int = random.randint(MIN_HERBIVORE_SPEED, MAX_HERBIVORE_SPEED),
-        hp: int = random.randint(MIN_HERBIVORE_HP, MAX_HERBIVORE_HP),
+        speed: int | None = None,
+        hp: int | None = None,
         prey_class: type[Grass] = Grass,
     ):
-        super().__init__(speed, hp, prey_class)
+        if speed is None:
+            speed = random.randint(MIN_HERBIVORE_SPEED, MAX_HERBIVORE_SPEED)
+        if hp is None:
+            hp = random.randint(MIN_HERBIVORE_HP, MAX_HERBIVORE_HP)
 
+        super().__init__(speed, hp, prey_class)
         self.id = next(self._ids)
 
     def __str__(self) -> str:
