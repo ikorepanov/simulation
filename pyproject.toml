@@ -1,7 +1,7 @@
 [project]
 name = "simulation"
-version = "0.1.0"
-description = "The second project of Sergey Zhukov's roadmap"
+version = "1.0.0"
+description = "Step-based 2D ecosystem simulation with herbivores, predators, plants, and static obstacles. The world is a grid where each entity occupies a single cell. Features turn-based actions: entity movement, resource consumption. Designed to demonstrate OOP architecture and flexible class-based design in Python."
 authors = [{ name = "Ilia Korepanov" }]
 
 dependencies = [
