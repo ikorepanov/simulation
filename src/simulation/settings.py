@@ -37,12 +37,12 @@ ANSI_STYLE_END = (
 )
 
 # sprites
-HERBIVORE_SPRITE = '\U0001f411 '
-GRASS_SPRITE = '\U0001f33f '
-PREDATOR_SPRITE = '\U0001f43a '
+HERBIVORE_SPRITE = '\U0001f992 '
+GRASS_SPRITE = '\U0001f340 '
+PREDATOR_SPRITE = '\U0001f981 '
 ROCK_SPRITE = '\U0001faa8  '
-TREE_SPRITE = '\U0001f333 '
+TREE_SPRITE = '\U0001f334 '
 EMPTY_COORD_SPRITE = '   '
 
-# current color scheme: industrial, midnight, ocean, forest, twilight, glacier, abyss
+# current color scheme: industrial, midnight, ocean, savanna, twilight, glacier, abyss
 COLOR_SCHEME = 'abyss'
