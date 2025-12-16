@@ -70,7 +70,7 @@ class Predator(Creature):
     def _attack_at(self, coord: Coordinate, game_map: Map) -> None:
         herbivore = game_map.get_entity_at(coord)
         if herbivore and isinstance(herbivore, Herbivore):
-            herbivore._loose_hp(self.attack_power)
+            herbivore.loose_hp(self.attack_power)
             self._finish_resource_at(
                 coord, game_map
             ) if herbivore.hp <= 0 else logger.info(f'{self} bit {herbivore}')

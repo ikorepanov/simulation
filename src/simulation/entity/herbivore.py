@@ -49,6 +49,9 @@ class Herbivore(Creature):
         else:
             self._wander_or_idle(game_map)
 
+    def loose_hp(self, attack_power: int) -> None:
+        self.hp -= attack_power
+
     def _eat_at(self, coord: Coordinate, game_map: Map) -> None:
         grass = game_map.get_entity_at(coord)
         if grass and isinstance(grass, Grass):
@@ -61,9 +64,9 @@ class Herbivore(Creature):
         what_to_do = ['wander', 'idle']
         weights = (1 / 3, 2 / 3)
 
-        some = random.choices(what_to_do, weights=weights)[0]
+        choice = random.choices(what_to_do, weights=weights)[0]
 
-        if some == 'wander':
+        if choice == 'wander':
             adjacent_coords = game_map.get_adjacents(self.coord)
             count = len(adjacent_coords)
             new_coord = None
@@ -80,6 +83,3 @@ class Herbivore(Creature):
                 logger.info(f"{self} want to go somewhere but doesn't have place to go")
         else:
             logger.info(f'{self} chose to stay in place')
-
-    def _loose_hp(self, attack_power: int) -> None:
-        self.hp -= attack_power
