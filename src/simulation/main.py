@@ -47,5 +47,5 @@ if __name__ == '__main__':
         logger.error(f'No preditors: {error}')
         sys.exit()
     except Exception:
-        logger.exception('Непредвиденная ошибка')
+        logger.exception('Unexpected Error')
         sys.exit()
