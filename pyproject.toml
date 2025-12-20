@@ -1,17 +1,87 @@
 [project]
 name = "simulation"
-version = "0.1.0"
-description = "The second project of Sergey Zhukov's roadmap"
-readme = "README.md"
-authors = [
-    { name = "Ilia Korepanov" }
-]
-requires-python = ">=3.9, <3.12"
-dependencies = []
+version = "1.0.0"
+description = "Step-based 2D ecosystem simulation with herbivores, predators, plants, and static obstacles. The world is a grid where each entity occupies a single cell. Features turn-based actions: entity movement, resource consumption. Designed to demonstrate OOP architecture and flexible class-based design in Python."
+authors = [{ name = "Ilia Korepanov" }]
 
-[project.scripts]
-simulation = "simulation:main"
+dependencies = [
+    "loguru==0.7.3",
+]
+
+requires-python = ">=3.9, <3.12"
+readme = "README.md"
+license = { file = "LICENSE" }
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mypy==1.14.1",
+    "pre-commit==4.3.0",
+    "ruff==0.14.8",
+]
+
+[tool.mypy]
+exclude = ["venv", ".venv", "alembic"]
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+ignore_missing_imports = true
+
+# for strict mypy:
+disallow_untyped_defs = true
+
+[tool.ruff]
+exclude = ["alembic"]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+    "ARG001", # unused arguments in functions
+    "S", # flake8-bandit
+    "PT", # flake8-pytest-style
+    "RUF",  # Ruff-specific rules
+    "ASYNC", # flake8-async
+    "PTH", # flake8-use-pathlib
+    "D", # pydocstyle
+    "ERA", # eradicate
+    "YTT", # flake8-2020
+]
+ignore = [
+    "E501", # line too long, handled by black,
+    "B008", # do not perform function calls in argument defaults
+    "W191", # indentation contains tabs
+    "B904", # Allow raising exceptions without from e, for HTTPException
+    "PT011", # Checks for pytest.raises calls without a match parameter.
+    "RUF002", # Checks for ambiguous Unicode characters in docstrings.
+    "RUF001", # Checks for ambiguous Unicode characters in strings.
+    "D203", # incorrect-blank-line-before-class
+    "D212", # multi-line-summary-first-line
+    "D",
+    "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "D"]
+"__init__.py" = ["D"]
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[project.scripts]
+simulation = "simulation.main:main"

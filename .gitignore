@@ -170,3 +170,6 @@ cython_debug/
 
 *.pyc
 *.lock
+
+# --- Personal notes ---
+TODO.md
