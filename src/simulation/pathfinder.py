@@ -1,103 +1,75 @@
-from __future__ import annotations
-
 from collections import deque
-from typing import TYPE_CHECKING
 
 from simulation.coordinate import Coordinate
-from simulation.settings import HEIGHT, TILESIZE, WIDTH
-
-if TYPE_CHECKING:
-    from simulation.map import Map
-
-from simulation.entity import Entity
-from simulation.exceptions import CantFindPathError
+from simulation.entity.entity import Entity
+from simulation.game_map import Map
 
 
 class Pathfinder:
-    # def __init__(self, map, init_posititon: Coordinate, target_class: type[Entity]) -> None:
-    #     self.map = map
-    #     self.init_position = init_posititon
-    #     self.target_class = target_class
-
-    def is_on_map(self, coordinate: Coordinate) -> bool:
-        if any(
-            [
-                coordinate.x < 0,
-                coordinate.x >= WIDTH / TILESIZE,
-                coordinate.y < 0,
-                coordinate.y >= HEIGHT / TILESIZE,
-            ]
-        ):
-            return False
-        return True
-
-    def get_adjacents(self, coordinate: Coordinate) -> list[Coordinate]:
-        adjacents = []
-        x = coordinate.x
-        y = coordinate.y
-        possible_x_y_pairs = [(x + 1, y),  (x, y + 1), (x - 1, y), (x, y - 1)]
-        for pair in possible_x_y_pairs:
-            coordinate = Coordinate(*pair)
-            if self.is_on_map(coordinate):
-                adjacents.append(coordinate)
-        return adjacents
-
-    def recover_path_from_parents_dict(
-        self,
-        target_node: Coordinate,
-        parents: dict[Coordinate, Coordinate | None],
+    def find_path(
+        self, game_map: Map, start_coord: Coordinate, target_class: type[Entity]
     ) -> list[Coordinate]:
-        node: Coordinate | None = target_node
-        path = []
-        while node:
-            path.append(node)
-            node = parents[node]
-        # print(f'NB! {[(node.x, node.y) for node in path[-2:0:-1]]}')
-        return path[-2:0:-1]
-        # return path[1:-1]
+        """
+        Запуск алгоритма поиска пути к ближайшей цели
 
-    def find_path(self, map: Map, init_position: Coordinate, target_class: type[Entity]) -> list[Coordinate]:
-        # Запуск алгоритма поиска пути к ближайшей цели
+        1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
+        2. Извлечь из начала очереди узел u и пометить его как развёрнутый.
+          - Если узел u является целевым узлом, то завершить поиск
+            с результатом «успех».
+          - В противном случае, в конец очереди добавляются все преемники узла,
+            которые ещё не развёрнуты и не находятся в очереди.
+        3. Если очередь пуста, то все узлы связного графа были просмотрены,
+           следовательно, целевой узел недостижим из начального;
+           завершить поиск с результатом «неудача».
+        4. Вернуться к п. 2.
 
-        # 1. Поместить узел, с которого начинается поиск, в изначально пустую очередь.
-        # 2. Извлечь из начала очереди узел u и пометить его как развёрнутый.
-        #   - Если узел u является целевым узлом, то завершить поиск с результатом «успех».
-        #   - В противном случае, в конец очереди добавляются все преемники узла u, которые ещё не развёрнуты
-        #     и не находятся в очереди.
-        # 3. Если очередь пуста, то все узлы связного графа были просмотрены, следовательно, целевой узел недостижим
-        #    из начального; завершить поиск с результатом «неудача».
-        # 4. Вернуться к п. 2.
-
-        visited: set[Coordinate] = set()
+        Источник: https://ru.wikipedia.org/wiki/Поиск_в_ширину
+        """
         queue: deque[Coordinate] = deque()
+        visited: set[Coordinate] = set()
         parents: dict[Coordinate, Coordinate | None] = {}
 
-        # current_postition = Coordinate(int(self.rect.x / TILESIZE), int(self.rect.y / TILESIZE))
-        queue.appendleft(init_position)
-        parents[init_position] = None
+        queue.appendleft(start_coord)
+        parents[start_coord] = None
 
         while queue:
-            node = queue.pop()
-            visited.add(node)
+            coord = queue.pop()
+            visited.add(coord)
 
-            if node in map.entities and isinstance(map.get_entity(node), target_class):
-                # print('The path has been found')
-                return self.recover_path_from_parents_dict(node, parents)
+            if game_map.is_occupied_by_certain_class(coord, target_class):
+                return self._recover_path_from_parents_dict(coord, parents)
 
-            adjacent_nodes = self.get_adjacents(node)
-            for a_node in adjacent_nodes:
-                if a_node in visited or a_node in queue:
+            adjacent_coords = game_map.get_adjacents(coord)
+            available_coords = self._get_available_for_move(
+                game_map, adjacent_coords, target_class
+            )
+
+            for a_coord in available_coords:
+                if a_coord in visited or a_coord in queue:
                     continue
-                queue.appendleft(a_node)
-                parents[a_node] = node
+                queue.appendleft(a_coord)
+                parents[a_coord] = coord
 
-        else:
-            raise CantFindPathError()
+        return []
 
+    def _recover_path_from_parents_dict(
+        self,
+        target_coord: Coordinate,
+        parents: dict[Coordinate, Coordinate | None],
+    ) -> list[Coordinate]:
+        coord: Coordinate | None = target_coord
+        path = []
+        while coord:
+            path.append(coord)
+            coord = parents[coord]
+        return path[-2::-1]
 
-# TODO
-# Done. Настроить обработку ситуации, когда путь не может быть найден
-# (сейчас AttributeError: 'Pathfinder' object has no attribute 'path');
-
-# Done. Корректно обработать ситуации, когда нет свободных клеток (сейчас - получаю Traceback);
-# Done. Исправить curcular import для Map (сейчас - Map везде убраны);
+    def _get_available_for_move(
+        self, game_map: Map, adjacents: list[Coordinate], target_class: type[Entity]
+    ) -> list[Coordinate]:
+        return [
+            coord
+            for coord in adjacents
+            if game_map.is_empty_at(coord)
+            or game_map.is_occupied_by_certain_class(coord, target_class)
+        ]

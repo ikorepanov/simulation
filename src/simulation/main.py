@@ -1,29 +1,51 @@
-# import sys
+import sys
 
-import pygame
+from loguru import logger
 
-# from simulation.exceptions import NoUnoccupiedTilesError
-from simulation.map import Map
+from simulation.action import Action, MoveAction, PlaceEntitiesAction
+from simulation.entity.entity_creator import EntityCreator
+from simulation.exceptions import NoPredatorsOnGameMap, NoUnoccupiedCoordsError
+from simulation.game_map import Map
+from simulation.renderer.color_schemes import color_schemes
+from simulation.renderer.renderer import Renderer
+from simulation.settings import COLOR_SCHEME
 from simulation.simulation import Simulation
 
 
 def main() -> None:
-    m = Map()
-    # try:
-    #     m.setup_initial_entities_positions()
-    # except NoUnoccupiedTilesError as error:
-    #     print(f'No Unoccupied Tiles Error: {error.message}')
-    #     sys.exit(1)
+    game_map = Map()
 
-    s = Simulation(m)
-    s.show_start_screen()
+    renderer = Renderer(color_schemes[COLOR_SCHEME])
 
-    while s.running:
-        s.new()
-        s.show_go_screen()
+    entity_creator = EntityCreator()
 
-    pygame.quit()
+    init_actions: list[Action] = [
+        PlaceEntitiesAction(entity_creator.run()),
+    ]
+
+    turn_actions: list[Action] = [
+        MoveAction(),
+    ]
+
+    simulation = Simulation(
+        game_map=game_map,
+        renderer=renderer,
+        init_actions=init_actions,
+        turn_actions=turn_actions,
+    )
+
+    simulation.start_simulation()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except NoUnoccupiedCoordsError as error:
+        logger.error(f'No empty coords: {error}')
+        sys.exit()
+    except NoPredatorsOnGameMap as error:
+        logger.error(f'No preditors: {error}')
+        sys.exit()
+    except Exception:
+        logger.exception('Unexpected Error')
+        sys.exit()

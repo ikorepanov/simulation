@@ -1,43 +1,48 @@
-# define colors (R, G, B)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
-DARKGREY = (40, 40, 40)
-LIGHTGREY = (100, 100, 100)
-PURPLE = (128, 0, 128)
-VORTEX = (200, 0, 255)
-MINTWAVE = (0, 255, 100)
-
 # game options/settings
-TITLE = 'Simulation'
-WIDTH = 400  # 1024
-HEIGHT = 300  # 768
-FPS = 30  # 60  # How many times per second does the game loop repeat?
-BGCOLOR = DARKGREY
-GRIDCOLOR = LIGHTGREY
-DEVELOPMENT_MODE = True
+WIDTH = 40
+HEIGHT = 20
+DELAY_DURATION = 1
 
-TILESIZE = 100  # 32
-GRIDWIDTH = WIDTH / TILESIZE
-GRIDHEIGHT = HEIGHT / TILESIZE
-
-# finding free tile
+# finding free coord
 NUMBER_OF_ATTEMPTS = 1000
 
 # entities settings
-ATTACK_POWER = 100
-AMOUNT_OF_GRASS = 100
-PREDATOR_SPEED = 1
+MIN_ATTACK_POWER = 1
+MAX_ATTACK_POWER = MIN_ATTACK_POWER + 2
+MIN_GRASS_HEIGHT = 3
+MAX_GRASS_HEIGHT = MIN_GRASS_HEIGHT + 5
+MIN_HERBIVORE_HP = 4
+MAX_HERBIVORE_HP = MIN_HERBIVORE_HP + 2
 PREDATOR_HP = 100
-HERBIVORE_SPEED = 1
-HERBIVORE_HP = 100
+MIN_PREDATOR_SPEED = 1
+MAX_PREDATOR_SPEED = MIN_PREDATOR_SPEED + 2
+MIN_HERBIVORE_SPEED = 2
+MAX_HERBIVORE_SPEED = MIN_HERBIVORE_SPEED + 2
 
 # number of entities
-PREDATOR_NUMBER = 0
-HERBIVORE_NUMBER = 1
-ROCK_NUMBER = 0
-TREE_NUMBER = 0
-GRASS_NUMBER = 1
+PREDATOR_NUMBER = 10
+HERBIVORE_NUMBER = 50
+ROCK_NUMBER = 50
+TREE_NUMBER = 50
+GRASS_NUMBER = 200
+
+# ANSI
+ANSI_ESC = '\033'  # Начало ANSI escape-последовательности
+ANSI_BACKGROUND_256 = '[48;5;'  # Установить цвет фона; использовать 256-цветный режим
+ANSI_RESET = '[0'
+ANSI_BEGINNING_PREV_LINE = '[F'
+ANSI_CLEAR_LINE = '[K'
+ANSI_STYLE_END = (
+    'm'  # Завершить escape-команду и применить стили (конец описания стиля)
+)
+
+# sprites
+HERBIVORE_SPRITE = '\U0001f992 '
+GRASS_SPRITE = '\U0001f340 '
+PREDATOR_SPRITE = '\U0001f981 '
+ROCK_SPRITE = '\U0001faa8  '
+TREE_SPRITE = '\U0001f334 '
+EMPTY_COORD_SPRITE = '   '
+
+# current color scheme: industrial, midnight, ocean, savanna, twilight, glacier, abyss
+COLOR_SCHEME = 'abyss'
