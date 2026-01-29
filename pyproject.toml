@@ -2,7 +2,9 @@
 name = "simulation"
 version = "1.0.0"
 description = "Step-based 2D ecosystem simulation with herbivores, predators, plants, and static obstacles. The world is a grid where each entity occupies a single cell. Features turn-based actions: entity movement, resource consumption. Designed to demonstrate OOP architecture and flexible class-based design in Python."
-authors = [{ name = "Ilia Korepanov" }]
+authors = [
+    { name = "Ilia Korepanov", email = "ikorepanov.dev@gmail.com" },
+]
 
 dependencies = [
     "loguru==0.7.3",
